@@ -1,13 +1,13 @@
 <template>
   <div>
     <v-btn
-      class="connexion mr-1 ml-1"
+    class="panier"
       color="deep-purple"
-      tile
       dark
+      tile
       @click="sheet = !sheet"
     >
-    Connexion
+    Panier
     </v-btn>
     <v-bottom-sheet v-model="sheet">
       <v-sheet
@@ -23,24 +23,22 @@
           fermer
         </v-btn>
         <div class="py-3">
-          <ConnexionForm/>
+          Panier
         </div>
       </v-sheet>
     </v-bottom-sheet>
   </div>
 </template>
 <script>
-import ConnexionForm from '../components/ConnexionForm'
   export default {
-    name:"Connexion",
-    components:{ConnexionForm},
+    name:"Panier",
     data: () => ({
       sheet: false,
     }),
   }
 </script>
 <style lang="scss">
-  .connexion{
-    border-radius:0 15px 15px 0;
+  .panier{
+    border-radius:15px 0 0 15px;
   }
 </style>

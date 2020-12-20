@@ -1,153 +1,91 @@
 <template>
-<div>
-<v-container>
-<v-row>
- <v-col>  
-  <v-card>
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant.sync="mini"
-      permanent
-    >
-      <v-list-item class="px-2">
-        <v-list-item-avatar>
-          <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
-        </v-list-item-avatar>
-
-        <v-list-item-title>Sacha </v-list-item-title>
-
-        <v-btn
-          icon
-          @click.stop="mini = !mini"
-        >
-          <v-icon>mdi-chevron-left</v-icon>
-        </v-btn>
-      </v-list-item>
-
-      <v-divider></v-divider>
-
-      <v-list dense>
-        <v-list-item
-          v-for="item in items"
-          :key="item.title"
-          link
-        >
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    
-    <v-card
-    :loading="loading"
-    class="mx-auto my-12"
-    max-width="374"
-  > 
-    <template slot="progress">
-      <v-progress-linear
-        color="deep-purple"
-        height="10"
-        indeterminate
-      ></v-progress-linear>
-    </template>
-
-    <v-img
-      width="100%"
-      height="100%"
-      src="../assets/salameche.png"
-    ></v-img>
-
-    <v-card-title>Salamèche</v-card-title>
-
-    <v-card-text>
-        <v-row
-        align="center"
-        class="mx-0"
-      >
-      <div class="grey--text ml-4">
-          Ref: SAL6776
-      </div>
-      </v-row>
-      <v-row
-        align="center"
-        class="mx-0"
-      >
-        <div class="grey--text ml-4">
-          Niveau
-        </div>
-        <v-rating
-          :value="4.5"
-          color="amber"
-          dense
-          half-increments
-          readonly
-          size="14"
-        ></v-rating>
-
-      </v-row>
-      <v-row
-        align="center"
-        class="mx-0"
-      >
-      <div class="grey--text ml-4">
-          Type energie: Feu
-      </div>
-      </v-row>
-
-    </v-card-text>
-
-    <v-divider class="mx-4"></v-divider>
-
-    <v-card-title>20€</v-card-title>
-
-    <v-card-text>
-      <v-chip-group
-        v-model="selection"
-        active-class="deep-purple accent-4 white--text"
-        column
-      >
-        <v-chip @click="reserve">Acheter</v-chip>
-      </v-chip-group>
-    </v-card-text>
-
-  </v-card>
-
-
-   </v-card>
-  </v-col>
-</v-row>
-</v-container>
-</div>
+    <v-container>
+        <v-row justify="center">
+            <v-col cols="12" lg="10" md="10" xs="10"> 
+               <div class="justify-start">
+                   <v-img max-width="350" height="auto" src="../assets/logo-pokeshop.svg"></v-img>
+               </div>
+            </v-col>
+            <v-col cols="12" lg="10" md="10">
+               <v-card class="mb-lg-5 mb-md-5" elevation="20" color="rgba(204, 204, 204, 0.9)" min-height="850" rounded="xl">
+                   <v-row>
+                       <v-col class="position-relative jutify-content-center" cols="2" lg="2" md="2">
+                            <Menu/>
+                       </v-col>
+                       <v-col cols="10" lg="10">
+                           <v-row>
+                               <v-col cols="12" lg="12"> 
+                                   <!-- Shop -->
+                                   <v-layout class="jutify-content-end pr-4" min-height="auto">
+                                        <Panier/>
+                                        <Connexion/>
+                                   </v-layout>
+                               </v-col>
+                               <v-col cols="12" lg="12" md="12"> 
+                                   <!-- Carrousel -->
+                                   <v-card rounded="xl" class="mr-4">
+                                       <v-img src="../assets/banner-pokemon.png"></v-img>
+                                   </v-card>
+                               </v-col>
+                               <v-col cols="12" lg="12"> 
+                                   <!-- Nouveauté -->
+                                   <v-layout min-height="250" class="mr-lg-4" color="#000000">
+                                       <HomeCarte/>
+                                   </v-layout>
+                               </v-col>
+                           </v-row>
+                       </v-col>
+                   </v-row>
+               </v-card>
+            </v-col>
+            <v-col cols="10" lg="10" md="10">
+               <v-row>
+                   <v-col cols="12" lg="8" md="8" xs="12">
+                      <div class="grey--text pa-4">
+                            <h2 class="grey--text text--darken-2">Inscrivez-vous sur notre boutique et profitez d'une expérience unique</h2><br>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                            ullamco laboris nisi ut aliquip ex ea commodo consequat
+                      </div>  
+                   </v-col>
+                   <v-col cols="12" lg="4" md="4" xs="12" class="jutify-content-center">
+                        <InscriptionForm/>
+                   </v-col>
+               </v-row>
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
 <script>
-  export default {
-    data () {
-      return {
-        drawer: true,
-        items: [
-          { title: 'Accueil', icon: 'mdi-home-city' },
-          { title: 'Compte', icon: 'mdi-account' },
-          { title: 'Utilisateur', icon: 'mdi-account-group-outline' },
-        ],
-        mini: true,
-        loading: false,
-        selection: 1,
-      }
-    },
-    methods: {
-      reserve () {
-        this.loading = true
-
-        setTimeout(() => (this.loading = false), 2000)
-      },
-    },
-  }
+import Menu from '../components/Menu'
+import Connexion from '../components/Connexion'
+import Panier from '../components/Panier'
+import HomeCarte from '../components/HomeCarte'
+import InscriptionForm from '../components/InscriptionForm'
+export default {
+    
+    name: "Home",
+    components:{Menu,Connexion,Panier,HomeCarte,InscriptionForm}
+    }
 </script>
 <style lang="scss">
-    
+    .contenu{
+        background-color:#cccccc;
+        min-height:800px;
+    }
+
+    .jutify-content-center{
+        display:flex;
+        justify-content:center;
+    }
+
+    .jutify-content-end{
+        display:flex;
+        justify-content:flex-end;
+    }
+
+    .position-relative {
+        position:relative;
+        box-sizing:border-box;
+    }
 </style>

@@ -1,27 +1,17 @@
 module.exports = {
-    "env": {
-        "browser": true,
-        "es6": true
-    },
-    "extends": [
-        "eslint:recommended",
-        "plugin:vue/essential"
-    ],
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
-    },
-    "parser": "babel-eslint",
-    "parserOptions": {
-        "ecmaVersion": 2018,
-        "sourceType": "module"
-
-        ,"allowImportExportEverywhere": true,
-        "codeFrame": true
-    },
-    "plugins": [
-        "vue"
-    ],
-    "rules": {
-    }
-};
+  root: true,
+  env: {
+    node: true
+  },
+  'extends': [
+    'plugin:vue/essential',
+    'eslint:recommended'
+  ],
+  parserOptions: {
+    parser: 'babel-eslint'
+  },
+  rules: {
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
+  }
+}
