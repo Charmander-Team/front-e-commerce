@@ -21,10 +21,10 @@
             :src="require('../assets/' + carteCard.img)"
           ></v-img>
           <v-card max-width="150" class="mt-3 pa-2">
-            <v-card-title class="px-2 py-0 text-lg-body-3 text-md-body-1">
+            <v-card-title class="px-0 py-0 text-lg-body-3 text-md-body-1">
               {{ carteCard.nom }}
             </v-card-title>
-            <v-card-text class="px-2 py-0">
+            <v-card-text class="px-0 py-0">
               <div class="grey--text">Ref: {{ carteCard.ref }}</div>
               <div class="grey--text">Type: {{ carteCard.type }}</div>
               <v-row align="center" class="mx-0">
@@ -42,7 +42,7 @@
               </v-row>
             </v-card-text>
             <v-divider class="ma-1"></v-divider>
-            <v-card-text class="px-2 py-0">
+            <v-card-text class="px-0 py-0">
               <div class="grey--text mb-1">
                 Prix: {{ carteCard.prix }}{{ carteCard.devise }}
               </div>

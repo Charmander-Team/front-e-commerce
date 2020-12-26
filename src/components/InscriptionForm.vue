@@ -77,8 +77,8 @@
       ],
       email: '',
       emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+        v => !!v || 'E-mail obligatoire',
+        v => /.+@.+\..+/.test(v) || 'E-mail doit être valide',
       ],
       select: null,
       items: [
