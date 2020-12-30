@@ -24,7 +24,7 @@
             <v-card-title class="px-0 py-0 text-lg-body-3 text-md-body-1">
               {{ carteCard.nom }}
             </v-card-title>
-            <v-card-text class="px-0 py-0">
+            <v-card-text class="px-0 py-0 text-lg-custom">
               <div class="grey--text">Ref: {{ carteCard.ref }}</div>
               <div class="grey--text">Type: {{ carteCard.type }}</div>
               <v-row align="center" class="mx-0">
@@ -210,3 +210,9 @@ export default {
   }),
 };
 </script>
+<style lang="scss">
+  .text-lg-custom{
+    font-size: 0.75rem !important;
+    line-height:1rem !important;
+  }
+</style>

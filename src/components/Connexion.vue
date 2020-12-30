@@ -12,7 +12,7 @@
     <v-bottom-sheet v-model="sheet">
       <v-sheet
         class="text-center"
-        height="200px"
+        height="auto"
       >
         <v-btn
           class="mt-6"

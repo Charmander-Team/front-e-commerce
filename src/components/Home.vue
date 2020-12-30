@@ -1,12 +1,12 @@
 <template>
     <v-container>
         <v-row justify="center">
-            <v-col cols="12" lg="10" md="10" xs="10"> 
+            <v-col id="header" cols="12" lg="12" md="12" xs="10"> 
                <div class="justify-start">
                    <v-img max-width="350" height="auto" src="../assets/logo-pokeshop.svg"></v-img>
                </div>
             </v-col>
-            <v-col cols="12" lg="10" md="10">
+            <v-col cols="12" lg="12" md="12">
                <v-card class="mb-lg-5 mb-md-5" elevation="20" color="rgba(204, 204, 204, 0.9)" min-height="850" rounded="xl">
                    <v-row>
                        <v-col class="position-relative jutify-content-center" cols="2" lg="2" md="2">
@@ -42,7 +42,7 @@
                <v-row>
                    <v-col cols="12" lg="8" md="8" xs="12">
                       <div class="grey--text pa-4">
-                            <h2 class="grey--text text--darken-2">Inscrivez-vous sur notre boutique et profitez d'une expérience unique</h2><br>
+                            <h3 class="grey--text text--darken-2">Inscrivez-vous sur notre boutique et profitez d'une expérience unique</h3><br>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
                             ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
                             ullamco laboris nisi ut aliquip ex ea commodo consequat
@@ -54,6 +54,7 @@
                </v-row>
             </v-col>
         </v-row>
+        <ScrollDown/>
     </v-container>
 </template>
 <script>
@@ -62,10 +63,11 @@ import Connexion from '../components/Connexion'
 import Panier from '../components/Panier'
 import HomeCarte from '../components/HomeCarte'
 import InscriptionForm from '../components/InscriptionForm'
+import ScrollDown from '../components/ScrollDown'
 export default {
     
     name: "Home",
-    components:{Menu,Connexion,Panier,HomeCarte,InscriptionForm}
+    components:{Menu,Connexion,Panier,HomeCarte,InscriptionForm,ScrollDown}
     }
 </script>
 <style lang="scss">

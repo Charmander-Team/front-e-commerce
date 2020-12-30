@@ -1,11 +1,12 @@
 <template>
-<div>
-<!-- <div class="menu d-none d-sm-block"> -->
-<div class="menu hidden-md-and-down">
-    <v-btn height="45" v-for="(item,index) in items" :key="index" block dark tile color="deep-purple">
+<div id="containerCard" class="position-relative">
+<!-- Menu dekstop -->
+<div id="menu" class="hidden-md-and-down" v-scroll="onScroll">
+    <v-btn height="45" v-for="(item,index) in items" :key="index" block  tile small dark color="deep-purple">
        {{item.title}}
     </v-btn>
 </div>
+<!-- Menu mobile -->
 <div class="hidden-md-and-up">
   <v-layout
     wrap
@@ -14,7 +15,7 @@
     <v-container>
       <v-layout justify-center>
         
-          <v-icon color="deep-purple" @click.stop="drawer = !drawer" x-large>mdi-menu</v-icon>
+          <v-icon color="deep-purple" @click.stop="drawer = !drawer" large>mdi-menu</v-icon>
         
       </v-layout>
     </v-container>
@@ -50,14 +51,44 @@ export default {
       ],
       mini: true,
       drawer: null,
+      fab: false,
     };
+  },
+  methods: {
+    onScroll () {
+      // if (typeof window === 'undefined') return
+      // const top = window.pageYOffset ||   e.target.scrollTop || 0
+      // this.fab = top > 20
+     console.log(document.getElementById("containerCard").offsetHeight)
+     console.log(document.getElementById("header").offsetHeight)
+     let heightMenu = document.getElementById("containerCard").offsetHeight - (document.getElementById("header").offsetHeight * 2) - 35
+     if(heightMenu >=window.pageYOffset){
+              document.getElementById("menu").style.top=window.pageYOffset+"px"
+      }      
+     // console.log(window.pageYOffset)
+
+    },
+    scroll () {
+      this.$vuetify.goTo(0)
+    }
   },
 };
 </script>
 <style lang="scss">
-  .menu{
-    // position:absolute;
-    // z-index:100;
+  #containerCard{
+    height: 100%;
+  }
+
+  .position-relative{
+    position:relative;
+  }
+
+  #menu{
+    // position:fixed;
+     position: relative;
+     //left:20px;
+     //top:20px;
+    z-index:100;
     .v-btn:first-child{
       border-radius: 15px 15px 0 0;
     }
