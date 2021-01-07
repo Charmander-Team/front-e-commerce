@@ -1,24 +1,15 @@
 <template>
   <v-app>
-    <v-main>
-      <!-- <v-app-bar app>
-        LOGO
-      </v-app-bar> -->
-      <Home/>
-      <Footer/>
-    </v-main>
+      <router-view></router-view>
   </v-app>
 </template>
 
 <script>
-import Home from './components/Home';
-import Footer from './components/Footer';
+
 export default {
   name: 'App',
 
   components: {
-    Home,
-    Footer,
   },
 
   data: () => ({

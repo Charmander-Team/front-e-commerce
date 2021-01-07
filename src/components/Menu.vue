@@ -59,8 +59,9 @@ export default {
       // if (typeof window === 'undefined') return
       // const top = window.pageYOffset ||   e.target.scrollTop || 0
       // this.fab = top > 20
-     console.log(document.getElementById("containerCard").offsetHeight)
-     console.log(document.getElementById("header").offsetHeight)
+     
+     //console.log(document.getElementById("containerCard").offsetHeight)
+     //console.log(document.getElementById("header").offsetHeight)
      let heightMenu = document.getElementById("containerCard").offsetHeight - (document.getElementById("header").offsetHeight * 2) - 35
      if(heightMenu >=window.pageYOffset){
               document.getElementById("menu").style.top=window.pageYOffset+"px"
