@@ -2,35 +2,56 @@
   <v-footer
     dark
     padless
+    class="indigo lighten-1 white--text text-center"
   >
-    <v-card
-      flat
-      tile
-      class="indigo lighten-1 white--text text-center"
-    >
-      <v-card-text>
-        <v-btn
-          v-for="icon in icons"
-          :key="icon"
-          class="mx-4 white--text"
-          icon
-        >
-          <v-icon size="24px">
-            {{ icon }}
-          </v-icon>
-        </v-btn>
-      </v-card-text>
-
-      <v-card-text class="white--text pt-0">
-        Phasellus feugiat arcu sapien, et iaculis ipsum elementum sit amet. Mauris cursus commodo interdum. Praesent ut risus eget metus luctus accumsan id ultrices nunc. Sed at orci sed massa consectetur dignissim a sit amet dui. Duis commodo vitae velit et faucibus. Morbi vehicula lacinia malesuada. Nulla placerat augue vel ipsum ultrices, cursus iaculis dui sollicitudin. Vestibulum eu ipsum vel diam elementum tempor vel ut orci. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-      </v-card-text>
-
-      <v-divider></v-divider>
-
-      <v-card-text class="white--text">
-        {{ new Date().getFullYear() }} — <strong>Pokeshop</strong>
-      </v-card-text>
-    </v-card>
+      <v-container>
+        <v-row justify="center">
+            <v-col col="4" lg="2" md ="2">
+              <span class="footer-titre">Réseaux:</span><br>
+              <v-btn
+                v-for="icon in icons"
+                :key="icon"
+                class="d-inline mx-2 white--text"
+                icon
+              >
+                <v-icon class="d-inline">
+                  {{ icon }}
+                </v-icon>
+              </v-btn>
+            </v-col>
+            <v-col class="text-left" col="4" lg="5" md ="5">
+              <ul class="d-inline-block vertical-align-top ml-6" v-for="(item,index) in footer" :key="index">
+                <li class="footer-titre d-block">
+                  {{item.titre}}
+                </li>
+                <li class="d-block" v-for="(item2,index2) in item.liste" :key="index2">
+                    {{item2}}
+                </li>
+              </ul>
+            </v-col>
+            <v-col class="text-left" col="4" lg="5" md="5">
+              <ul>
+                <li class="footer-titre d-block">
+                  INSCRIPTION
+                </li>
+                <li class="d-block">
+                  Abonnez-vous à notre newsletter pour être le premier informé des nouvelles offres et promotions.
+                </li>
+                <li class="d-block form-inscription-mail">
+                  <input type="text" placeholder="Adresse Email"><input type="submit" value="INSCRIPTION">
+                </li>
+              </ul>
+            </v-col>
+        </v-row>
+      </v-container>
+      <v-container fluid class="pa-0">
+          <v-row>
+            <v-col class="white indigo--text d-flex justify-end pa-4" col="12" lg="12" md="12">
+                <img src="../assets/logo-master-card.svg" alt="" class="pa-2">
+                <img src="../assets/logo-visa.svg" alt="" class="pa-2">
+            </v-col>
+          </v-row>
+      </v-container>
   </v-footer>
 </template>
 <script>
@@ -40,9 +61,45 @@ export default {
       icons: [
         'mdi-facebook',
         'mdi-twitter',
-        'mdi-linkedin',
+        //'mdi-linkedin',
         'mdi-instagram',
       ],
+      footer:[
+        {titre:"Accueil",liste:["A propos","Contact","Mentions légales"]},
+        {titre:"Politique",liste:["CGV","CGI","Retour"]},
+        {titre:"Categories",liste:["Cartes rare","Cartes énergie","Cartes dresseur","Cartes pokemon"]},
+      ]
     }),
   }
 </script>
+<style lang="scss">
+  .vertical-align-top{
+    vertical-align: top;
+  }
+
+  .footer-titre{
+    font-size:17px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom:15px;
+  }
+
+  .form-inscription-mail {
+    margin:15px 0;
+    input[type="text"]{
+      padding:5px;
+      color:#8d8a8a;
+      border:2px solid #ffffff;
+      background-color: #ffffff;
+    }
+
+    input[type="submit"]{
+      padding:5px;
+      border:2px solid #ffffff;
+    }
+
+    input[type="text"]:focus,input[type="submit"]:focus{
+      outline:0;
+    }
+  }
+</style>
