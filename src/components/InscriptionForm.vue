@@ -40,7 +40,7 @@
     <v-checkbox
       v-model="checkbox"
       :rules="[v => !!v || 'Les champs indiquant * sont obligatoire']"
-      label="vous confirmez avoir lu et accepté
+      label="Je confirme avoir lu et accepté
       les conditions d'utilisation."
       required
     ></v-checkbox>

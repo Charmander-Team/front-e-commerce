@@ -8,7 +8,7 @@
                </div>
             </v-col>
             <v-col cols="12" lg="12" md="12">
-               <v-card class="mb-lg-5 mb-md-5" elevation="20" color="rgba(204, 204, 204, 0.9)" min-height="850" rounded="xl">
+               <v-card class="mb-lg-5 mb-md-5" elevation="20" color="rgba(204, 204, 204, 0.9)" rounded="xl">
                    <v-row>
                        <v-col class="position-relative jutify-content-center" cols="2" lg="2" md="2">
                             <Menu/>
@@ -30,8 +30,9 @@
                                </v-col>
                                <v-col cols="12" lg="12"> 
                                    <!-- Nouveauté -->
-                                   <v-layout min-height="250" class="mr-lg-4" color="#000000">
-                                       <HomeCarte/>
+                                   <v-layout class="mr-lg-4" color="#000000">
+                                       <HomeCarte class="hidden-md-and-down"/>
+                                       <HomeCarteMobile class="hidden-md-and-up"/>
                                    </v-layout>
                                </v-col>
                            </v-row>
@@ -68,6 +69,7 @@ import HomeCarte from '../components/HomeCarte'
 import InscriptionForm from '../components/InscriptionForm'
 import Footer from '../components/Footer'
 import ScrollDown from '../components/ScrollDown'
+import HomeCarteMobile from '../components/HomeCarteMobile'
 export default {
     components:{
       Menu,
@@ -76,7 +78,9 @@ export default {
       HomeCarte,
       InscriptionForm,
       Footer,
-      ScrollDown}
+      ScrollDown,
+      HomeCarteMobile,
+      }
     }
 </script>
 <style lang="scss">

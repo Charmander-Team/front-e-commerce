@@ -7,10 +7,9 @@
     </v-btn>
 </div>
 <!-- Menu mobile -->
-<div class="hidden-md-and-up">
+<div id="menuMobile" class="hidden-md-and-up" v-scroll="onScroll">
   <v-layout
     wrap
-    style="height: 200px;"
   >
     <v-container>
       <v-layout justify-center>
@@ -65,6 +64,8 @@ export default {
      let heightMenu = document.getElementById("containerCard").offsetHeight - (document.getElementById("header").offsetHeight * 2) - 35
      if(heightMenu >=window.pageYOffset){
               document.getElementById("menu").style.top=window.pageYOffset+"px"
+              document.getElementById("menuMobile").style.top=window.pageYOffset+"px"
+
       }      
      // console.log(window.pageYOffset)
 
@@ -97,5 +98,9 @@ export default {
       border-radius: 0 0 15px 15px;
     }
   }
+
+   #menuMobile{
+     position: relative;
+   }
 
 </style>

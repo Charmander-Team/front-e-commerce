@@ -6,8 +6,8 @@
   >
       <v-container>
         <v-row justify="center">
-            <v-col col="4" lg="2" md ="2">
-              <span class="footer-titre">Réseaux:</span><br>
+            <v-col cols="12" lg="2" md ="2">
+              <div class="footer-titre d-blobk">Réseaux:</div>
               <v-btn
                 v-for="icon in icons"
                 :key="icon"
@@ -19,8 +19,8 @@
                 </v-icon>
               </v-btn>
             </v-col>
-            <v-col class="text-left" col="4" lg="5" md ="5">
-              <ul class="d-inline-block vertical-align-top ml-6" v-for="(item,index) in footer" :key="index">
+            <v-col class="text-left" cols="12" lg="5" md ="5">
+              <ul class="d-lg-inline-block d-xs-block vertical-align-top ml-lg-6 ml-xs-0" v-for="(item,index) in footer" :key="index">
                 <li class="footer-titre d-block">
                   {{item.titre}}
                 </li>
@@ -29,7 +29,7 @@
                 </li>
               </ul>
             </v-col>
-            <v-col class="text-left" col="4" lg="5" md="5">
+            <v-col class="text-left" cols="12" lg="5" md="5">
               <ul>
                 <li class="footer-titre d-block">
                   INSCRIPTION
@@ -38,7 +38,8 @@
                   Abonnez-vous à notre newsletter pour être le premier informé des nouvelles offres et promotions.
                 </li>
                 <li class="d-block form-inscription-mail">
-                  <input type="text" placeholder="Adresse Email"><input type="submit" value="INSCRIPTION">
+                  <input type="text" placeholder="Adresse Email" class="">
+                  <input type="submit" value="INSCRIPTION" class="">
                 </li>
               </ul>
             </v-col>
@@ -67,7 +68,7 @@ export default {
       footer:[
         {titre:"Accueil",liste:["A propos","Contact","Mentions légales"]},
         {titre:"Politique",liste:["CGV","CGI","Retour"]},
-        {titre:"Categories",liste:["Cartes rare","Cartes énergie","Cartes dresseur","Cartes pokemon"]},
+        {titre:"Categories",liste:["Cartes rares","Cartes Energie","Cartes Dresseur","Cartes Pokemon"]},
       ]
     }),
   }
@@ -81,7 +82,8 @@ export default {
     font-size:17px;
     font-weight: 700;
     text-transform: uppercase;
-    margin-bottom:15px;
+    margin-top:10px;
+    margin-bottom:10px;
   }
 
   .form-inscription-mail {
