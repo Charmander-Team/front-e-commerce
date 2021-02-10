@@ -47,10 +47,14 @@
                 Prix: {{ carteCard.price }} €
               </div>
               <v-btn small color="deep-purple" dark v-if="carteCard.bid===0">
-                Acheter
+                <!-- Acheter -->
+                Panier <sup>+</sup>
               </v-btn>
               <v-btn small color="deep-purple" dark v-if="carteCard.bid===1">
                 Enchèrir
+              </v-btn>
+              <v-btn small color="deep-purple" class="mt-2" dark>
+                <router-link style="text-decoration:none;color:#ffffff;" to="/VoirCarte">Voir</router-link>
               </v-btn>
             </v-card-text>
           </v-card>

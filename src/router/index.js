@@ -10,6 +10,11 @@ const routes = [
     name: 'Home',
     component: Home
   },
+  {
+    path: '/VoirCarte',
+    name: 'VoirCarte',
+    component: () => import(/* webpackChunkName: "VoirCarte" */ '../views/VoirCarte.vue')
+  },
   //{
     //path: '/about',
     //name: 'About',
