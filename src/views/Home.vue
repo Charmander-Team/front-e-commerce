@@ -4,7 +4,7 @@
         <v-row justify="center">
             <v-col id="header" cols="12" lg="12" md="12" xs="10"> 
                <div class="justify-start">
-                   <v-img max-width="350" height="auto" src="../assets/logo-pokeshop.svg"></v-img>
+                   <v-img max-width="200" height="auto" src="../assets/logo-pokeshop.svg"></v-img>
                </div>
             </v-col>
             <v-col cols="12" lg="12" md="12">
@@ -84,6 +84,7 @@ export default {
     }
 </script>
 <style lang="scss">
+    
     .contenu{
         background-color:#cccccc;
         min-height:800px;

@@ -3,14 +3,14 @@
     <v-row v-for="(item, index) in cartes" :key="index">
       <v-divider class="mx-2"></v-divider>
       <v-col cols="12" lg="12" md="12">
-        <div class="text-h6">{{ item.categorie }} :</div>
+        <div class="text-h6">{{ item.category_id }} :</div>
       </v-col>
       <v-col
         cols="auto"
         lg="2"
         md="4"
         sm="4"
-        v-for="(carteCard, caracteristique) in item.liste"
+        v-for="(carteCard, caracteristique) in item.list"
         :key="caracteristique"
       >
         <div>
@@ -18,18 +18,18 @@
             width="100%"
             height="auto"
             max-width="150"
-            :src="require('../assets/' + carteCard.img)"
+            :src="carteCard.img"
           ></v-img>
           <v-card max-width="150" class="mt-3 pa-2">
             <v-card-title class="px-0 py-0 text-lg-body-3 text-md-body-1">
-              {{ carteCard.nom }}
+              {{ capitalizeFirstLetter(carteCard.name) }}
             </v-card-title>
             <v-card-text class="px-0 py-0 text-lg-custom">
               <div class="grey--text">Ref: {{ carteCard.ref }}</div>
               <div class="grey--text">Type: {{ carteCard.type }}</div>
               <v-row align="center" class="mx-0">
                 <div class="grey--text">
-                  Niveau:
+                  Etat:
                 </div>
                 <v-rating
                   :value="carteCard.niveau"
@@ -44,12 +44,12 @@
             <v-divider class="ma-1"></v-divider>
             <v-card-text class="px-0 py-0">
               <div class="grey--text mb-1">
-                Prix: {{ carteCard.prix }}{{ carteCard.devise }}
+                Prix: {{ carteCard.price }} €
               </div>
-              <v-btn small color="deep-purple" dark v-if="carteCard.achat">
+              <v-btn small color="deep-purple" dark v-if="carteCard.bid===0">
                 Acheter
               </v-btn>
-              <v-btn small color="deep-purple" dark v-if="carteCard.enchere">
+              <v-btn small color="deep-purple" dark v-if="carteCard.bid===1">
                 Enchèrir
               </v-btn>
             </v-card-text>
@@ -208,7 +208,23 @@ export default {
       },
     ],
   }),
+  methods:{
+    loadAllCarte(){
+      this.$axios.get("http://localhost:3006/products").then((response) => {
+        console.log(response.data)
+        this.cartes=response.data
+      }).catch(error => console.log(error))
+    },
+    capitalizeFirstLetter(string) {
+      let capitalize = string.charAt(0).toUpperCase() + string.slice(1);
+      return capitalize.replace('-', ' ')
+    }
+  },
+  async mounted(){
+    await this.loadAllCarte()
+  }
 };
+
 </script>
 <style lang="scss">
   .text-lg-custom{
@@ -216,3 +232,5 @@ export default {
     line-height:1rem !important;
   }
 </style>
+
+

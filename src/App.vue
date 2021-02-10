@@ -20,7 +20,7 @@ export default {
 <style lang="scss">
 
   #app{
-    background-image:url('assets/bg.svg');
+    background-image:url('assets/bg-jaune.svg');
     background-repeat:no-repeat;
     background-position:top center;
     background-size:100vw auto;

@@ -2,7 +2,7 @@
 <div id="containerCard" class="position-relative">
 <!-- Menu dekstop -->
 <div id="menu" class="hidden-md-and-down" v-scroll="onScroll">
-    <v-btn height="45" v-for="(item,index) in items" :key="index" block  tile small dark color="deep-purple">
+    <v-btn height="45" v-for="(item,index) in items" :key="index" block  tile small light color="white">
        {{item.title}}
     </v-btn>
 </div>
