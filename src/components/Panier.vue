@@ -14,7 +14,7 @@
           <v-img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" width="30" height="auto">
             <v-badge
           color="green"
-          content="6"
+          content="8"
         ></v-badge>
           </v-img>
         
