@@ -1,0 +1,10 @@
+/**
+ * You must have to:
+ *  - copy this files and rename it "port.js"
+ *  - edit this one with your port
+ */
+
+const port = 3000;
+
+
+module.exports = port;
