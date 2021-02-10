@@ -2,7 +2,7 @@
   <v-footer
     dark
     padless
-    class="indigo lighten-1 white--text text-center"
+    class="black lighten-1 white--text text-center"
   >
       <v-container>
         <v-row justify="center">

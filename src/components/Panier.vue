@@ -9,15 +9,14 @@
     >
     Panier
     </v-btn> -->
-    <v-tab>
-        
-          <v-img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" width="30" height="auto">
+        <v-tab @click="sheet = !sheet">
+          <v-img src="../assets/panier_icon.png" width="58" height="auto">
             <v-badge
-          color="green"
+          color="black"
           content="8"
         ></v-badge>
           </v-img>
-        
+          <!-- PANIER -->
       </v-tab>
     <v-bottom-sheet v-model="sheet">
       <v-sheet
@@ -58,7 +57,7 @@
 
   .v-badge__badge{
     position:absolute !important;
-    right: 0 !important;
-    top:0 !important;
+    left: 9px !important;
+    top:-13px !important;
   }
 </style>

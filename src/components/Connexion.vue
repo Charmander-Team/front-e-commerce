@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn
+    <!-- <v-btn
       class="connexion mr-1 ml-1"
       color="deep-purple"
       tile
@@ -8,7 +8,14 @@
       @click="sheet = !sheet"
     >
     Connexion
-    </v-btn>
+    </v-btn> -->
+    <v-tab @click="sheet = !sheet">
+        <v-img src="../assets/connexion_icon.png" width="75" height="auto">
+        </v-img>
+        <!-- connexion -->
+    </v-tab>
+    
+
     <v-bottom-sheet v-model="sheet">
       <v-sheet
         class="text-center"

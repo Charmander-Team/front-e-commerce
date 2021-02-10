@@ -3,7 +3,7 @@
     <v-row v-for="(item, index) in cartes" :key="index">
       <v-divider class="mx-2"></v-divider>
       <v-col cols="12" lg="12" md="12">
-        <div class="text-h6">{{ item.category_id }} :</div>
+        <div class="text-h6">{{ item.title_list }} :</div>
       </v-col>
       <v-col
         cols="auto"
