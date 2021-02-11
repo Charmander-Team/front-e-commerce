@@ -23,14 +23,38 @@
                                         <Connexion/>
                                    </v-layout>
                                </v-col>
-                                    <!-- Détail carte -->
+                               <!-- Détail carte -->
+                               <v-col cols="12" lg="12">
+                                    <v-row>
+                                        <v-col lg="4">
+                                            <v-img :src="detailCard.img" max-width="245" height="auto" class="ma-4"></v-img>
+                                        </v-col>
+                                        <v-col lg="8">
+                                            <v-card class="mt-4 mr-6" max-width="100%" min-height="342" color="#ffffff" elevation="2" rounded="lg">
+                                                <v-card-title class="jutify-content-center">{{detailCard.name}}</v-card-title>
+                                                <v-card-text>
+                                                     <div class="mb-2">{{detailCard.ref}}</div>
+                                                     <div class="mb-2">Etat: </div>
+                                                     <div class="mb-2">Type: {{detailCard.type}}</div>
+                                                     <div class="mb-2">Description:<br>Plus la puissance électrique de Pikachu est élevée, plus les poches de ses joues sont extensibles.</div>
+                                                     <div  class="mb-2 jutify-content-center">Prix: {{detailCard.price}}€</div>
+                                                     <div class="mt-6 jutify-content-center">
+                                                        <v-btn x-large color="deep-purple" dark>
+                                                            Ajouter au panier
+                                                        </v-btn>
+                                                     </div>
+                                                </v-card-text>
+                                            </v-card>
+                                        </v-col>
+                                    </v-row>
+                               </v-col>
                            </v-row>
                        </v-col>
                    </v-row>
                </v-card>
             </v-col>
         </v-row>
-        <ScrollDown/>
+        <!-- <ScrollDown/> -->
     </v-container>
      <Footer/>
     </v-main>
@@ -40,15 +64,40 @@ import Menu from '../components/Menu'
 import Connexion from '../components/Connexion'
 import Panier from '../components/Panier'
 import Footer from '../components/Footer'
-import ScrollDown from '../components/ScrollDown'
+// import ScrollDown from '../components/ScrollDown'
 export default {
     components:{
       Menu,
       Connexion,
       Panier,
       Footer,
-      ScrollDown,
-      }
+    //   ScrollDown,
+      },
+    data(){
+      return {
+          detailCard:{
+            // img: "www.pokemon.fr/img/pikachu.png",
+            // name: "Pikachu",
+            // ref: "sm76",
+            // type: "Électrique",
+            // etat: 2,
+            // price: "20",
+            // bid: true,
+            // card_id:1,
+          }
+      }  
+    },
+    methods:{
+        loadCardID(){
+        this.$axios.get(`http://localhost:${this.$apiPort}/products/id/${this.$route.params.cardId}`).then((response) => {
+            console.log(response.data)
+            this.detailCard=response.data
+        }).catch(error => console.log(error))
+        },
+     },
+     async mounted(){
+       await this.loadCardID()
+     }
     }
 </script>
 <style lang="scss">

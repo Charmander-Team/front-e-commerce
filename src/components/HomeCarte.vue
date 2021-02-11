@@ -54,7 +54,7 @@
                 Enchèrir
               </v-btn>
               <v-btn small color="deep-purple" class="mt-2" dark>
-                <router-link style="text-decoration:none;color:#ffffff;" to="/VoirCarte">Voir</router-link>
+                <router-link style="text-decoration:none;color:#ffffff;" :to="{ name: 'VoirCarte', params: { cardId: carteCard.card_id }}">Voir</router-link>
               </v-btn>
             </v-card-text>
           </v-card>
