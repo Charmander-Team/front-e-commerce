@@ -33,7 +33,7 @@
                                             <v-card class="mt-4 mr-6" max-width="100%" min-height="342" color="#ffffff" elevation="2" rounded="lg">
                                                 <v-card-title class="jutify-content-center">{{detailCard.name}}</v-card-title>
                                                 <v-card-text>
-                                                     <div class="mb-2">{{detailCard.ref}}</div>
+                                                     <div class="mb-2">Ref: {{detailCard.ref}}</div>
                                                      <div class="mb-2">Etat: </div>
                                                      <div class="mb-2">Type: {{detailCard.type}}</div>
                                                      <div class="mb-2">Description:<br>Plus la puissance électrique de Pikachu est élevée, plus les poches de ses joues sont extensibles.</div>
