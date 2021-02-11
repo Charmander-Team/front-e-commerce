@@ -6,11 +6,15 @@ import vuetify from './plugins/vuetify'
 import VueResizeText from 'vue-resize-text'
 import axios from 'axios'
 
+import apiPort from './../config/api_port.js'
+
 Vue.use(VueResizeText)
 
 Vue.config.productionTip = false
 
 Vue.prototype.$axios = axios
+
+Vue.prototype.$apiPort = apiPort
 
 new Vue({
   router,

@@ -214,8 +214,9 @@ export default {
   }),
   methods:{
     loadAllCarte(){
-      const api_port = require("./../../config/api_port.js");
-      this.$axios.get(`http://localhost:${api_port}/products`).then((response) => {
+      //const api_port = require("./../../config/api_port.js");
+      // this.$axios.get(`http://localhost:${api_port}/products`).then((response) => {
+      this.$axios.get(`http://localhost:${this.$apiPort}/products`).then((response) => {
         console.log(response.data)
         this.cartes=response.data
       }).catch(error => console.log(error))
