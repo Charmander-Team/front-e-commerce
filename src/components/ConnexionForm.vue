@@ -5,17 +5,6 @@
     lazy-validation>
     <v-container>
       <v-row>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-text-field
-            v-model="motDePasse"
-            :rules="nameRules"
-            label="Mot de passe"
-            required
-          ></v-text-field>
-        </v-col>
 
         <v-col
           cols="12"
@@ -28,6 +17,21 @@
             required
           ></v-text-field>
         </v-col>
+
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-text-field
+            v-model="motDePasse"
+            :rules="nameRules"
+            type="password"
+            label="Mot de passe"
+            required
+          ></v-text-field>
+        </v-col>
+
+        
 
         <v-col
           cols="12"
@@ -54,7 +58,7 @@ export default {
     data: () => ({
       valid: false,
       motDePasse: '',
-      lastname: '',
+      //lastname: '',
       nameRules: [
         v => !!v || 'Mot de passe obligatoire',
       ],
@@ -66,7 +70,11 @@ export default {
     }),
     methods: {
       validate () {
-        this.$refs.form.validate()
+        // this.$refs.form.validate()
+        this.$axios.get(`http://localhost:${this.$apiPort}/api/client/mdp/${this.motDePasse}/mail/${this.email}`).then((response) => {
+        console.log(response.data)
+        }).catch(error => console.log(error))
+        //this.$refs.form.valid()
       },
     },
 }

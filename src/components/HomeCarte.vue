@@ -7,7 +7,7 @@
       </v-col>
       <v-col
         cols="auto"
-        lg="2"
+        lg="3"
         md="4"
         sm="4"
         v-for="(carteCard, caracteristique) in item.list"
@@ -17,7 +17,7 @@
           <v-img
             width="100%"
             height="auto"
-            max-width="150"
+            max-width="250"
             :src="carteCard.img"
           ></v-img>
           <v-card max-width="150" class="mt-3 pa-2">

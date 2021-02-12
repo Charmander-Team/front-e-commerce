@@ -3,7 +3,9 @@
 <!-- Menu dekstop -->
 <div id="menu" class="hidden-md-and-down" v-scroll="onScroll">
     <v-btn height="45" v-for="(item,index) in items" :key="index" block  tile small light color="white">
-       {{item.title}}
+       <router-link :to="item.path" style="text-decoration:none;color:#000000">
+         {{item.title}}
+       </router-link>
     </v-btn>
 </div>
 <!-- Menu mobile -->
@@ -40,13 +42,13 @@ export default {
   data() {
     return {
       items: [
-        { title: "Home", icon: "mdi-home-city" },
-        { title: "Nouveautés", icon: "mdi-account" },
-        { title: "Enchères", icon: "mdi-account-group-outline" },
-        { title: "Catégories", icon: "mdi-account-group-outline" },
-        { title: "Règles", icon: "mdi-account-group-outline" },
-        { title: "A propos", icon: "mdi-account-group-outline" },
-        { title: "Contact", icon: "mdi-account-group-outline" },
+        { title: "Home", icon: "mdi-home-city", path:"/" },
+        { title: "Nouveautés", icon: "mdi-account",path:"/nouveautes" },
+        { title: "Enchères", icon: "mdi-account-group-outline",path:"/encheres" },
+        { title: "Catégories", icon: "mdi-account-group-outline",path:"/categories"},
+        { title: "Règles", icon: "mdi-account-group-outline",path:"/regles"},
+        { title: "A propos", icon: "mdi-account-group-outline",path:"/apropos"},
+        { title: "Contact", icon: "mdi-account-group-outline",path:"/contact" },
       ],
       mini: true,
       drawer: null,
