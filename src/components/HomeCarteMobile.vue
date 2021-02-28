@@ -3,7 +3,7 @@
         <v-row v-for="(item, index) in cartes" :key="index">
             <v-divider class="mx-2"></v-divider>
             <v-col cols="12" lg="12" md="12">
-                <div class="text-h6">{{ item.categorie }} :</div>
+                <div class="text-h6">{{ item.title_list }} :</div>
             </v-col>
             <v-layout
                 class="mx-auto"
@@ -11,16 +11,15 @@
             >
                 <v-slide-group
                 v-model="model"
-                class="pa-0"
+                class="pa-0 mb-3"
                 active-class="success"
                 show-arrows
                 
-                center-active
-                prev-icon=""
-                next-icon=""
+                prev-icon="mdi-chevron-left"
+                next-icon="mdi-chevron-right"
                 >
                 <v-slide-item
-                    v-for="(carteCard, caracteristique) in item.liste"
+                    v-for="(carteCard, caracteristique) in item.list"
                     :key="caracteristique"
                 >
                     <v-col
@@ -31,12 +30,12 @@
                     <v-img
                         width="100%"
                         height="auto"
-                        max-width="150"
-                        :src="require('../assets/' + carteCard.img)"
+                        max-width="250"
+                        :src="carteCard.img"
                     ></v-img>
-                    <v-card max-width="150" class="mt-3 pa-2">
+                    <v-card max-width="250" class="mt-3 pa-2">
                         <v-card-title class="px-0 py-0 text-lg-body-3 text-md-body-1">
-                        {{ carteCard.nom }}
+                        {{ capitalizeFirstLetter(carteCard.name) }}
                         </v-card-title>
                         <v-card-text class="px-0 py-0 text-lg-custom">
                         <div class="grey--text">Ref: {{ carteCard.ref }}</div>
@@ -58,13 +57,17 @@
                         <v-divider class="ma-1"></v-divider>
                         <v-card-text class="px-0 py-0">
                         <div class="grey--text mb-1">
-                            Prix: {{ carteCard.prix }}{{ carteCard.devise }}
+                            Prix: {{ carteCard.price }} €
                         </div>
-                        <v-btn small color="deep-purple" dark v-if="carteCard.achat">
-                            Acheter
+                        <v-btn small color="deep-purple" dark v-if="carteCard.bid===0">
+                          <!-- Acheter -->
+                          Panier <sup>+</sup>
                         </v-btn>
-                        <v-btn small color="deep-purple" dark v-if="carteCard.enchere">
-                            Enchèrir
+                        <v-btn small color="deep-purple" dark v-if="carteCard.bid===1">
+                          Enchèrir
+                        </v-btn>
+                        <v-btn small color="deep-purple" class="ml-2" dark>
+                          <router-link style="text-decoration:none;color:#ffffff;" :to="{ name: 'VoirCarte', params: { cardId: carteCard.card_id }}">Voir</router-link>
                         </v-btn>
                         </v-card-text>
                     </v-card>
@@ -226,6 +229,23 @@ export default {
       },
     ],
     }),
+
+    methods:{
+    loadAllCarte(){
+      this.$axios.get(`http://localhost:${this.$apiPort}/products`).then((response) => {
+        console.log(response.data)
+        this.cartes=response.data
+      }).catch(error => console.log(error))
+    },
+    capitalizeFirstLetter(string) {
+      let capitalize = string.charAt(0).toUpperCase() + string.slice(1);
+      return capitalize.replace('-', ' ')
+      }
+    },
+    async mounted(){
+      await this.loadAllCarte()
+    }
+
 }
 </script>
 <style lang="scss">

@@ -16,7 +16,7 @@
     <v-container>
       <v-layout justify-center>
         
-          <v-icon color="deep-purple" @click.stop="drawer = !drawer" large>mdi-menu</v-icon>
+          <v-icon color="#ffffff" @click.stop="drawer = !drawer" large>mdi-menu</v-icon>
         
       </v-layout>
     </v-container>
@@ -25,9 +25,9 @@
       v-model="drawer"
       fixed
       temporary
-      color="deep-purple"
+      color="#ffffff"
     >
-      <v-btn height="45" v-for="(item,index) in items" :key="index" block dark tile color="deep-purple">
+      <v-btn height="45" v-for="(item,index) in items" :key="index" block light tile color="#ffffff">
        {{item.title}}
       </v-btn>
     </v-navigation-drawer>

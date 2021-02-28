@@ -7,7 +7,7 @@
             fixed
             bottom
             right
-            color="deep-purple"
+            color="red"
             @click="toTop"
           >
             <!-- <v-icon>mdi-arrow-up-bold</v-icon> -->

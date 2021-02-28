@@ -5,14 +5,27 @@
       <v-col cols="12" lg="12" md="12">
         <div class="text-h6">{{ item.title_list }} :</div>
       </v-col>
-      <v-col
+      
+      <v-layout
+          class="mx-auto"
+          max-width="250"
+      >
+      <v-slide-group
+        v-model="model"
+        class="pa-0 mb-5"
+        active-class="success"
+        show-arrows
+        
+        prev-icon="mdi-chevron-left"
+        next-icon="mdi-chevron-right"
+        >
+      <v-slide-item
         cols="auto"
-        lg="3"
-        md="4"
-        sm="4"
+        
         v-for="(carteCard, caracteristique) in item.list"
         :key="caracteristique"
       >
+      <v-col cols="auto">
         <div>
           <v-img
             width="100%"
@@ -20,7 +33,7 @@
             max-width="250"
             :src="carteCard.img"
           ></v-img>
-          <v-card max-width="150" class="mt-3 pa-2">
+          <v-card max-width="250" class="mt-3 pa-2">
             <v-card-title class="px-0 py-0 text-lg-body-3 text-md-body-1">
               {{ capitalizeFirstLetter(carteCard.name) }}
             </v-card-title>
@@ -43,7 +56,7 @@
             </v-card-text>
             <v-divider class="ma-1"></v-divider>
             <v-card-text class="px-0 py-0">
-              <div class="grey--text mb-1">
+              <div class="black--text mb-1">
                 Prix: {{ carteCard.price }} €
               </div>
               <v-btn small color="deep-purple" dark v-if="carteCard.bid===0">
@@ -53,13 +66,16 @@
               <v-btn small color="deep-purple" dark v-if="carteCard.bid===1">
                 Enchèrir
               </v-btn>
-              <v-btn small color="deep-purple" class="mt-2" dark>
+              <v-btn small color="deep-purple" class="ml-2" dark>
                 <router-link style="text-decoration:none;color:#ffffff;" :to="{ name: 'VoirCarte', params: { cardId: carteCard.card_id }}">Voir</router-link>
               </v-btn>
             </v-card-text>
           </v-card>
         </div>
-      </v-col>
+        </v-col>
+      </v-slide-item>
+      </v-slide-group>
+      </v-layout>
     </v-row>
   </v-container>
 </template>
@@ -67,6 +83,7 @@
 export default {
   name: "HomeCarte",
   data: () => ({
+    model: null,
     cartes: [
       {
         categorie: "Nouveautés",
@@ -236,6 +253,15 @@ export default {
   .text-lg-custom{
     font-size: 0.75rem !important;
     line-height:1rem !important;
+  }
+
+  .v-slide-group__prev,.v-slide-group__next{
+    background-color: rgba(128, 128, 128,0.2);
+    width: 2px !important;
+  }
+  
+  .v-slide-group__prev:hover,.v-slide-group__next:hover{
+    background-color: rgba(128, 128, 128,0.6);
   }
 </style>
 
