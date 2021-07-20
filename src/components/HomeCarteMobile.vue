@@ -232,7 +232,7 @@ export default {
 
     methods:{
     loadAllCarte(){
-      this.$axios.get(`http://localhost:${this.$apiPort}/products`).then((response) => {
+      this.$axios.get(`http://localhost:${this.$apiPort}/api/product`).then((response) => {
         console.log(response.data)
         this.cartes=response.data
       }).catch(error => console.log(error))

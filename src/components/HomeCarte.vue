@@ -33,7 +33,7 @@
             max-width="250"
             :src="carteCard.img"
           ></v-img>
-          <v-card max-width="250" class="mt-3 pa-2">
+          <v-card width="250" class="mt-3 pa-2">
             <v-card-title class="px-0 py-0 text-lg-body-3 text-md-body-1">
               {{ capitalizeFirstLetter(carteCard.name) }}
             </v-card-title>
@@ -80,160 +80,171 @@
   </v-container>
 </template>
 <script>
+import Products from '@/services/Products.js';
 export default {
   name: "HomeCarte",
   data: () => ({
     model: null,
     cartes: [
-      {
-        categorie: "Nouveautés",
-        liste: [
-          {
-            img: "salameche.png",
-            nom: "Salamèche",
-            ref: "SCPM01",
-            type: "Feu",
-            niveau: 2,
-            prix: "20",
-            devise: "€",
-            achat: true,
-            enchere: false,
-          },
-          {
-            img: "pikachu.png",
-            nom: "Pikachu",
-            ref: "SCPM02",
-            type: "Électrique",
-            niveau: 2,
-            prix: "20",
-            devise: "€",
-            achat: false,
-            enchere: true,
-          },
-          {
-            img: "bulbizarre.png",
-            nom: "Bulbizarre",
-            ref: "SCPM03",
-            type: "Plante",
-            niveau: 2,
-            prix: "20",
-            devise: "€",
-            achat: false,
-            enchere: true,
-          },
-          {
-            img: "grodoudou.png",
-            nom: "Grodoudou",
-            ref: "SCPM04",
-            type: "Psy",
-            niveau: 2,
-            prix: "20",
-            devise: "€",
-            achat: true,
-            enchere: false,
-          },
-          {
-            img: "draco.png",
-            nom: "Draco",
-            ref: "SCPM05",
-            type: "Dragon",
-            niveau: 1,
-            prix: "20",
-            devise: "€",
-            achat: true,
-            enchere: false,
-          },
-          {
-            img: "zorua.png",
-            nom: "Zorua",
-            ref: "SCPM06",
-            type: "Obscurité",
-            niveau: 2,
-            prix: "20",
-            devise: "€",
-            achat: false,
-            enchere: true,
-          },
-        ],
-      },
-      {
-        categorie: "Exclusivités",
-        liste: [
-          {
-            img: "zorua.png",
-            nom: "Zorua",
-            ref: "SCPM06",
-            type: "Obscurité",
-            niveau: 2,
-            prix: "20",
-            devise: "€",
-            achat: false,
-            enchere: true,
-          },
-          {
-            img: "draco.png",
-            nom: "Draco",
-            ref: "SCPM05",
-            type: "Dragon",
-            niveau: 1,
-            prix: "20",
-            devise: "€",
-            achat: true,
-            enchere: false,
-          },
-          {
-            img: "grodoudou.png",
-            nom: "Grodoudou",
-            ref: "SCPM04",
-            type: "Psy",
-            niveau: 2,
-            prix: "20",
-            devise: "€",
-            achat: true,
-            enchere: false,
-          },
-          {
-            img: "salameche.png",
-            nom: "Salamèche",
-            ref: "SCPM01",
-            type: "Feu",
-            niveau: 2,
-            prix: "20",
-            devise: "€",
-            achat: true,
-            enchere: false,
-          },
-          {
-            img: "bulbizarre.png",
-            nom: "Bulbizarre",
-            ref: "SCPM03",
-            type: "Plante",
-            niveau: 2,
-            prix: "20",
-            devise: "€",
-            achat: false,
-            enchere: true,
-          },
-          {
-            img: "pikachu.png",
-            nom: "Pikachu",
-            ref: "SCPM02",
-            type: "Électrique",
-            niveau: 2,
-            prix: "20",
-            devise: "€",
-            achat: false,
-            enchere: true,
-          },
-        ],
-      },
+      // {
+      //   categorie: "Nouveautés",
+      //   liste: [
+      //     {
+      //       img: "salameche.png",
+      //       nom: "Salamèche",
+      //       ref: "SCPM01",
+      //       type: "Feu",
+      //       niveau: 2,
+      //       prix: "20",
+      //       devise: "€",
+      //       achat: true,
+      //       enchere: false,
+      //     },
+      //     {
+      //       img: "pikachu.png",
+      //       nom: "Pikachu",
+      //       ref: "SCPM02",
+      //       type: "Électrique",
+      //       niveau: 2,
+      //       prix: "20",
+      //       devise: "€",
+      //       achat: false,
+      //       enchere: true,
+      //     },
+      //     {
+      //       img: "bulbizarre.png",
+      //       nom: "Bulbizarre",
+      //       ref: "SCPM03",
+      //       type: "Plante",
+      //       niveau: 2,
+      //       prix: "20",
+      //       devise: "€",
+      //       achat: false,
+      //       enchere: true,
+      //     },
+      //     {
+      //       img: "grodoudou.png",
+      //       nom: "Grodoudou",
+      //       ref: "SCPM04",
+      //       type: "Psy",
+      //       niveau: 2,
+      //       prix: "20",
+      //       devise: "€",
+      //       achat: true,
+      //       enchere: false,
+      //     },
+      //     {
+      //       img: "draco.png",
+      //       nom: "Draco",
+      //       ref: "SCPM05",
+      //       type: "Dragon",
+      //       niveau: 1,
+      //       prix: "20",
+      //       devise: "€",
+      //       achat: true,
+      //       enchere: false,
+      //     },
+      //     {
+      //       img: "zorua.png",
+      //       nom: "Zorua",
+      //       ref: "SCPM06",
+      //       type: "Obscurité",
+      //       niveau: 2,
+      //       prix: "20",
+      //       devise: "€",
+      //       achat: false,
+      //       enchere: true,
+      //     },
+      //   ],
+      // },
+      // {
+      //   categorie: "Exclusivités",
+      //   liste: [
+      //     {
+      //       img: "zorua.png",
+      //       nom: "Zorua",
+      //       ref: "SCPM06",
+      //       type: "Obscurité",
+      //       niveau: 2,
+      //       prix: "20",
+      //       devise: "€",
+      //       achat: false,
+      //       enchere: true,
+      //     },
+      //     {
+      //       img: "draco.png",
+      //       nom: "Draco",
+      //       ref: "SCPM05",
+      //       type: "Dragon",
+      //       niveau: 1,
+      //       prix: "20",
+      //       devise: "€",
+      //       achat: true,
+      //       enchere: false,
+      //     },
+      //     {
+      //       img: "grodoudou.png",
+      //       nom: "Grodoudou",
+      //       ref: "SCPM04",
+      //       type: "Psy",
+      //       niveau: 2,
+      //       prix: "20",
+      //       devise: "€",
+      //       achat: true,
+      //       enchere: false,
+      //     },
+      //     {
+      //       img: "salameche.png",
+      //       nom: "Salamèche",
+      //       ref: "SCPM01",
+      //       type: "Feu",
+      //       niveau: 2,
+      //       prix: "20",
+      //       devise: "€",
+      //       achat: true,
+      //       enchere: false,
+      //     },
+      //     {
+      //       img: "bulbizarre.png",
+      //       nom: "Bulbizarre",
+      //       ref: "SCPM03",
+      //       type: "Plante",
+      //       niveau: 2,
+      //       prix: "20",
+      //       devise: "€",
+      //       achat: false,
+      //       enchere: true,
+      //     },
+      //     {
+      //       img: "pikachu.png",
+      //       nom: "Pikachu",
+      //       ref: "SCPM02",
+      //       type: "Électrique",
+      //       niveau: 2,
+      //       prix: "20",
+      //       devise: "€",
+      //       achat: false,
+      //       enchere: true,
+      //     },
+      //   ],
+      // },
     ],
+
+    event: {}
   }),
   methods:{
+async getEventDataProduct() {
+      Products.loadAllcards()
+      .then(
+        (event => {
+          console.log("event home carte",event)
+          this.$set(this, "cartes", event);
+        }).bind(this)
+      );
+    },
+
     loadAllCarte(){
-      //const api_port = require("./../../config/api_port.js");
-      // this.$axios.get(`http://localhost:${api_port}/products`).then((response) => {
-      this.$axios.get(`http://localhost:${this.$apiPort}/products`).then((response) => {
+      this.$axios.get(`http://localhost:${this.$apiPort}/api/product`).then((response) => {
         console.log(response.data)
         this.cartes=response.data
       }).catch(error => console.log(error))
@@ -244,7 +255,10 @@ export default {
     }
   },
   async mounted(){
-    await this.loadAllCarte()
+    // await this.loadAllCarte()
+    await this.getEventDataProduct()
+    // console.log("event",this.event)
+    console.log("cartes",this.cartes)
   }
 };
 
