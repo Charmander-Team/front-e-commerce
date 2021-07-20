@@ -80,6 +80,7 @@
     </v-container>
 </template>
 <script>
+import Products from '@/services/Products.js';
 export default {
     name:"HomeCarteMobile",
     data: () => ({
@@ -231,6 +232,16 @@ export default {
     }),
 
     methods:{
+    async getEventDataProduct() {
+      Products.loadAllcards()
+      .then(
+        (event => {
+          console.log("event home carte",event)
+          this.$set(this, "cartes", event);
+        }).bind(this)
+      );
+    },
+    
     loadAllCarte(){
       this.$axios.get(`http://localhost:${this.$apiPort}/api/product`).then((response) => {
         console.log(response.data)
@@ -242,8 +253,9 @@ export default {
       return capitalize.replace('-', ' ')
       }
     },
-    async mounted(){
-      await this.loadAllCarte()
+    async created(){
+      await this.getEventDataProduct()
+      // await this.loadAllCarte()
     }
 
 }
