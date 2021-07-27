@@ -36,7 +36,7 @@
                                                      <div class="mb-2">Ref: {{detailCard.ref}}</div>
                                                      <div class="mb-2">Etat: </div>
                                                      <div class="mb-2">Type: {{detailCard.type}}</div>
-                                                     <div class="mb-2">Description:<br>Plus la puissance électrique de Pikachu est élevée, plus les poches de ses joues sont extensibles.</div>
+                                                     <div class="mb-2">Description:<br>{{detailCard.description}}</div>
                                                      <div  class="mb-2 jutify-content-center">Prix: {{detailCard.price}}€</div>
                                                      <div class="mt-6 jutify-content-center">
                                                         <v-btn x-large color="deep-purple" dark>
@@ -64,6 +64,8 @@ import Menu from '../components/Menu'
 import Connexion from '../components/Connexion'
 import Panier from '../components/Panier'
 import Footer from '../components/Footer'
+import Products from '@/services/Products.js';
+
 // import ScrollDown from '../components/ScrollDown'
 export default {
     components:{
@@ -88,15 +90,20 @@ export default {
       }  
     },
     methods:{
-        loadCardID(){
-        this.$axios.get(`http://localhost:${this.$apiPort}/products/id/${this.$route.params.cardId}`).then((response) => {
-            console.log(response.data)
-            this.detailCard=response.data
-        }).catch(error => console.log(error))
-        },
+
+        async getEventDataProductID() {
+      Products.loadCardById(this.$route.params.cardId)
+      .then(
+        (event => {
+          console.log("event home carte id",event)
+          this.$set(this, "detailCard", event);
+        }).bind(this)
+      );
+    },
+
      },
      async mounted(){
-       await this.loadCardID()
+       await this.getEventDataProductID()
      }
     }
 </script>

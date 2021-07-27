@@ -44,7 +44,7 @@ export default {
       items: [
         { title: "Home", icon: "mdi-home-city", path:"/" },
         { title: "Nouveautés", icon: "mdi-account",path:"/nouveautes" },
-        { title: "Enchères", icon: "mdi-account-group-outline",path:"/encheres" },
+        // { title: "Enchères", icon: "mdi-account-group-outline",path:"/encheres" },
         { title: "Catégories", icon: "mdi-account-group-outline",path:"/categories"},
         { title: "Règles", icon: "mdi-account-group-outline",path:"/regles"},
         { title: "A propos", icon: "mdi-account-group-outline",path:"/apropos"},

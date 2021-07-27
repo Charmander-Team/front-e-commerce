@@ -59,7 +59,7 @@
               <div class="black--text mb-1">
                 Prix: {{ carteCard.price }} €
               </div>
-              <v-btn small color="deep-purple" dark v-if="carteCard.bid===0">
+              <v-btn small color="deep-purple" dark v-if="carteCard.bid===null">
                 <!-- Acheter -->
                 Panier <sup>+</sup>
               </v-btn>
@@ -243,22 +243,13 @@ async getEventDataProduct() {
       );
     },
 
-    loadAllCarte(){
-      this.$axios.get(`http://localhost:${this.$apiPort}/api/product`).then((response) => {
-        console.log(response.data)
-        this.cartes=response.data
-      }).catch(error => console.log(error))
-    },
     capitalizeFirstLetter(string) {
       let capitalize = string.charAt(0).toUpperCase() + string.slice(1);
       return capitalize.replace('-', ' ')
     }
   },
   async mounted(){
-    // await this.loadAllCarte()
     await this.getEventDataProduct()
-    // console.log("event",this.event)
-    console.log("cartes",this.cartes)
   }
 };
 

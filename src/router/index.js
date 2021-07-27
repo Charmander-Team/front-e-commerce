@@ -15,6 +15,11 @@ const routes = [
     name: 'VoirCarte',
     component: () => import(/* webpackChunkName: "VoirCarte" */ '../views/VoirCarte.vue')
   },
+  {
+    path: '/Nouveautes',
+    name: 'Nouveautes',
+    component: () => import(/* webpackChunkName: "Nouveautes" */ '../views/Nouveautes.vue')
+  },
   //{
     //path: '/about',
     //name: 'About',
