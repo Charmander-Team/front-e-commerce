@@ -20,6 +20,16 @@ const routes = [
     name: 'Nouveautes',
     component: () => import(/* webpackChunkName: "Nouveautes" */ '../views/Nouveautes.vue')
   },
+  {
+    path: '/Categories',
+    name: 'Categories',
+    component: () => import(/* webpackChunkName: "category" */ '../views/Categories.vue')
+  },
+  {
+    path: '/VoirCategory/:categoryId',
+    name: 'VoirCategory',
+    component: () => import(/* webpackChunkName: "category" */ '../views/VoirCategory.vue')
+  },
   //{
     //path: '/about',
     //name: 'About',
