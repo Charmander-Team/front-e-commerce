@@ -58,9 +58,11 @@
     </v-card>
 </template>
 <script>
+  import Users from '@/services/Users'
   export default {
     name:"InscriptionForm",
     data: () => ({
+      user:null,
       show: false,
       valid: true,
       nom: '',
@@ -91,8 +93,33 @@
     }),
 
     methods: {
-      validate () {
+     validate () {
         this.$refs.form.validate()
+        if(this.$refs.form.validate()){
+          Users.createUser({
+            lastname: this.nom,
+            firstname: this.prenom,
+            mail: this.email,
+            password: this.mdp,
+            admin: false,
+            image: ""
+          })
+          .then(
+            (event => {
+              console.log("event user",event)
+              this.$set(this, "user", event)
+              if(event!==undefined){
+                this.resetValidation()
+                this.$store.state.Users.connexion = true
+                this.$vuetify.goTo(0)
+                this.$store.state.Users.lastname= event.lastname
+                this.$store.state.Users.firstname= event.firstname
+                this.$store.state.Users.mail= event.mail
+                this.$store.state.Users.image= event.image
+              }
+            }).bind(this)
+          );        
+        }
       },
       reset () {
         this.$refs.form.reset()

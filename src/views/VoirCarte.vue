@@ -53,6 +53,7 @@
                    </v-row>
                </v-card>
             </v-col>
+            <CreerCompte/>
         </v-row>
         <!-- <ScrollDown/> -->
     </v-container>
@@ -64,6 +65,7 @@ import Menu from '../components/Menu'
 import Connexion from '../components/Connexion'
 import Panier from '../components/Panier'
 import Footer from '../components/Footer'
+import CreerCompte from '../components/CreerCompte'
 import Products from '@/services/Products.js';
 
 // import ScrollDown from '../components/ScrollDown'
@@ -73,6 +75,7 @@ export default {
       Connexion,
       Panier,
       Footer,
+      CreerCompte,
     //   ScrollDown,
       },
     data(){

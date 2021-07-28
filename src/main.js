@@ -16,6 +16,8 @@ Vue.prototype.$axios = axios
 
 Vue.prototype.$apiPort = apiPort
 
+// Vue.prototype.$store = store
+
 new Vue({
   router,
   store,

@@ -1,11 +1,52 @@
 <template>
   <v-form 
-    v-if="!$store.state.Users.connexion"
+    v-if="$store.state.Users.connexion"
     ref="form"
     v-model="valid"
     lazy-validation>
     <v-container>
       <v-row>
+          <v-col cols="12">
+              <v-img :src="$store.state.Users.image" alt="image user"></v-img>
+          </v-col>
+      </v-row>
+      <v-row>
+
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-text-field
+            v-model="firstname"
+            :label="`Prénom: ${$store.state.Users.firstname}`"
+            required
+            readonly
+          ></v-text-field>
+        </v-col>
+        
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-text-field
+            v-model="lastname"
+            :label="`Nom: ${$store.state.Users.lastname}`"
+            required
+            readonly
+          ></v-text-field>
+        </v-col>
+        
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-text-field
+            v-model="email"
+            :label="`Mail: ${$store.state.Users.mail}`"
+            required
+            readonly
+          ></v-text-field>
+        </v-col>
 
         <v-col
           cols="12"
@@ -14,7 +55,19 @@
           <v-text-field
             v-model="email"
             :rules="emailRules"
-            label="E-mail"
+            label="Nouvel E-mail"
+          ></v-text-field>
+        </v-col>
+
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-text-field
+            v-model="motDePasse"
+            :rules="nameRules"
+            type="password"
+            label="Mot de passe actuel"
             required
           ></v-text-field>
         </v-col>
@@ -27,16 +80,13 @@
             v-model="motDePasse"
             :rules="nameRules"
             type="password"
-            label="Mot de passe"
-            required
+            label="Nouveau mot de passe"
           ></v-text-field>
         </v-col>
 
-        
-
         <v-col
           cols="12"
-          md="4"
+          md="12"
         >
             <v-btn
             :disabled="!valid"
@@ -45,7 +95,7 @@
             @click="validate"
             align-center
             >
-            Valider
+            modifier
             </v-btn>
         </v-col>
 
@@ -55,11 +105,12 @@
 </template>
 <script>
 export default {
-    name:"ConnexionForm",
+    name:"DetailConnexion",
     data: () => ({
       valid: false,
       motDePasse: '',
-      //lastname: '',
+      firstname:'',
+      lastname: '',
       nameRules: [
         v => !!v || 'Mot de passe obligatoire',
       ],

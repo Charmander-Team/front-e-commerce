@@ -31,6 +31,7 @@
         </v-btn>
         <div class="py-3">
           <ConnexionForm/>
+          <DetailConnexion/> 
         </div>
       </v-sheet>
     </v-bottom-sheet>
@@ -38,9 +39,10 @@
 </template>
 <script>
 import ConnexionForm from '../components/ConnexionForm'
+import DetailConnexion from '../components/DetailConnexion'
   export default {
     name:"Connexion",
-    components:{ConnexionForm},
+    components:{ConnexionForm,DetailConnexion},
     data: () => ({
       sheet: false,
     }),
