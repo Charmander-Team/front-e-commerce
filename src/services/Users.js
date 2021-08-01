@@ -11,4 +11,13 @@ export default {
         return res
       },
 
+      async checkUser(data){
+        let res = await axios.post(`http://localhost:${apiPort}/api/user/check`,data).then((response) => {
+
+            return response.data
+
+        }).catch(error => console.log(error))
+        return res
+      }
+
   }

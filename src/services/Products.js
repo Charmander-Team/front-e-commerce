@@ -11,11 +11,11 @@ export default {
                 list: []
             },
             {
-                title_list: "Cartes Pokemon",
+                title_list: "Cartes Pokémon",
                 list: []
             },
             {
-                title_list: "Cartes dresseur",
+                title_list: "Cartes dresseurs",
                 list: []
             }
         ];

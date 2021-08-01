@@ -94,7 +94,7 @@
 
     methods: {
      validate () {
-        this.$refs.form.validate()
+        // this.$refs.form.validate()
         if(this.$refs.form.validate()){
           Users.createUser({
             lastname: this.nom,
@@ -112,6 +112,7 @@
                 this.resetValidation()
                 this.$store.state.Users.connexion = true
                 this.$vuetify.goTo(0)
+                this.$store.state.Users.id= event.id
                 this.$store.state.Users.lastname= event.lastname
                 this.$store.state.Users.firstname= event.firstname
                 this.$store.state.Users.mail= event.mail

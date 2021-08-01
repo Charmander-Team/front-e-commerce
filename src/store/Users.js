@@ -1,6 +1,7 @@
 export default {
   state: {
       connexion:false,
+      id:null,
       lastname:"",
       firstname:"",
       email:"",
@@ -21,6 +22,9 @@ export default {
      },
      getImage(state){
          return state.image
+     },
+     getId(state){
+         return state.id
      },
   }
 }

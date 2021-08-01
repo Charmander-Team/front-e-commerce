@@ -7,7 +7,7 @@
     <v-container>
       <v-row>
           <v-col cols="12">
-              <v-img :src="$store.state.Users.image" alt="image user"></v-img>
+              <v-img :src="$store.state.Users.image" width="15%" alt="image user"></v-img>
           </v-col>
       </v-row>
       <v-row>
@@ -42,7 +42,7 @@
         >
           <v-text-field
             v-model="email"
-            :label="`Mail: ${$store.state.Users.mail}`"
+            :label="`E-mail: ${$store.state.Users.mail}`"
             required
             readonly
           ></v-text-field>
@@ -86,7 +86,7 @@
 
         <v-col
           cols="12"
-          md="12"
+          md="4"
         >
             <v-btn
             :disabled="!valid"
@@ -95,10 +95,26 @@
             @click="validate"
             align-center
             >
-            modifier
+            Modifier
             </v-btn>
         </v-col>
 
+
+        <v-col
+          cols="12"
+          md="4"
+        >
+            <v-btn
+            :disabled="!$store.state.Users.connexion"
+            color="red"
+            dark
+            class="mr-4"
+            @click="logout"
+            align-center
+            >
+            Déconnexion
+            </v-btn>
+        </v-col>
       </v-row>
     </v-container>
   </v-form>
@@ -121,6 +137,15 @@ export default {
       ],
     }),
     methods: {
+      logout(){
+        this.$store.state.Users.connexion = false
+        this.$vuetify.goTo(0)
+        this.$store.state.Users.id=null
+        this.$store.state.Users.lastname= ""
+        this.$store.state.Users.firstname= ""
+        this.$store.state.Users.mail= ""
+        this.$store.state.Users.image= ""
+      },
       validate () {
         // this.$refs.form.validate()
         this.$axios.get(`http://localhost:${this.$apiPort}/api/client/mdp/${this.motDePasse}/mail/${this.email}`).then((response) => {

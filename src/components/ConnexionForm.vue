@@ -45,7 +45,7 @@
             @click="validate"
             align-center
             >
-            Valider
+            Connexion
             </v-btn>
         </v-col>
 
@@ -54,6 +54,7 @@
   </v-form>
 </template>
 <script>
+import Users from '@/services/Users'
 export default {
     name:"ConnexionForm",
     data: () => ({
@@ -68,15 +69,38 @@ export default {
         v => !!v || 'E-mail obligatoire',
         v => /.+@.+/.test(v) || 'E-mail invalid',
       ],
+      user:null
     }),
     methods: {
+
       validate () {
-        // this.$refs.form.validate()
-        this.$axios.get(`http://localhost:${this.$apiPort}/api/client/mdp/${this.motDePasse}/mail/${this.email}`).then((response) => {
-        console.log(response.data)
-        }).catch(error => console.log(error))
-        //this.$refs.form.valid()
+        
+        if(this.$refs.form.validate()){
+          Users.checkUser({
+            mail: this.email,
+            mdp: this.motDePasse,
+          })
+          .then(
+            (event => {
+              console.log("event user check",event)
+              this.$set(this, "user", event)
+              if(event!==undefined){
+                this.$refs.form.resetValidation()
+                this.$store.state.Users.connexion = true
+                this.$vuetify.goTo(0)
+                this.$store.state.Users.id= event.id
+                this.$store.state.Users.lastname= event.lastname
+                this.$store.state.Users.firstname= event.firstname
+                this.$store.state.Users.mail= event.mail
+                this.$store.state.Users.image= event.image
+
+                this.motDePasse = ""
+              }
+            }).bind(this)
+          );        
+        }
       },
+
     },
 }
 </script>

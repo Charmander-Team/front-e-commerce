@@ -103,9 +103,13 @@ export default {
         }).bind(this)
       );
     },
+    toTop() {
+      this.$vuetify.goTo(0)
+    }
 
      },
      async mounted(){
+       this.toTop()
        await this.getEventDataProductID()
      }
     }
