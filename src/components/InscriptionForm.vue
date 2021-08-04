@@ -117,6 +117,8 @@
                 this.$store.state.Users.firstname= event.firstname
                 this.$store.state.Users.mail= event.mail
                 this.$store.state.Users.image= event.image
+
+                localStorage.setItem('token', event.token)
               }
             }).bind(this)
           );        

@@ -53,8 +53,8 @@
           md="4"
         >
           <v-text-field
-            v-model="email"
-            :rules="emailRules"
+            v-model="nouvelEmail"
+            :rules="nouvelEmailRules"
             label="Nouvel E-mail"
           ></v-text-field>
         </v-col>
@@ -64,7 +64,7 @@
           md="4"
         >
           <v-text-field
-            v-model="motDePasse"
+            v-model="motDePasseActuel"
             :rules="nameRules"
             type="password"
             label="Mot de passe actuel"
@@ -77,7 +77,7 @@
           md="4"
         >
           <v-text-field
-            v-model="motDePasse"
+            v-model="nouveauMotDePasse"
             :rules="nameRules"
             type="password"
             label="Nouveau mot de passe"
@@ -92,7 +92,7 @@
             :disabled="!valid"
             color="success"
             class="mr-4"
-            @click="validate"
+            @click="update"
             align-center
             >
             Modifier
@@ -120,11 +120,14 @@
   </v-form>
 </template>
 <script>
+import Users from '@/services/Users'
 export default {
     name:"DetailConnexion",
     data: () => ({
+      user:null,
       valid: false,
-      motDePasse: '',
+      motDePasseActuel: '',
+      nouveauMotDePasse: '',
       firstname:'',
       lastname: '',
       nameRules: [
@@ -135,6 +138,11 @@ export default {
         v => !!v || 'E-mail obligatoire',
         v => /.+@.+/.test(v) || 'E-mail invalid',
       ],
+      nouvelEmail:'',
+      nouvelEmailRules: [
+        v => !!v || 'E-mail obligatoire',
+        v => /.+@.+/.test(v) || 'E-mail invalid',
+      ]
     }),
     methods: {
       logout(){
@@ -145,13 +153,49 @@ export default {
         this.$store.state.Users.firstname= ""
         this.$store.state.Users.mail= ""
         this.$store.state.Users.image= ""
+        localStorage.removeItem('token')
       },
-      validate () {
-        // this.$refs.form.validate()
-        this.$axios.get(`http://localhost:${this.$apiPort}/api/client/mdp/${this.motDePasse}/mail/${this.email}`).then((response) => {
-        console.log(response.data)
-        }).catch(error => console.log(error))
-        //this.$refs.form.valid()
+      update(){
+        Users.checkUser({
+            mail: this.$store.state.Users.mail,
+            mdp: this.motDePasseActuel,
+          })
+          .then(
+            (val => {
+              console.log("event user check update",val)
+              this.$set(this, "user", val)
+              if(val!==undefined){
+                let data = {}
+                if(this.nouveauMotDePasse!=="" && this.nouvelEmail===""){
+                  data = {password:this.nouveauMotDePasse}
+                }
+                if(this.nouveauMotDePasse==="" && this.nouvelEmail!==""){
+                  data = {mail:this.nouvelEmail}
+                }
+                if(this.nouveauMotDePasse!=="" && this.nouvelEmail!==""){
+                  data = {mail:this.nouvelEmail,password:this.nouveauMotDePasse}
+                }
+
+                Users.updateUser(this.$store.state.Users.id,data).then(event=>{
+                  console.log("event update",event)
+                this.$refs.form.resetValidation()
+                this.$store.state.Users.connexion = true
+                this.$vuetify.goTo(0)
+                this.$store.state.Users.id= event.id
+                this.$store.state.Users.lastname= event.lastname
+                this.$store.state.Users.firstname= event.firstname
+                this.$store.state.Users.mail= event.mail
+                this.$store.state.Users.image= event.image
+
+                localStorage.setItem('token', event.token)
+
+                this.motDePasseActuel = ""
+                this.nouveauMotDePasse = ""
+                })
+
+              }
+            }).bind(this)
+          );
       },
     },
 }

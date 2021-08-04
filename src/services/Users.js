@@ -18,6 +18,24 @@ export default {
 
         }).catch(error => console.log(error))
         return res
-      }
+      }, 
+
+      async checkUserToken(data){
+        let res = await axios.post(`http://localhost:${apiPort}/api/user/check/token`,data).then((response) => {
+
+            return response.data
+
+        }).catch(error => console.log(error))
+        return res
+      },
+
+      async updateUser(id,data){
+        let res = await axios.put(`http://localhost:${apiPort}/api/user/${id}`,data).then((response) => {
+
+            return response.data
+
+        }).catch(error => console.log(error))
+        return res
+      },
 
   }

@@ -94,6 +94,8 @@ export default {
                 this.$store.state.Users.mail= event.mail
                 this.$store.state.Users.image= event.image
 
+                localStorage.setItem('token', event.token)
+
                 this.motDePasse = ""
               }
             }).bind(this)

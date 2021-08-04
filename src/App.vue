@@ -5,7 +5,7 @@
 </template>
 
 <script>
-
+import User from "@/services/Users.js"
 export default {
   name: 'App',
 
@@ -13,8 +13,50 @@ export default {
   },
 
   data: () => ({
-    //
+    user:null,
   }),
+
+  methods:{
+    checkToken () {
+        let checkTimestamp = null
+        let timestampNow = null
+        if(localStorage.getItem('token')){
+          checkTimestamp = localStorage.getItem('token').split(':')
+          timestampNow = Math.round(new Date().getTime() / 1000)
+        }
+        // check tout les 4 heures = 14400 secondes
+        if(localStorage.getItem('token') && timestampNow - checkTimestamp[0]<= 14400){
+          User.checkUserToken({
+            token: localStorage.getItem('token')
+          })
+          .then(
+            (event => {
+              console.log("event user check token",event)
+              this.$set(this, "user", event)
+              if(event!==undefined){
+                this.$store.state.Users.connexion = true
+                this.$vuetify.goTo(0)
+                this.$store.state.Users.id= event.id
+                this.$store.state.Users.lastname= event.lastname
+                this.$store.state.Users.firstname= event.firstname
+                this.$store.state.Users.mail= event.mail
+                this.$store.state.Users.image= event.image
+
+                localStorage.setItem('token', event.token)
+
+              }
+            }).bind(this)
+          );        
+        }else{
+          localStorage.removeItem('token')
+        }
+      },
+  },
+
+  mounted(){
+    this.checkToken()
+  }
+
 };
 </script>
 <style lang="scss">

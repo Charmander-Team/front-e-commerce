@@ -5,7 +5,7 @@ export default {
       lastname:"",
       firstname:"",
       email:"",
-      image:""
+      image:"",
   },
   getters:{
      getConnexion(state){
