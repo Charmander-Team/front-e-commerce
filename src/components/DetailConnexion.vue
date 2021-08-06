@@ -54,7 +54,6 @@
         >
           <v-text-field
             v-model="nouvelEmail"
-            :rules="nouvelEmailRules"
             label="Nouvel E-mail"
           ></v-text-field>
         </v-col>
@@ -78,7 +77,6 @@
         >
           <v-text-field
             v-model="nouveauMotDePasse"
-            :rules="nameRules"
             type="password"
             label="Nouveau mot de passe"
           ></v-text-field>
@@ -140,7 +138,7 @@ export default {
       ],
       nouvelEmail:'',
       nouvelEmailRules: [
-        v => !!v || 'E-mail obligatoire',
+        // v => !!v || 'E-mail obligatoire',
         v => /.+@.+/.test(v) || 'E-mail invalid',
       ]
     }),
@@ -156,6 +154,7 @@ export default {
         localStorage.removeItem('token')
       },
       update(){
+        if(this.$refs.form.validate()){
         Users.checkUser({
             mail: this.$store.state.Users.mail,
             mdp: this.motDePasseActuel,
@@ -191,11 +190,13 @@ export default {
 
                 this.motDePasseActuel = ""
                 this.nouveauMotDePasse = ""
+                this.nouvelEmail=""
                 })
 
               }
             }).bind(this)
           );
+        }
       },
     },
 }
