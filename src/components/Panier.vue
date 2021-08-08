@@ -1,24 +1,16 @@
 <template>
   <div>
-    <!-- <v-btn
-    class="panier"
-      color="deep-purple"
-      dark
-      tile
-      @click="sheet = !sheet"
-    >
-    Panier
-    </v-btn> -->
-        <v-tab @click="sheet = !sheet">
+
+        <v-tab @click="$store.state.Panier.sheet = !$store.state.Panier.sheet">
           <v-img src="../assets/panier_icon.png" width="58" height="auto">
             <v-badge
           color="black"
-          content="8"
+          :content="$store.state.Panier.nbProduit"
         ></v-badge>
           </v-img>
           <!-- PANIER -->
       </v-tab>
-    <v-bottom-sheet v-model="sheet">
+    <v-bottom-sheet scrollable v-model="$store.state.Panier.sheet">
       <v-sheet
         class="text-center"
         height="200px"
@@ -27,7 +19,7 @@
           class="mt-6"
           text
           color="red"
-          @click="sheet = !sheet"
+          @click="$store.state.Panier.sheet = !$store.state.Panier.sheet"
         >
           fermer
         </v-btn>
@@ -42,7 +34,7 @@
   export default {
     name:"Panier",
     data: () => ({
-      sheet: false,
+      // sheet: false,
     }),
   }
 </script>

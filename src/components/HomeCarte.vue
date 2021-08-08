@@ -59,10 +59,10 @@
               <div class="black--text mb-1">
                 Prix: {{ carteCard.price }} €
               </div>
-              <v-btn small color="deep-purple" dark v-if="carteCard.bid===null">
-                <!-- Acheter -->
+              <v-btn @click="dialog = true, stock = carteCard.stock" small color="deep-purple" dark v-if="carteCard.bid===null">
                 Panier <sup>+</sup>
-              </v-btn>
+              </v-btn>      
+     
               <v-btn small color="deep-purple" dark v-if="carteCard.bid===1">
                 Enchèrir
               </v-btn>
@@ -76,7 +76,64 @@
       </v-slide-item>
       </v-slide-group>
       </v-layout>
+
     </v-row>
+
+    <v-dialog
+      v-model="dialog"
+      overlay-color="grey"
+      max-width="600px"
+      @click:outside="nbAjout = 0"
+    >
+      <v-card>
+        <v-form 
+        ref="form"
+        v-model="valid"
+        lazy-validation>
+        <v-card-title>
+          <span class="text-h5">Ajouter Au panier</span>
+        </v-card-title>
+        <v-card-text>
+          <small>En stock: {{stock}}</small>
+          <v-container>
+            <v-row>
+              <v-col
+                cols="12"
+                sm="6"
+              >
+                <v-select
+                  v-model="nbAjout"
+                  :items="quantite()"
+                  label="Choisir une Quantité*"
+                  :rules="nbProduitRule"
+                  required
+                ></v-select>
+              </v-col>
+            </v-row>
+          </v-container>
+          <small>*Ce champ est obligatoire</small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="blue"
+            dark
+            @click="dialog = false"
+          >
+            Fermer
+          </v-btn>
+          <v-btn
+            color="blue"
+            dark
+            @click="ajouterPanier()"
+          >
+            Ajouter
+          </v-btn>
+        </v-card-actions>
+        </v-form>
+      </v-card>
+    </v-dialog>
+
   </v-container>
 </template>
 <script>
@@ -84,155 +141,42 @@ import Products from '@/services/Products.js';
 export default {
   name: "HomeCarte",
   data: () => ({
+    nbProduitRule: [
+        v => !!v || 'Veuillez choisir une quantité',
+      ],
+    valid:false,
+    stock:null,
+    dialog: false,
     model: null,
+    nbAjout:0,
     cartes: [
-      // {
-      //   categorie: "Nouveautés",
-      //   liste: [
-      //     {
-      //       img: "salameche.png",
-      //       nom: "Salamèche",
-      //       ref: "SCPM01",
-      //       type: "Feu",
-      //       niveau: 2,
-      //       prix: "20",
-      //       devise: "€",
-      //       achat: true,
-      //       enchere: false,
-      //     },
-      //     {
-      //       img: "pikachu.png",
-      //       nom: "Pikachu",
-      //       ref: "SCPM02",
-      //       type: "Électrique",
-      //       niveau: 2,
-      //       prix: "20",
-      //       devise: "€",
-      //       achat: false,
-      //       enchere: true,
-      //     },
-      //     {
-      //       img: "bulbizarre.png",
-      //       nom: "Bulbizarre",
-      //       ref: "SCPM03",
-      //       type: "Plante",
-      //       niveau: 2,
-      //       prix: "20",
-      //       devise: "€",
-      //       achat: false,
-      //       enchere: true,
-      //     },
-      //     {
-      //       img: "grodoudou.png",
-      //       nom: "Grodoudou",
-      //       ref: "SCPM04",
-      //       type: "Psy",
-      //       niveau: 2,
-      //       prix: "20",
-      //       devise: "€",
-      //       achat: true,
-      //       enchere: false,
-      //     },
-      //     {
-      //       img: "draco.png",
-      //       nom: "Draco",
-      //       ref: "SCPM05",
-      //       type: "Dragon",
-      //       niveau: 1,
-      //       prix: "20",
-      //       devise: "€",
-      //       achat: true,
-      //       enchere: false,
-      //     },
-      //     {
-      //       img: "zorua.png",
-      //       nom: "Zorua",
-      //       ref: "SCPM06",
-      //       type: "Obscurité",
-      //       niveau: 2,
-      //       prix: "20",
-      //       devise: "€",
-      //       achat: false,
-      //       enchere: true,
-      //     },
-      //   ],
-      // },
-      // {
-      //   categorie: "Exclusivités",
-      //   liste: [
-      //     {
-      //       img: "zorua.png",
-      //       nom: "Zorua",
-      //       ref: "SCPM06",
-      //       type: "Obscurité",
-      //       niveau: 2,
-      //       prix: "20",
-      //       devise: "€",
-      //       achat: false,
-      //       enchere: true,
-      //     },
-      //     {
-      //       img: "draco.png",
-      //       nom: "Draco",
-      //       ref: "SCPM05",
-      //       type: "Dragon",
-      //       niveau: 1,
-      //       prix: "20",
-      //       devise: "€",
-      //       achat: true,
-      //       enchere: false,
-      //     },
-      //     {
-      //       img: "grodoudou.png",
-      //       nom: "Grodoudou",
-      //       ref: "SCPM04",
-      //       type: "Psy",
-      //       niveau: 2,
-      //       prix: "20",
-      //       devise: "€",
-      //       achat: true,
-      //       enchere: false,
-      //     },
-      //     {
-      //       img: "salameche.png",
-      //       nom: "Salamèche",
-      //       ref: "SCPM01",
-      //       type: "Feu",
-      //       niveau: 2,
-      //       prix: "20",
-      //       devise: "€",
-      //       achat: true,
-      //       enchere: false,
-      //     },
-      //     {
-      //       img: "bulbizarre.png",
-      //       nom: "Bulbizarre",
-      //       ref: "SCPM03",
-      //       type: "Plante",
-      //       niveau: 2,
-      //       prix: "20",
-      //       devise: "€",
-      //       achat: false,
-      //       enchere: true,
-      //     },
-      //     {
-      //       img: "pikachu.png",
-      //       nom: "Pikachu",
-      //       ref: "SCPM02",
-      //       type: "Électrique",
-      //       niveau: 2,
-      //       prix: "20",
-      //       devise: "€",
-      //       achat: false,
-      //       enchere: true,
-      //     },
-      //   ],
-      // },
+      
     ],
 
     event: {}
   }),
   methods:{
+ajouterPanier(){
+  if(this.$refs.form.validate()){
+  this.dialog = false
+  this.$store.state.Panier.nbProduit = parseInt(this.$store.state.Panier.nbProduit) + parseInt(this.nbAjout)
+  this.$store.state.Panier.sheet =true
+  localStorage.setItem('nbProduitPanier',this.$store.state.Panier.nbProduit)
+  this.nbAjout = 0 
+
+  //Détail de l'ajout
+  
+
+  }
+},
+quantite(){
+  let itemStock = []
+  for(let i=1 ; i <= this.stock ; i++){
+    itemStock.push(i)
+  }
+  return itemStock
+},
+
 async getEventDataProduct() {
       Products.loadAllcards()
       .then(

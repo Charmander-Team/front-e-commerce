@@ -39,7 +39,8 @@ export default {
                     type: card_db.energy_type,
                     price: card_db.price,
                     bid: card_db.bid,
-                    date: card_db.createdAt
+                    date: card_db.createdAt,
+                    stock: card_db.stock
                 };
                 if (current_ts - field_date_ts <= one_month_ts && news_cards_list.length < 6) {
                     
@@ -73,7 +74,8 @@ export default {
                 price: response.data.price,
                 bid: response.data.bid,
                 date: response.data.createdAt,
-                description: response.data.description
+                description: response.data.description,
+                stock: response.data.stock
             }
 
             return card
@@ -97,7 +99,8 @@ export default {
                     type: card_db.energy_type,
                     price: card_db.price,
                     bid: card_db.bid,
-                    date: card_db.createdAt
+                    date: card_db.createdAt,
+                    stock: card_db.stock
                 };
                 if (current_ts - field_date_ts <= one_month_ts && news_cards_list.length < 30) {
                     

@@ -55,6 +55,10 @@ export default {
 
   mounted(){
     this.checkToken()
+    if(localStorage.getItem('nbProduitPanier')){
+    this.$store.state.Panier.nbProduit = parseInt(localStorage.getItem('nbProduitPanier')) 
+    // localStorage.removeItem('nbProduitPanier')
+    }
   }
 
 };
