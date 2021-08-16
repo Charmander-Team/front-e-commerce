@@ -1,4 +1,4 @@
-name: CI/CD
+name: Master-Deploy
 
 on:
     push:
@@ -6,17 +6,18 @@ on:
             - master
 
 jobs:
-    ci-cd:
+    job_one:
+        name: SSH Connexion
         runs-on: ubuntu-latest
         steps:
-            - name: ssh connection
-              uses: appleboy/ssh-action@master
-              with:
-                  host: pokeshop.tk
-                  username: root
-                  key: ${{ secrets.PROD_SSH_KEY }}
-                  port: 22
-                  script:
-                      cd /home/pokemon/
-                      ls -la
+        - name: ssh connection
+          uses: appleboy/ssh-action@master
+          with:
+            host: pokeshop.tk
+            username: root
+            key: ${{ secrets.PROD_SSH_KEY }}
+            port: 22
+            script: |
+                cd /home/pokemon/
+                ls -la
 
