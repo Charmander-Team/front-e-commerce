@@ -40,7 +40,7 @@
           <v-btn v-if="$store.state.Users.connexion" class="mt-3" color="success">Valider panier</v-btn>
           <div v-if="!$store.state.Users.connexion">
               <p>Pour valider votre panier:</p> 
-              <v-btn class="mt-3" color="success">Connectez vous</v-btn>
+              <v-btn class="mt-3" color="success" >Connectez vous</v-btn>
               ou
               <v-btn class="mt-3" color="success">Créez un compte</v-btn>
           </div>
