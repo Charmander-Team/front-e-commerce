@@ -59,7 +59,7 @@
               <div class="black--text mb-1">
                 Prix: {{ carteCard.price }} €
               </div>
-              <v-btn @click="dialog = true, stock = carteCard.stock" small color="deep-purple" dark v-if="carteCard.bid===null">
+              <v-btn @click="dialog = true, stock = carteCard.stock, product = {id:carteCard.card_id, img:carteCard.img, ref:carteCard.ref, price:carteCard.price, name:carteCard.name, quantite:null, montant:null }" small color="deep-purple" dark v-if="carteCard.bid===null">
                 Panier <sup>+</sup>
               </v-btn>      
      
@@ -141,6 +141,7 @@ import Products from '@/services/Products.js';
 export default {
   name: "HomeCarte",
   data: () => ({
+    product:null,
     nbProduitRule: [
         v => !!v || 'Veuillez choisir une quantité',
       ],
@@ -162,10 +163,14 @@ ajouterPanier(){
   this.$store.state.Panier.nbProduit = parseInt(this.$store.state.Panier.nbProduit) + parseInt(this.nbAjout)
   this.$store.state.Panier.sheet =true
   localStorage.setItem('nbProduitPanier',this.$store.state.Panier.nbProduit)
+  this.product.quantite = this.nbAjout
+  this.product.montant = parseInt(this.nbAjout) * parseInt(this.product.price)
+  console.log("montant",this.product.montant)
   this.nbAjout = 0 
 
   //Détail de l'ajout
-  
+  this.$store.state.Panier.contenu.push(this.product)
+  localStorage.setItem('panier', JSON.stringify(this.$store.state.Panier.contenu))
 
   }
 },
