@@ -2,8 +2,7 @@ name: Master-Deploy
 
 on:
     push:
-        branches:
-            - master
+        branches: [ dev ]
 
 jobs:
     SSH-Connexion:
@@ -19,7 +18,5 @@ jobs:
                 username: root
                 ssh_private_key: ${{ secrets.PROD_SSH_KEY }}
                 port: 22
-                script: |
-                    cd /home/pokemon/
-                    ls -la
+                script: whoami
             - run: ls -la
