@@ -16,7 +16,7 @@ jobs:
             - name: SSH connection
               uses: appleboy/ssh-action@v0.1.4
               with:
-                host: pokeshop.tk
+                host: "pokeshop.tk"
                 username: ${{ secrets.PROD_USER }}
                 key: ${{ secrets.PROD_SSH_KEY }}
                 port: ${{ secrets.PROD_PORT }}
