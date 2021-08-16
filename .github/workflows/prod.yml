@@ -25,4 +25,4 @@ jobs:
                     git switch prod
                     git pull
                     npm install
-                    npm run serve &
+                    npm run serve
