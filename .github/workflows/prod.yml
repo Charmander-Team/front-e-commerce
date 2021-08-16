@@ -21,5 +21,11 @@ jobs:
                 key: ${{ secrets.PROD_SSH_KEY }}
                 port: ${{ secrets.PROD_PORT }}
                 script: |
-                    cd /home/pokemon
-                    mkdir test
+                    cd /home/pokemon/front_e_commerce
+                    ls -la
+                    git switch prod
+                    git status
+                    git pull
+                    npm install
+                    npm run serve &
+                    
