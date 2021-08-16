@@ -2,8 +2,8 @@ import axios from "axios"
 import apiPort from '../../config/api_port.js'
 export default {
     async loadAllcards(){
-       let res = await axios.get(`http://localhost:${apiPort}/api/product`).then((response) => {
-        //   console.log(response.data)
+       let res = await axios.get(`http://161.35.17.111:3000/api/product`).then((response) => {
+    //    let res = await axios.get(`http://localhost:${apiPort}/api/product`).then((response) => {
 
           let cards = [
             {
@@ -47,11 +47,11 @@ export default {
                     news_cards_list.push(card);
                 }
 
-                if(card_db.category_id === 1 && pokemon_cards_list.length < 6 ) {
+                if(card_db.category_id === 2 && pokemon_cards_list.length < 6 ) {
                     pokemon_cards_list.push(card);
                 }
                 
-                if(card_db.category_id === 2 && trainer_cards_list.length < 6 ) {
+                if(card_db.category_id === 1 && trainer_cards_list.length < 6 ) {
                     trainer_cards_list.push(card);
                 }
             });
