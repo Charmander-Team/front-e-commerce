@@ -15,6 +15,7 @@ jobs:
             - name: SSH connection
               uses: appleboy/ssh-action@master
               with:
+                host: pokeshop.tk
                 username: root
                 key: ${{ secrets.PROD_SSH_KEY }}
                 port: 22
