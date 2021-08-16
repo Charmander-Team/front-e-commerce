@@ -1,0 +1,22 @@
+name: CI/CD
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    ci-cd:
+        runs-on: ubuntu-latest
+        steps:
+            - name: ssh connection
+              uses: appleboy/ssh-action@master
+              with:
+                  host: pokeshop.tk
+                  username: root
+                  key: ${{ secrets.PROD_SSH_KEY }}
+                  port: 22
+                  script:
+                      cd /home/pokemon/
+                      ls -la
+
