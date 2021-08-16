@@ -16,7 +16,7 @@ jobs:
               uses: appleboy/ssh-action@master
               with:
                 username: root
-                ssh_private_key: ${{ secrets.PROD_SSH_KEY }}
+                key: ${{ secrets.PROD_SSH_KEY }}
                 port: 22
                 script: whoami
             - run: ls -la
