@@ -16,8 +16,8 @@ jobs:
               uses: appleboy/ssh-action@master
               with:
                 host: pokeshop.tk
-                username: root
+                username: ${{ secrets.PROD_USER }}
                 key: ${{ secrets.PROD_SSH_KEY }}
-                port: 22
+                port: ${{ secrets.PROD_PORT }}
                 script: whoami
             - run: ls -la
