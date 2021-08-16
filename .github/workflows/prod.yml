@@ -20,6 +20,9 @@ jobs:
                 username: ${{ secrets.PROD_USER }}
                 key: ${{ secrets.PROD_SSH_KEY }}
                 port: ${{ secrets.PROD_PORT }}
-            - run: ls -la
-            - run: cd /home/
-            - run: ls -la
+                script: |
+                    ls -la
+                    whoami
+                    pwd
+                    cd /home/pokemon
+                    ls -la
