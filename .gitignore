@@ -23,4 +23,4 @@ pnpm-debug.log*
 *.sw?
 
 # Ignore environnement variables
-config/api_port.js
+config/config.js

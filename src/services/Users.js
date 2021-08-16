@@ -1,9 +1,9 @@
 import axios from "axios"
-import apiPort from '../../config/api_port.js'
+import config from '../../config/config.js'
 export default {
 
       async createUser(data){
-        let res = await axios.post(`http://localhost:${apiPort}/api/user`,data).then((response) => {
+        let res = await axios.post(`${config.api_url}/api/user`,data).then((response) => {
 
             return response.data
 
@@ -12,7 +12,7 @@ export default {
       },
 
       async checkUser(data){
-        let res = await axios.post(`http://localhost:${apiPort}/api/user/check`,data).then((response) => {
+        let res = await axios.post(`${config.api_url}/api/user/check`,data).then((response) => {
 
             return response.data
 
@@ -21,7 +21,7 @@ export default {
       }, 
 
       async checkUserToken(data){
-        let res = await axios.post(`http://localhost:${apiPort}/api/user/check/token`,data).then((response) => {
+        let res = await axios.post(`${config.api_url}/api/user/check/token`,data).then((response) => {
 
             return response.data
 
@@ -30,7 +30,7 @@ export default {
       },
 
       async updateUser(id,data){
-        let res = await axios.put(`http://localhost:${apiPort}/api/user/${id}`,data).then((response) => {
+        let res = await axios.put(`${config.api_url}/api/user/${id}`,data).then((response) => {
 
             return response.data
 

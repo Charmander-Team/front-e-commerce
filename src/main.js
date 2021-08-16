@@ -6,7 +6,7 @@ import vuetify from './plugins/vuetify'
 import VueResizeText from 'vue-resize-text'
 import axios from 'axios'
 
-import apiPort from './../config/api_port.js'
+import config from './../config/config.js'
 
 Vue.use(VueResizeText)
 
@@ -14,7 +14,7 @@ Vue.config.productionTip = false
 
 Vue.prototype.$axios = axios
 
-Vue.prototype.$apiPort = apiPort
+Vue.prototype.$apiPort = config.api_port
 
 // Vue.prototype.$store = store
 
