@@ -1,9 +1,10 @@
 import axios from "axios"
-import apiPort from '../../config/api_port.js'
+import config from '../../config/config.js'
 export default {
     async loadAllcards(){
-       let res = await axios.get(`http://161.35.17.111:3000/api/product`).then((response) => {
-    //    let res = await axios.get(`http://localhost:${apiPort}/api/product`).then((response) => {
+
+       let res = await axios.get(`${config.api_url}/api/product`).then((response) => {
+        //   console.log(response.data)
 
           let cards = [
             {
@@ -63,7 +64,7 @@ export default {
       },
 
       async loadCardById(id){
-        let res = await axios.get(`http://localhost:${apiPort}/api/product/${id}`).then((response) => {
+        let res = await axios.get(`${config.api_url}/api/product/${id}`).then((response) => {
 
             let card = {
                 card_id: response.data.id,
@@ -85,7 +86,7 @@ export default {
       },
 
       async loadNouveautes(){
-        let res = await axios.get(`http://localhost:${apiPort}/api/product`).then((response) => {
+        let res = await axios.get(`${config.api_url}/api/product`).then((response) => {
             let news_cards_list = []
             response.data.forEach((card_db) => {
                 const current_ts = Date.now() / 1000;

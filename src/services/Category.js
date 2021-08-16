@@ -1,9 +1,9 @@
 import axios from "axios"
-import apiPort from '../../config/api_port.js'
+import config from '../../config/config.js'
 export default {
 
       async loadCategoryNouveaute(){
-        let res = await axios.get(`http://localhost:${apiPort}/api/category`).then((response) => {
+        let res = await axios.get(`${config.api_url}/api/category`).then((response) => {
 
             return response.data
 
@@ -12,7 +12,7 @@ export default {
       },
       
       async loadCartesByCategory(id){
-        let res = await axios.get(`http://localhost:${apiPort}/api/product/category/${id}`).then((response) => {
+        let res = await axios.get(`${config.api_url}/api/product/category/${id}`).then((response) => {
 
             return response.data
 
