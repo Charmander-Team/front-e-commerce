@@ -21,8 +21,5 @@ jobs:
                 key: ${{ secrets.PROD_SSH_KEY }}
                 port: ${{ secrets.PROD_PORT }}
                 script: |
-                    ls -la
-                    whoami
-                    pwd
                     cd /home/pokemon
-                    ls -la
+                    mkdir test
