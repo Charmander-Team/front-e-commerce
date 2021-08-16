@@ -1,5 +1,7 @@
 # front_e_commerce
 
+test
+
 ## Project setup
 ```
 npm install
