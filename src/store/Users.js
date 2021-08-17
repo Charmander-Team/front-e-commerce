@@ -6,6 +6,7 @@ export default {
       firstname:"",
       email:"",
       image:"",
+      sheet:false,
   },
   getters:{
      getConnexion(state){
@@ -25,6 +26,9 @@ export default {
      },
      getId(state){
          return state.id
+     },
+     getSheetUser(state){
+         return state.sheet
      },
   }
 }

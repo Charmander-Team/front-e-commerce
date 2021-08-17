@@ -1,22 +1,12 @@
 <template>
   <div>
-    <!-- <v-btn
-      class="connexion mr-1 ml-1"
-      color="deep-purple"
-      tile
-      dark
-      @click="sheet = !sheet"
-    >
-    Connexion
-    </v-btn> -->
-    <v-tab @click="sheet = !sheet">
+    <v-tab @click="$store.state.Users.sheet = !$store.state.Users.sheet">
         <v-img src="../assets/connexion_icon.png" width="75" height="auto">
         </v-img>
-        <!-- connexion -->
     </v-tab>
     
 
-    <v-bottom-sheet v-model="sheet">
+    <v-bottom-sheet v-model="$store.state.Users.sheet">
       <v-sheet
         class="text-center"
         height="auto"
@@ -25,7 +15,7 @@
           class="mt-6"
           text
           color="red"
-          @click="sheet = !sheet"
+          @click="$store.state.Users.sheet = !$store.state.Users.sheet"
         >
           fermer
         </v-btn>

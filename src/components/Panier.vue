@@ -10,7 +10,7 @@
           </v-img>
           <!-- PANIER -->
       </v-tab>
-    <v-bottom-sheet scrollable v-model="$store.state.Panier.sheet">
+    <v-bottom-sheet  v-model="$store.state.Panier.sheet">
       <v-sheet
         class="text-center"
       >
@@ -22,10 +22,11 @@
         >
           fermer
         </v-btn>
-        <div class="py-3">
+        <div class="table-overflow py-3" :style="$store.state.Users.connexion?'margin-bottom:104px':'margin-bottom:144px'">
           <p>Dans votre Pokéball</p>
           <v-data-table
             :headers="headers"
+            :options="{}"
             :items="$store.state.Panier.contenu"
             :items-per-page="5"
             :sort-desc="true"
@@ -35,17 +36,19 @@
             </template>
           </v-data-table>
         </div>
-        <div style="padding:20px;">
-          Total : {{totalPanier()}} €<br>
-          <v-btn v-if="$store.state.Users.connexion" class="mt-3" color="success">Valider panier</v-btn>
-          <div v-if="!$store.state.Users.connexion">
-              <p>Pour valider votre panier:</p> 
-              <v-btn class="mt-3" color="success" >Connectez vous</v-btn>
-              ou
-              <v-btn class="mt-3" color="success">Créez un compte</v-btn>
-          </div>
-        </div>
       </v-sheet>
+      <v-footer absolute class="pa-4">
+          <div class="text-center mx-auto">
+            Total : {{totalPanier()}} €<br>
+            <v-btn v-if="$store.state.Users.connexion" class="mt-3" color="success">Valider panier</v-btn>
+            <div v-if="!$store.state.Users.connexion">
+                <p>Pour valider votre panier:</p> 
+                <v-btn class="mt-3" color="success" @click="connecterPanier()">Connectez vous</v-btn>
+                ou
+                <v-btn class="mt-3" color="success" @click="creerCompte()">Créez un compte</v-btn>
+            </div>
+          </div>
+      </v-footer>
     </v-bottom-sheet>
   </div>
 </template>
@@ -68,6 +71,15 @@
       zoom:false,
     }),
     methods:{
+      creerCompte(){
+        this.$store.state.Panier.sheet = false
+        this.$vuetify.goTo('#inscriptionForm', {duration: 500, easing: 'easeInOutCubic'})
+      },
+      connecterPanier(){
+        this.$store.state.Panier.sheet = false
+        this.$store.state.Users.sheet = true
+
+      },
       zoomImg(event){
         let imgClick = event.target
         imgClick.style.width = "150px"
@@ -99,5 +111,10 @@
     position:absolute !important;
     left: 9px !important;
     top:-13px !important;
+  }
+
+  .v-bottom-sheet
+  {
+    overflow:auto !important;
   }
 </style>

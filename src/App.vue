@@ -58,7 +58,6 @@ export default {
     if(localStorage.getItem('nbProduitPanier')){
     this.$store.state.Panier.nbProduit = parseInt(localStorage.getItem('nbProduitPanier')) 
     this.$store.state.Panier.contenu = JSON.parse(localStorage.getItem('panier'))
-    // localStorage.removeItem('nbProduitPanier')
     }
   }
 

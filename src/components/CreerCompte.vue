@@ -9,8 +9,8 @@
                     ullamco laboris nisi ut aliquip ex ea commodo consequat
                 </div>  
             </v-col>
-            <v-col cols="12" lg="4" md="4" xs="12" class="jutify-content-center">
-                <InscriptionForm/>
+            <v-col id="inscriptionForm" cols="12" lg="4" md="4" xs="12" class="jutify-content-center">
+              <InscriptionForm/>
             </v-col>
         </v-row>
     </v-col>
