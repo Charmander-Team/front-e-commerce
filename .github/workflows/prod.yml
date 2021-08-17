@@ -1,8 +1,8 @@
-name: Master-Deploy
+name: Prod-Deploy
 
 on:
     push:
-        branches: [ dev ]
+        branches: [ prod ]
 
 jobs:
     SSH-Connexion:
@@ -13,7 +13,7 @@ jobs:
             - name: Repository checkout
               uses: actions/checkout@v2
 
-            - name: SSH connection
+            - name: SSH connection && prod deploy
               uses: appleboy/ssh-action@v0.1.4
               with:
                 host: "pokeshop.tk"
@@ -25,4 +25,4 @@ jobs:
                     git switch prod
                     git pull
                     npm install
-                    npm run serve
+                    npm run serve &
