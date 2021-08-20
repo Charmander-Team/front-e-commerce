@@ -57,7 +57,12 @@ export default {
     this.checkToken()
     if(localStorage.getItem('nbProduitPanier')){
     this.$store.state.Panier.nbProduit = parseInt(localStorage.getItem('nbProduitPanier')) 
-    this.$store.state.Panier.contenu = JSON.parse(localStorage.getItem('panier'))
+    // if(JSON.parse(localStorage.getItem('panier'))[0].user===null){
+          this.$store.state.Panier.contenu = JSON.parse(localStorage.getItem('panier'))
+    // }else 
+    //   if(JSON.parse(localStorage.getItem('panier'))[0].user===this.$store.state.Users.id && this.$store.state.Users.connexion){
+    //     this.$store.state.Panier.contenu = []
+    //   }
     }
   }
 

@@ -165,6 +165,7 @@ ajouterPanier(){
   localStorage.setItem('nbProduitPanier',this.$store.state.Panier.nbProduit)
   this.product.quantite = this.nbAjout
   this.product.montant = parseInt(this.nbAjout) * parseInt(this.product.price)
+  this.product.user = this.$store.state.Users.id
   console.log("montant",this.product.montant)
   this.nbAjout = 0 
 
