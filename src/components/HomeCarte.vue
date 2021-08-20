@@ -59,7 +59,7 @@
               <div class="black--text mb-1">
                 Prix: {{ carteCard.price }} €
               </div>
-              <v-btn @click="dialog = true, stock = carteCard.stock, product = {id:carteCard.card_id, img:carteCard.img, ref:carteCard.ref, price:carteCard.price, name:carteCard.name, quantite:null, montant:null }" small color="deep-purple" dark v-if="carteCard.bid===null">
+              <v-btn @click="dialog = true, stock = carteCard.stock, product = {id:carteCard.card_id, img:carteCard.img, ref:carteCard.ref, price:carteCard.price, name:carteCard.name, quantite:null, montant:null }" small color="deep-purple" dark v-if="carteCard.stock>0">
                 Panier <sup>+</sup>
               </v-btn>      
      
