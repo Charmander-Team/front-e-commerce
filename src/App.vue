@@ -6,6 +6,8 @@
 
 <script>
 import User from "@/services/Users.js"
+import Orders from "@/services/Orders.js"
+import Order_content from "@/services/Order_content.js"
 export default {
   name: 'App',
 
@@ -44,6 +46,18 @@ export default {
 
                 localStorage.setItem('token', event.token)
 
+
+                Orders.loadOrderByUser(event.id).then((data=>{
+                      data.forEach(element=>{
+                        if(!element.paid){
+                          Order_content.loadOrderContentByOrder(element.id).then(content=>{
+                            this.$store.state.Panier.contenu = content
+                            console.log("content",content)
+                          })
+                        }
+                      })
+                }))
+
               }
             }).bind(this)
           );        
@@ -58,12 +72,24 @@ export default {
     if(localStorage.getItem('nbProduitPanier')){
     this.$store.state.Panier.nbProduit = parseInt(localStorage.getItem('nbProduitPanier')) 
     // if(JSON.parse(localStorage.getItem('panier'))[0].user===null){
+      if(!this.$store.state.Users.connexion){
           this.$store.state.Panier.contenu = JSON.parse(localStorage.getItem('panier'))
-    // }else 
-    //   if(JSON.parse(localStorage.getItem('panier'))[0].user===this.$store.state.Users.id && this.$store.state.Users.connexion){
-    //     this.$store.state.Panier.contenu = []
-    //   }
+      }
     }
+
+    // if(this.$store.state.Users.connexion){
+    //   Orders.loadOrderByUser(this.$store.state.Users.id).then((data=>{
+    //         data.forEach(element=>{
+    //           if(!element.paid){
+    //             Order_content.loadOrderContentByOrder(element.id).then(content=>{
+    //               this.$store.state.Panier.contenu = content
+    //               console.log("content",content)
+    //             })
+    //           }
+    //         })
+    //   }))
+
+    // }
   }
 
 };

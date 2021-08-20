@@ -81,7 +81,8 @@ export default {
         return  Orders.loadOrderByUser(this.$store.state.Users.id).then((data=>{
             data.forEach(element=>{
               if(!element.paid){
-                this.order_id=element.order_id
+                this.order_id=element.id
+                // this.order_id=element.order_id
                 return element.paid
               }else {
                 return true
@@ -115,10 +116,23 @@ export default {
 
                 this.motDePasse = ""
 
+                Orders.loadOrderByUser(event.id).then((data=>{
+                      data.forEach(element=>{
+                        if(!element.paid){
+                          Order_content.loadOrderContentByOrder(element.id).then(content=>{
+                            this.$store.state.Panier.contenu = content
+                            console.log("content",content)
+                          })
+                        }
+                      })
+                }))
+
                 if(localStorage.getItem('nbProduitPanier') && this.checkUserCommande()){
                           Orders.createOrder({
                           user_id: this.$store.state.Users.id,
+                          paid: false
                         }).then(data=>{
+                          // let orderId = data.id
                           this.$store.state.Panier.contenu.forEach(element => {
                                 Order_content.createOrderContent(
                             {
@@ -144,9 +158,6 @@ export default {
                   localStorage.removeItem('panier')
                   localStorage.removeItem('nbProduitPanier')
                 }
-
-                // this.$store.state.Panier.contenu[0].user = this.$store.state.Users.id
-                // localStorage.setItem('panier', JSON.stringify(this.$store.state.Panier.contenu))
               }
             }).bind(this)
           );        

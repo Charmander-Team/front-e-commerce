@@ -152,6 +152,10 @@ export default {
         this.$store.state.Users.mail= ""
         this.$store.state.Users.image= ""
         localStorage.removeItem('token')
+        localStorage.removeItem('panier')
+        localStorage.removeItem('nbProduitPanier')
+        this.$store.state.Panier.contenu = []
+        this.$store.state.Panier.nbProduit = "0"
       },
       update(){
         if(this.$refs.form.validate()){

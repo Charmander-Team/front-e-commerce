@@ -9,4 +9,13 @@ export default {
         }).catch(error => console.log(error))
         return res
       },
+
+      async loadOrderContentByOrder(data){
+        let res = await axios.get(`${config.api_url}/api/order_content/order/${data}`).then((response) => {
+
+            return response.data
+
+        }).catch(error => console.log(error))
+        return res
+      },
 }
