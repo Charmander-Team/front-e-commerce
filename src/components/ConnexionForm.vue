@@ -77,21 +77,6 @@ export default {
     }),
     methods: {
 
-      /*
-      checkUserCommande(){
-       Orders.loadOrderByUser(this.$store.state.Users.id).then((data=>{
-          console.log("checkUserCommande",data)
-            data.forEach(element=>{
-              if(element.paid === false){
-                this.order_id=element.id
-                console.log("paid",element.paid)
-                   
-              }
-            })
-          }))
-      },
-      */
-
       validate () {
         
         if(this.$refs.form.validate()){
@@ -145,7 +130,6 @@ export default {
                       })
                 }))
 
-                // console.log("check",this.checkUserCommande())
 console.log("order id",this.order_id)
                 if(localStorage.getItem('nbProduitPanier') && this.order_id===null){
                           Orders.createOrder({
