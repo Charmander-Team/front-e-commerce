@@ -163,15 +163,52 @@ ajouterPanier(){
   this.$store.state.Panier.nbProduit = parseInt(this.$store.state.Panier.nbProduit) + parseInt(this.nbAjout)
   this.$store.state.Panier.sheet =true
   localStorage.setItem('nbProduitPanier',this.$store.state.Panier.nbProduit)
-  this.product.quantite = this.nbAjout
-  this.product.montant = parseInt(this.nbAjout) * parseInt(this.product.price)
-  this.product.user = this.$store.state.Users.id
-  console.log("montant",this.product.montant)
-  this.nbAjout = 0 
+  console.log("contenu",this.$store.state.Panier.contenu)
 
-  //Détail de l'ajout
-  this.$store.state.Panier.contenu.push(this.product)
-  localStorage.setItem('panier', JSON.stringify(this.$store.state.Panier.contenu))
+  let ArrayContenuId = []
+  this.$store.state.Panier.contenu.forEach(element=>{
+    ArrayContenuId.push(element.id)
+  })
+
+
+if(JSON.stringify(this.$store.state.Panier.contenu)!="[]"){
+  this.$store.state.Panier.contenu.forEach((element,index)=>{
+    console.log("element id",this.$store.state.Panier.contenu[index].id)
+    console.log("product id",this.product.id)
+    if(this.product.id === this.$store.state.Panier.contenu[index].id){
+        this.$store.state.Panier.contenu[index].quantite = this.$store.state.Panier.contenu[index].quantite + this.nbAjout
+
+        this.$store.state.Panier.contenu[index].montant = parseInt(this.$store.state.Panier.contenu[index].quantite) * parseInt(this.$store.state.Panier.contenu[index].price)
+        console.log("montant",this.$store.state.Panier.contenu[index].montant)
+        this.nbAjout = 0 
+    } 
+  })
+  if(!ArrayContenuId.includes(this.product.id)) 
+     {
+      this.product.quantite = this.nbAjout
+      this.product.montant = parseInt(this.product.quantite) * parseInt(this.product.price)
+      this.product.user = this.$store.state.Users.id
+      console.log("montant",this.product.montant)
+      this.nbAjout = 0 
+
+      //Détail de l'ajout
+      this.$store.state.Panier.contenu.push(this.product)
+      localStorage.setItem('panier', JSON.stringify(this.$store.state.Panier.contenu))
+
+    }
+} else if(JSON.stringify(this.$store.state.Panier.contenu)==="[]")
+     {
+      this.product.quantite = this.nbAjout
+      this.product.montant = parseInt(this.product.quantite) * parseInt(this.product.price)
+      this.product.user = this.$store.state.Users.id
+      console.log("montant",this.product.montant)
+      this.nbAjout = 0 
+
+      //Détail de l'ajout
+      this.$store.state.Panier.contenu.push(this.product)
+      localStorage.setItem('panier', JSON.stringify(this.$store.state.Panier.contenu))
+
+}
 
   }
 },
