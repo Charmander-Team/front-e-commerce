@@ -181,6 +181,7 @@ if(JSON.stringify(this.$store.state.Panier.contenu)!="[]"){
         this.$store.state.Panier.contenu[index].montant = parseInt(this.$store.state.Panier.contenu[index].quantite) * parseInt(this.$store.state.Panier.contenu[index].price)
         console.log("montant",this.$store.state.Panier.contenu[index].montant)
         this.nbAjout = 0 
+        localStorage.setItem('panier', JSON.stringify(this.$store.state.Panier.contenu))
     } 
   })
   if(!ArrayContenuId.includes(this.product.id)) 
