@@ -57,6 +57,7 @@
 import Users from '@/services/Users'
 import Orders from '@/services/Orders'
 import Order_content from '@/services/Order_content'
+import Products from '@/services/Products'
 export default {
     name:"ConnexionForm",
     data: () => ({
@@ -76,20 +77,20 @@ export default {
     }),
     methods: {
 
+      /*
       checkUserCommande(){
-      
-        return  Orders.loadOrderByUser(this.$store.state.Users.id).then((data=>{
+       Orders.loadOrderByUser(this.$store.state.Users.id).then((data=>{
+          console.log("checkUserCommande",data)
             data.forEach(element=>{
-              if(!element.paid){
+              if(element.paid === false){
                 this.order_id=element.id
-                // this.order_id=element.order_id
-                return element.paid
-              }else {
-                return true
+                console.log("paid",element.paid)
+                   
               }
             })
           }))
       },
+      */
 
       validate () {
         
@@ -99,7 +100,7 @@ export default {
             mdp: this.motDePasse,
           })
           .then(
-            (event => {
+            (async event => {
               console.log("event user check",event)
               this.$set(this, "user", event)
               if(event!==undefined){
@@ -116,23 +117,41 @@ export default {
 
                 this.motDePasse = ""
 
-                Orders.loadOrderByUser(event.id).then((data=>{
+                await Orders.loadOrderByUser(event.id).then((data=>{
+                  console.log("orderByUser",data)
                       data.forEach(element=>{
-                        if(!element.paid){
+                        if(element.paid === false){
+                          this.order_id=element.id
                           Order_content.loadOrderContentByOrder(element.id).then(content=>{
-                            this.$store.state.Panier.contenu = content
-                            console.log("content",content)
+                            if(content.length>0){
+                              content.forEach(value=>{
+                                let product = {}
+                                this.$store.state.Panier.nbProduit = parseInt(this.$store.state.Panier.nbProduit) + value.quantity
+                                Products.loadCardById(value.product_id).then(data=>{
+                                  product.id=data.card_id
+                                  product.img=data.img
+                                  product.ref=data.ref
+                                  product.price=data.price
+                                  product.name=data.name
+                                  product.quantite=value.quantity
+                                  product.montant=data.price * value.quantity
+                                  this.$store.state.Panier.contenu.push(product)
+                                })
+                              })
+                              console.log("content",content)
+                            }
                           })
                         }
                       })
                 }))
 
-                if(localStorage.getItem('nbProduitPanier') && this.checkUserCommande()){
+                // console.log("check",this.checkUserCommande())
+console.log("order id",this.order_id)
+                if(localStorage.getItem('nbProduitPanier') && this.order_id===null){
                           Orders.createOrder({
                           user_id: this.$store.state.Users.id,
                           paid: false
                         }).then(data=>{
-                          // let orderId = data.id
                           this.$store.state.Panier.contenu.forEach(element => {
                                 Order_content.createOrderContent(
                             {
@@ -145,7 +164,8 @@ export default {
                         })
                   localStorage.removeItem('panier')
                   localStorage.removeItem('nbProduitPanier')     
-                } else {
+                } else 
+                if(localStorage.getItem('nbProduitPanier') && this.order_id!=null) {
                   this.$store.state.Panier.contenu.forEach(element => {
                                 Order_content.createOrderContent(
                             {

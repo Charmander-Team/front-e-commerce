@@ -8,6 +8,7 @@
 import User from "@/services/Users.js"
 import Orders from "@/services/Orders.js"
 import Order_content from "@/services/Order_content.js"
+import Products from "@/services/Products.js"
 export default {
   name: 'App',
 
@@ -49,10 +50,25 @@ export default {
 
                 Orders.loadOrderByUser(event.id).then((data=>{
                       data.forEach(element=>{
-                        if(!element.paid){
+                        if(element.paid===false){
                           Order_content.loadOrderContentByOrder(element.id).then(content=>{
-                            this.$store.state.Panier.contenu = content
-                            console.log("content",content)
+                            if(content.length>0){
+                              content.forEach(value=>{
+                                let product = {}
+                                this.$store.state.Panier.nbProduit = parseInt(this.$store.state.Panier.nbProduit) + value.quantity
+                                Products.loadCardById(value.product_id).then(data=>{
+                                  product.id=data.card_id
+                                  product.img=data.img
+                                  product.ref=data.ref
+                                  product.price=data.price
+                                  product.name=data.name
+                                  product.quantite=value.quantity
+                                  product.montant=data.price * value.quantity
+                                  this.$store.state.Panier.contenu.push(product)
+                                })
+                              })
+                              console.log("content",content)
+                            }
                           })
                         }
                       })

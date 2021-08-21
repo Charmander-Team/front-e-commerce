@@ -27,6 +27,7 @@
           <v-data-table
             :headers="headers"
             :options="{}"
+            item-key="id"
             :items="$store.state.Panier.contenu"
             :items-per-page="5"
             :sort-desc="true"
