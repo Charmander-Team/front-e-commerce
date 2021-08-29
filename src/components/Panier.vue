@@ -72,6 +72,9 @@
       zoom:false,
     }),
     methods:{
+      // renduPanier(){
+      //   return this.$store.state.Users.connexion ? this.$store.state.Panier.contenu : JSON.parse(localStorage.getItem('panier'))
+      // },
       creerCompte(){
         this.$store.state.Panier.sheet = false
         this.$vuetify.goTo('#inscriptionForm', {duration: 500, easing: 'easeInOutCubic'})

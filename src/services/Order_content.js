@@ -18,4 +18,13 @@ export default {
         }).catch(error => console.log(error))
         return res
       },
+
+      async updateOrderContent(id,data){
+        let res = await axios.put(`${config.api_url}/api/order_content/${id}`,data).then((response) => {
+
+            return response.data
+
+        }).catch(error => console.log(error))
+        return res
+      },
 }
