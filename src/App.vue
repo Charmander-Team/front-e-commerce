@@ -81,8 +81,8 @@ export default {
           );        
         }else{
           localStorage.removeItem('token')
-          localStorage.removeItem('nbProduitPanier')
-          localStorage.removeItem('panier')
+          // localStorage.removeItem('nbProduitPanier')
+          // localStorage.removeItem('panier')
         }
       },
   },
