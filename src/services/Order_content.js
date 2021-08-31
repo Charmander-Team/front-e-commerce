@@ -27,4 +27,13 @@ export default {
         }).catch(error => console.log(error))
         return res
       },
+      
+      async deleteOrderContent(id){
+        let res = await axios.delete(`${config.api_url}/api/order_content/${id}`).then((response) => {
+
+            return response.data
+
+        }).catch(error => console.log(error))
+        return res
+      },
 }

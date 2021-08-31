@@ -66,6 +66,7 @@ export default {
                                   product.name=data.name
                                   product.quantite=value.quantity
                                   product.montant=data.price * value.quantity
+                                  product.idContentOrder=value.id
                                   this.$store.state.Panier.contenu.push(product)
                                 })
                               })

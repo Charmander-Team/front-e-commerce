@@ -186,14 +186,17 @@
       modifierPanier(){
         this.$store.state.Panier.contenu[this.editedIndex].quantite = this.editedQuantite
         this.$store.state.Panier.contenu[this.editedIndex].montant = this.editedQuantite * this.$store.state.Panier.contenu[this.editedIndex].price
-        localStorage.setItem('panier', JSON.stringify(this.$store.state.Panier.contenu))
+        
 
         this.$store.state.Panier.nbProduit = 0
         this.$store.state.Panier.contenu.forEach(element=>{
         this.$store.state.Panier.nbProduit += parseInt(element.quantite) 
         })
 
+        if(!this.$store.state.Users.connexion){
+        localStorage.setItem('panier', JSON.stringify(this.$store.state.Panier.contenu))
         localStorage.setItem('nbProduitPanier',this.$store.state.Panier.nbProduit)
+        }
 
         if(this.$store.state.Users.connexion){
           let data = {quantity:this.editedQuantite}
@@ -224,7 +227,8 @@
 
       deleteItem (item) {
         this.editedIndex = this.$store.state.Panier.contenu.indexOf(item)
-        // this.editedItem = Object.assign({}, item)
+        this.idContentOrder = item.idContentOrder
+        console.log("id content order delete",item.idContentOrder)
         this.dialogDelete = true
       },
       deleteItemConfirm(){
@@ -235,9 +239,14 @@
           this.$store.state.Panier.nbProduit += parseInt(element.quantite) 
           })
           this.$store.state.Panier.nbProduit =this.$store.state.Panier.nbProduit.toString()
+          if(!this.$store.state.Users.connexion){
           localStorage.setItem('nbProduitPanier',this.$store.state.Panier.nbProduit.toString())
           localStorage.setItem('panier',JSON.stringify(this.$store.state.Panier.contenu))
-
+          }
+          if(this.$store.state.Users.connexion){
+              console.log("delete id content order",this.idContentOrder)
+              Order_content.deleteOrderContent(this.idContentOrder)
+          }
           this.dialogDelete = false
       },
       closeDelete(){
