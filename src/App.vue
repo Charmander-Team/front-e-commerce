@@ -47,6 +47,8 @@ export default {
 
                 localStorage.setItem('token', event.token)
 
+                this.$store.state.Panier.contenu = []
+                this.$store.state.Panier.nbProduit = 0
 
                 Orders.loadOrderByUser(event.id).then((data=>{
                       data.forEach(element=>{
@@ -79,6 +81,8 @@ export default {
           );        
         }else{
           localStorage.removeItem('token')
+          localStorage.removeItem('nbProduitPanier')
+          localStorage.removeItem('panier')
         }
       },
   },

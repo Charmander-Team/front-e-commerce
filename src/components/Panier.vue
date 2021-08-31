@@ -27,7 +27,7 @@
           <v-data-table
             :headers="headers"
             :options="{}"
-            item-key="id"
+            item-key="idContentOrder"
             :items="$store.state.Panier.contenu"
             :items-per-page="5"
             :sort-desc="true"
@@ -35,6 +35,86 @@
             <template v-slot:[`item.img`]="{ item }">
               <img :src="item.img" width="30" height="auto" alt="" @mouseover="zoomImg" @mouseout="deZoomImg">
             </template>
+            
+            <template v-slot:[`item.actions`]="{ item }">
+              <v-icon
+                small
+                class="mr-2"
+                @click="editItem(item)"
+              >
+                mdi-pencil
+              </v-icon>
+              <v-icon
+                small
+                @click="deleteItem(item)"
+              >
+                mdi-delete
+              </v-icon>
+            
+              </template>
+          <template v-slot:top>
+            <v-dialog
+              v-model="dialogEdit"
+              max-width="500px"
+            >
+              <v-card>
+                <v-card-title>
+                  <span class="text-h5">Modifier ma commande</span>
+                </v-card-title>
+                <v-card-text>
+                  <span>En stock: {{stock}}</span>
+                  <v-container>
+                    <v-row>
+                      <v-col
+                        cols="12"
+                        sm="12"
+                        md="12"
+                      >
+                        <v-select
+                          v-model="editedQuantite"
+                          :items="itemStock"
+                          label="Choisir une Quantité*"
+                          :rules="nbProduitRule"
+                          required
+                        ></v-select>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      color="blue"
+                      dark
+                      @click="dialogEdit = false"
+                    >
+                      Fermer
+                    </v-btn>
+                    <v-btn
+                      v-if="editedQuantite!=quantite"
+                      color="blue"
+                      dark
+                      @click="modifierPanier()"
+                    >
+                      Modifier
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+            </v-dialog>
+
+            <v-dialog v-model="dialogDelete" max-width="500px">
+              <v-card>
+                <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+                  <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+                  <v-spacer></v-spacer>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+            </template>
+
           </v-data-table>
         </div>
       </v-sheet>
@@ -54,9 +134,21 @@
   </div>
 </template>
 <script>
+  import Products from '@/services/Products'
+  import Order_content from '@/services/Order_content'
   export default {
     name:"Panier",
     data: () => ({
+      stock:null,
+      itemStock:[],
+      // id:null,
+      // quantiteModifie:null,
+      quantite:null,
+      dialogEdit:false,
+      dialogDelete:false,
+      nbProduitRule: [
+        v => !!v || 'Veuillez Modifier votre quantité',
+      ],
       headers:[
         {
             text: 'Nom',
@@ -68,13 +160,79 @@
           { text: 'Prix (€)', value: 'price' },
           { text: 'Quantité', value: 'quantite' },
           { text: 'Montant (€)', value: 'montant' },
+          { text: 'Actions', value: 'actions', sortable: false }
       ],
       zoom:false,
+      editedQuantite:null,
+      editedIndex:null,
+      idContentOrder:null
     }),
     methods:{
       // renduPanier(){
       //   return this.$store.state.Users.connexion ? this.$store.state.Panier.contenu : JSON.parse(localStorage.getItem('panier'))
       // },
+
+      // async loadStock(){
+      //     if(this.id!=null){
+      //    await Products.loadCardById(this.id).then(data=>{
+      //           let itemStock = []
+      //           for(let i=1 ; i <= data.stock ; i++){
+      //             itemStock.push(i)
+      //           }
+      //           return itemStock
+      //         })
+      //     }
+      // },
+      modifierPanier(){
+        this.$store.state.Panier.contenu[this.editedIndex].quantite = this.editedQuantite
+        this.$store.state.Panier.contenu[this.editedIndex].montant = this.editedQuantite * this.$store.state.Panier.contenu[this.editedIndex].price
+        localStorage.setItem('panier', JSON.stringify(this.$store.state.Panier.contenu))
+
+        this.$store.state.Panier.nbProduit = 0
+        this.$store.state.Panier.contenu.forEach(element=>{
+        this.$store.state.Panier.nbProduit += parseInt(element.quantite) 
+        })
+
+        localStorage.setItem('nbProduitPanier',this.$store.state.Panier.nbProduit)
+
+        if(this.$store.state.Users.connexion){
+          let data = {quantity:this.editedQuantite}
+          console.log("id",this.idContentOrder)
+          Order_content.updateOrderContent(this.idContentOrder,data)
+        }
+
+        this.dialogEdit = false
+      },
+      editItem (item) {
+        this.editedIndex = this.$store.state.Panier.contenu.indexOf(item)
+        this.idContentOrder = item.idContentOrder
+        // this.id=item.id
+
+        this.quantite = item.quantite
+        this.editedQuantite = item.quantite
+        this.itemStock =[]
+        Products.loadCardById(item.id).then(data=>{
+                this.stock = data.stock
+                for(let i=1 ; i <= data.stock ; i++){
+                  this.itemStock.push(i)
+                }
+              })
+
+        console.log("item",item)
+        this.dialogEdit = true
+      },
+
+      deleteItem (item) {
+        this.editedIndex = this.desserts.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.dialogDelete = true
+      },
+      deleteItemConfirm(){
+
+      },
+      closeDelete(){
+
+      },
       creerCompte(){
         this.$store.state.Panier.sheet = false
         this.$vuetify.goTo('#inscriptionForm', {duration: 500, easing: 'easeInOutCubic'})
