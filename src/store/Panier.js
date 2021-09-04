@@ -2,7 +2,8 @@ export default {
     state: {
         nbProduit:"0",
         sheet:false,
-        contenu:[]
+        contenu:[],
+        order_id:null
     },
     getters:{
        getNbProduit(state){
@@ -13,6 +14,9 @@ export default {
        },
        getContenu(state){
            return state.contenu
+       },
+       getOrderId(state){
+           return state.order_id
        }
     }
   }

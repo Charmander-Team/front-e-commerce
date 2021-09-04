@@ -137,7 +137,8 @@
   </v-container>
 </template>
 <script>
-import Products from '@/services/Products.js';
+import Products from '@/services/Products.js'
+import Order_content from '@/services/Order_content'
 export default {
   name: "HomeCarte",
   data: () => ({
@@ -176,16 +177,27 @@ if(JSON.stringify(this.$store.state.Panier.contenu)!="[]"){
     console.log("element id",this.$store.state.Panier.contenu[index].id)
     console.log("product id",this.product.id)
     if(this.product.id === this.$store.state.Panier.contenu[index].id){
+      console.log("Update une carte au panier")
         this.$store.state.Panier.contenu[index].quantite = this.$store.state.Panier.contenu[index].quantite + this.nbAjout
 
         this.$store.state.Panier.contenu[index].montant = parseInt(this.$store.state.Panier.contenu[index].quantite) * parseInt(this.$store.state.Panier.contenu[index].price)
         console.log("montant",this.$store.state.Panier.contenu[index].montant)
         this.nbAjout = 0 
         localStorage.setItem('panier', JSON.stringify(this.$store.state.Panier.contenu))
+        
+        if(this.$store.state.Users.connexion){
+            Order_content.updateOrderContent(
+                      this.$store.state.Panier.contenu[index].idContentOrder,
+                      {
+                      quantity:this.$store.state.Panier.contenu[index].quantite
+                      }
+            )
+        }
     } 
   })
   if(!ArrayContenuId.includes(this.product.id)) 
      {
+       console.log("Ajoute une carte au panier")
       this.product.quantite = this.nbAjout
       this.product.montant = parseInt(this.product.quantite) * parseInt(this.product.price)
       this.product.user = this.$store.state.Users.id
@@ -196,9 +208,20 @@ if(JSON.stringify(this.$store.state.Panier.contenu)!="[]"){
       this.$store.state.Panier.contenu.push(this.product)
       localStorage.setItem('panier', JSON.stringify(this.$store.state.Panier.contenu))
 
+      if(this.$store.state.Users.connexion){
+          Order_content.createOrderContent(
+                      {
+                        order_id: this.$store.state.Panier.order_id,
+                        product_id: this.product.id,
+                        quantity: this.product.quantite,
+                      }
+                      )
+      }
+
     }
 } else if(JSON.stringify(this.$store.state.Panier.contenu)==="[]")
      {
+      console.log("Ajoute une carte au panier quand contenu vide")
       this.product.quantite = this.nbAjout
       this.product.montant = parseInt(this.product.quantite) * parseInt(this.product.price)
       this.product.user = this.$store.state.Users.id

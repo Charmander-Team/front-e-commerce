@@ -53,6 +53,8 @@ export default {
                 Orders.loadOrderByUser(event.id).then((data=>{
                       data.forEach(element=>{
                         if(element.paid===false){
+                          console.log("order id",element.id)
+                          this.$store.state.Panier.order_id = element.id
                           Order_content.loadOrderContentByOrder(element.id).then(content=>{
                             if(content.length>0){
                               content.forEach(value=>{

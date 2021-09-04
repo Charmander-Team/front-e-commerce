@@ -74,17 +74,86 @@ export default {
       ],
       user:null,
       order_id:null,
-      arrayContentOrder:[]
+      arrayContentOrder:[],
+      retour :{user:false,ini:false,implementUpdate:false,implementCreate:false},
+      panierUpdate:[],
+      panierCreate:[]
     }),
     methods: {
 
-      pushContenu(){
+      async updatePanier(array){
+          for(let i = 0; i<array.length;i++){
+                await  Order_content.updateOrderContent(
+                  array[i].id,
+                  {
+                  quantity:array[i].quantity
+                  }
+                )
+                .then(r=>{
+                  console.log("update then",r)
+                  if(r){this.retour.implementUpdate = true}
+                  })
+              }
+      },
+
+      // async updatePanier(array){
+      //     array.forEach(val=>{
+      //             Order_content.updateOrderContent(
+      //             val.id,
+      //             {
+      //             quantity:val.quantity
+      //             }
+      //           )
+      //           .then(r=>{
+      //             console.log("update then",r)
+      //             if(r){this.retour.implementUpdate = true}
+      //             })
+      //         })
+      // },
+
+      async createPanier(array){
+          for(let i = 0; i<array.length;i++){ 
+           await Order_content.createOrderContent(
+                  {
+                    order_id: this.order_id,
+                    product_id: array[i].product_id,
+                    quantity: array[i].quantity,
+                  }
+                  )
+                  .then(r=>{
+                    console.log("create then",r)
+                    if(r){this.retour.implementCreate = true}
+                    })
+              }
+      }
+      // async createPanier(array){
+      //     array.forEach(val=>{ 
+      //                     Order_content.createOrderContent(
+      //                           {
+      //                             order_id: this.order_id,
+      //                             product_id: val.product_id,
+      //                             quantity: val.quantity,
+      //                           }
+      //                           )
+      //                           .then(r=>{
+      //                             console.log("create then",r)
+      //                             if(r){this.retour.implementCreate = true}
+      //                             })
+      //                       })
+      // }
+      ,
+      async pushContenu(){
+
+        await Order_content.loadOrderContentByOrder(this.order_id).then(content=>{
+            console.log("content push contenu",content)   
+
         this.$store.state.Panier.contenu = []
         this.$store.state.Panier.nbProduit = "0"
-        this.arrayContentOrder.forEach(value=>{
+        
+        content.forEach(value=>{
               let product = {}
               this.$store.state.Panier.nbProduit = parseInt(this.$store.state.Panier.nbProduit) + value.quantity
-              // this.$store.state.Panier.nbProduit += parseInt(value.quantity)
+             
               Products.loadCardById(value.product_id).then(data=>{
                 product.id=data.card_id
                 product.img=data.img
@@ -97,6 +166,8 @@ export default {
                 this.$store.state.Panier.contenu.push(product)
               })
           })
+        })
+
           console.log("Push in contenu")
       },
 
@@ -108,11 +179,14 @@ export default {
             mdp: this.motDePasse,
           })
           .then(
-           ( async event => {
-            // (async event => {
+          //  ( 
+           async event => {
+              // let retour = {user:false,ini:false,implement:false} 
               console.log("event user check",event)
               this.$set(this, "user", event)
               if(event!==undefined){
+                this.retour.user = true
+
                 this.$refs.form.resetValidation()
                 this.$store.state.Users.connexion = true
                 this.$vuetify.goTo(0)
@@ -131,60 +205,29 @@ export default {
                       // data.forEach(element=>{
                         for(let i = 0; i<data.length;i++){
                         if(data[i].paid === false){
+                          this.$store.state.Panier.order_id = data[i].id
                           this.order_id=data[i].id
                       await Order_content.loadOrderContentByOrder(data[i].id).then(content=>{
                             if(content.length>0){
-                              // content.forEach(value=>{
-                              //   let product = {}
-                              //   this.$store.state.Panier.nbProduit = parseInt(this.$store.state.Panier.nbProduit) + value.quantity
-                              //   Products.loadCardById(value.product_id).then(data=>{
-                              //     product.id=data.card_id
-                              //     product.img=data.img
-                              //     product.ref=data.ref
-                              //     product.price=data.price
-                              //     product.name=data.name
-                              //     product.quantite=value.quantity
-                              //     product.montant=data.price * value.quantity
-                              //     this.$store.state.Panier.contenu.push(product)
-                              //   })
-                              // })
+                              
                               this.arrayContentOrder = content
                               console.log("content",content)
                             }
                           })
                         }
                         }
-                      // })
                 })
+              
 
-                // let panier = []
-                // this.$store.state.Panier.contenu.forEach(element => {
-                //   this.arrayContentOrder.forEach(val=>{
-                //     let product = {}
-                //       if(val.product_id === element.id ) {
-                //           product.id = val.product_id
-                //           product.quantite = val.quantity + element.quantite
-                //           panier.push(product)
-                //       }else{
-                //         product.id = val.product_id
-                //         product.quantite = val.quantity
-                //         panier.push(product)
-                //       }
-                //   })
-                // })
-                // console.log("panier reconstiue",panier)
-                
-
-console.log("order id",this.order_id)
-console.log("array content",this.arrayContentOrder)
-console.log("panier content",this.$store.state.Panier.contenu)
+                    console.log("order id",this.order_id)
+                    console.log("array content",this.arrayContentOrder)
+                    console.log("panier content",this.$store.state.Panier.contenu)
                 if(localStorage.getItem('nbProduitPanier') && this.order_id===null){
                           Orders.createOrder({
                           user_id: this.$store.state.Users.id,
                           paid: false
                         }).then(data=>{
-                          
-
+                          this.$store.state.Panier.order_id = data.id
                           this.$store.state.Panier.contenu.forEach(element => {
                                 Order_content.createOrderContent(
                             {
@@ -196,140 +239,106 @@ console.log("panier content",this.$store.state.Panier.contenu)
                           })
                         })
                   localStorage.removeItem('panier')
-                  localStorage.removeItem('nbProduitPanier')     
+                  localStorage.removeItem('nbProduitPanier')  
+                  this.retour.ini = true
                 } else 
                 if(localStorage.getItem('nbProduitPanier') && this.order_id!=null) {
 
-                
-                // this.$store.state.Panier.contenu.forEach(element => {
-                //   this.arrayContentOrder.forEach(val=>{
-                  let panierUpdate = []
-                  let panierCreate = []
+                  this.panierUpdate = []
+                  this.panierCreate = []
+                  // let panierUpdate = []
+                  // let panierCreate = []
                   this.$store.state.Panier.contenu.forEach(element => {
                   let valueUpdate = null
-                  // if(this.arrayContentOrder!=null){
+                  
                     valueUpdate =  this.arrayContentOrder.find(val=>val.product_id === element.id)
 
-                  // }  
-                  // let valueCreate = {}
+                  
                   console.log("valueUpdate",valueUpdate)
                   if(valueUpdate){
                       valueUpdate.quantity = valueUpdate.quantity + element.quantite
-                      panierUpdate.push(valueUpdate)
+                      this.panierUpdate.push(valueUpdate)
                   } else {
                       let val = {}
                       val.product_id = element.id
                       val.quantity = element.quantite
-                      panierCreate.push(val)
+                      this.panierCreate.push(val)
                   }
-                  // else {
-                  //   valueCreate.id = element.id
-                  //   valueCreate.quantite = element.quantite
-                  //   panierCreate.push(valueCreate)
-                  // }
-
-                  
-                  // })
-                  // this.$store.state.Panier.contenu.forEach(element => {
-                  
-                  
-                  // let valueUpdate =  this.arrayContentOrder.find(val=>val.product_id === element.id)
-                  // let valueCreate = {}
-                  // console.log("valueUpdate",valueUpdate)
-                  // if(valueUpdate!=undefined){
-                  //     valueUpdate.quantity = valueUpdate.quantity + element.quantite
-                  //     panierUpdate.push(valueUpdate)
-                  // } else {
-                  //   valueCreate.id = element.id
-                  //   valueCreate.quantite = element.quantite
-                  //   panierCreate.push(valueCreate)
-                  // }
-
-                  // if(this.arrayContentOrder!=null){
-
-
-                  // let valueCreate =  this.arrayContentOrder.find(val=>val.product_id != element.id)
-                  // console.log("valueCreate",valueCreate)
-                  // if(!valueCreate){
-                  //     let val = {}
-                  //     val.product_id = element.id
-                  //     val.quantity = element.quantite
-                  //     panierCreate.push(val)
-                  // }
-
-
-                  // }
-
-
                   
                   })
-                  console.log("panierUpdate reconstruit",panierUpdate)
-                  console.log("panierCreate reconstruit",panierCreate)
-
-
+                  console.log("panierUpdate reconstruit",this.panierUpdate)
+                  console.log("panierCreate reconstruit",this.panierCreate)
+                    
                   
-                        panierUpdate.forEach(val=>{
-                            Order_content.updateOrderContent(
-                            val.id,
-                            {
-                            quantity:val.quantity
-                            }
-                          )
-                        })
+
+                      // Promise.resolve(
+                  
+                        // panierUpdate.forEach(async val=>{
+                        //    await Order_content.updateOrderContent(
+                        //     val.id,
+                        //     {
+                        //     quantity:val.quantity
+                        //     }
+                        //   )
+                        //   .then(r=>{
+                        //     console.log("update then",r)
+                        //     if(r){this.retour.implementUpdate = true}
+                        //     })
+                        // })
                         
-                      
-                       panierCreate.forEach(val=>{ 
-                        Order_content.createOrderContent(
-                            {
-                              order_id: this.order_id,
-                              product_id: val.product_id,
-                              quantity: val.quantity,
-                            }
-                            )
-                      })
-
-
-                      // if(val.product_id === element.id ) {
+                        // ).then(()=>{
                           
-                      //     let newQuantite = val.quantity + element.quantite
+                          //  panierCreate.forEach(async val=>{ 
+                          //  await Order_content.createOrderContent(
+                          //       {
+                          //         order_id: this.order_id,
+                          //         product_id: val.product_id,
+                          //         quantity: val.quantity,
+                          //       }
+                          //       )
+                          //       .then(r=>{
+                          //         console.log("create then",r)
+                          //         if(r){this.retour.implementCreate = true}
+                          //         })
+                          //   })
 
-                      //     Order_content.updateOrderContent(
-                      //       val.id,
-                      //       {
-                      //       quantity:newQuantite
-                      //       }
-                      //     )
-                      // }else{
+
+                        // }).then(()=>{
+                          
+                        //   this.pushContenu()
+                        // })
                         
-                      //   Order_content.createOrderContent(
-                      //       {
-                      //         order_id: this.order_id,
-                      //         product_id: element.id,
-                      //         quantity: element.quantite,
-                      //       }
-                      //       )
-                      // }
-
-
-
-                //   })
-                // })
+                    // await this.updatePanier(this.panierUpdate)
+                    // await this.createPanier(this.panierCreate)
                 
                   localStorage.removeItem('panier')
                   localStorage.removeItem('nbProduitPanier')
-
+                // return true
                 }
-                return true
+                console.log("valeur push contenu",this.retour)
+                // return this.retour
+                // return true
+                
+              // await this.updatePanier(this.panierUpdate)
+              // await this.createPanier(this.panierCreate)
               }
-            }).bind(this)
-            // })
+            }
+            // ).bind(this)
           )
-          .then((val)=>{
-              console.log("valeur push contenu",val)
-              if(val){
-                this.pushContenu()
-              }
-            })        
+          .then(async()=>{
+          // .then(async (val)=>{
+              // console.log("valeur push contenu",val)
+              // if((val.user && val.implementUpdate ) ||(val.user && val.implementCreate ) || (val.user && val.ini) || val.user){
+              // if(val){
+                console.log("push")
+                await this.updatePanier(this.panierUpdate)
+                await this.createPanier(this.panierCreate)
+                // await this.pushContenu()
+              // }
+            }) 
+          .then(async()=>{
+                await this.pushContenu()
+            })     
         }
       },
 

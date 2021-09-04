@@ -168,21 +168,7 @@
       idContentOrder:null
     }),
     methods:{
-      // renduPanier(){
-      //   return this.$store.state.Users.connexion ? this.$store.state.Panier.contenu : JSON.parse(localStorage.getItem('panier'))
-      // },
-
-      // async loadStock(){
-      //     if(this.id!=null){
-      //    await Products.loadCardById(this.id).then(data=>{
-      //           let itemStock = []
-      //           for(let i=1 ; i <= data.stock ; i++){
-      //             itemStock.push(i)
-      //           }
-      //           return itemStock
-      //         })
-      //     }
-      // },
+      
       modifierPanier(){
         this.$store.state.Panier.contenu[this.editedIndex].quantite = this.editedQuantite
         this.$store.state.Panier.contenu[this.editedIndex].montant = this.editedQuantite * this.$store.state.Panier.contenu[this.editedIndex].price
