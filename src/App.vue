@@ -48,7 +48,7 @@ export default {
                 localStorage.setItem('token', event.token)
 
                 this.$store.state.Panier.contenu = []
-                this.$store.state.Panier.nbProduit = 0
+                this.$store.state.Panier.nbProduit = "0"
 
                 Orders.loadOrderByUser(event.id).then((data=>{
                       data.forEach(element=>{

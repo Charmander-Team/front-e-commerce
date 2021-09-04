@@ -121,7 +121,7 @@
       <v-footer absolute class="pa-4">
           <div class="text-center mx-auto">
             Total : {{totalPanier()}} €<br>
-            <v-btn v-if="$store.state.Users.connexion" class="mt-3" color="success">Valider panier</v-btn>
+            <v-btn v-if="$store.state.Users.connexion" :disabled="$store.state.Panier.contenu.length>0?false:true" class="mt-3" color="success" @click="validerPanier()" >Valider panier</v-btn>
             <div v-if="!$store.state.Users.connexion">
                 <p>Pour valider votre panier:</p> 
                 <v-btn class="mt-3" color="success" @click="connecterPanier()">Connectez vous</v-btn>
@@ -136,6 +136,7 @@
 <script>
   import Products from '@/services/Products'
   import Order_content from '@/services/Order_content'
+  import Orders from '@/services/Orders'
   export default {
     name:"Panier",
     data: () => ({
@@ -168,6 +169,35 @@
       idContentOrder:null
     }),
     methods:{
+      validerPanier(){
+        if(this.$store.state.Panier.contenu.length>0){
+          
+          for(let i=0; i<this.$store.state.Panier.contenu.length;i++){
+            Products.loadCardById(this.$store.state.Panier.contenu[i].id).then(data=>{
+              let newStock =data.stock - this.$store.state.Panier.contenu[i].quantite
+              return newStock
+            }).then(val=>{
+              console.log("new stock",val)
+              Products.updateCard(this.$store.state.Panier.contenu[i].id,{stock:val})
+            })
+          }
+        
+          Orders.updateOrder(this.$store.state.Panier.order_id,{paid:true}).then(data=>{
+                console.log("valide panier data",data)
+                this.$store.state.Panier.contenu = []
+                this.$store.state.Panier.nbProduit = "0"
+                  //créer un nouveau panier
+                  Orders.createOrder({
+                    user_id: this.$store.state.Users.id,
+                    paid: false
+                  }).then(data=>{
+                    console.log("créer panier data",data)
+                    this.$store.state.Panier.order_id = data.id
+                    this.$router.go(0)
+                  })
+              })
+        }
+      },
       
       modifierPanier(){
         this.$store.state.Panier.contenu[this.editedIndex].quantite = this.editedQuantite

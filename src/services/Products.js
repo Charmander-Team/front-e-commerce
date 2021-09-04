@@ -110,5 +110,13 @@ export default {
         }).catch(error => console.log(error))
         return res
 
-      }
+      },
+      async updateCard(id,data){
+        let res = await axios.put(`${config.api_url}/api/product/${id}`,data).then((response) => {
+
+            return response.data
+
+        }).catch(error => console.log(error))
+        return res
+    },
   }

@@ -8,14 +8,23 @@ export default {
 
         }).catch(error => console.log(error))
         return res
-      },
+    },
     
-    async loadOrderByUser(data){
-        let res = await axios.get(`${config.api_url}/api/order/user/${data}`).then((response) => {
+    async loadOrderByUser(id){
+        let res = await axios.get(`${config.api_url}/api/order/user/${id}`).then((response) => {
 
             return response.data
 
         }).catch(error => console.log(error))
         return res
-      }
+    },
+
+    async updateOrder(id,data){
+        let res = await axios.put(`${config.api_url}/api/order/${id}`,data).then((response) => {
+
+            return response.data
+
+        }).catch(error => console.log(error))
+        return res
+    },
 }
