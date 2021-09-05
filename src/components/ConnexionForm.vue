@@ -75,7 +75,7 @@ export default {
       user:null,
       order_id:null,
       arrayContentOrder:[],
-      retour :{user:false,ini:false,implementUpdate:false,implementCreate:false},
+      retour :{user:false,ini:false,implementUpdate:false,implementCreate:false},// ne pas conserver
       panierUpdate:[],
       panierCreate:[]
     }),

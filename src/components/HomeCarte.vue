@@ -59,8 +59,11 @@
               <div class="black--text mb-1">
                 Prix: {{ carteCard.price }} €
               </div>
-              <v-btn @click="dialog = true, stock = carteCard.stock, product = {id:carteCard.card_id, img:carteCard.img, ref:carteCard.ref, price:carteCard.price, name:carteCard.name, quantite:null, montant:null }" small color="deep-purple" dark v-if="carteCard.stock>0">
+              <v-btn @click="dialog = true, stock = carteCard.stock, product = {id:carteCard.card_id, img:carteCard.img, ref:carteCard.ref, price:carteCard.price, name:carteCard.name, quantite:null, montant:null, idContentOrder:null }" small color="deep-purple" dark v-if="carteCard.stock>0">
                 Panier <sup>+</sup>
+              </v-btn>      
+              <v-btn  small color="red" dark v-if="carteCard.stock<=0">
+                épuisé
               </v-btn>      
      
               <v-btn small color="deep-purple" dark v-if="carteCard.bid===1">
@@ -163,7 +166,11 @@ ajouterPanier(){
   this.dialog = false
   this.$store.state.Panier.nbProduit = parseInt(this.$store.state.Panier.nbProduit) + parseInt(this.nbAjout)
   this.$store.state.Panier.sheet =true
+
+  if(!this.$store.state.Users.connexion){
   localStorage.setItem('nbProduitPanier',this.$store.state.Panier.nbProduit)
+  }
+
   console.log("contenu",this.$store.state.Panier.contenu)
 
   let ArrayContenuId = []
@@ -183,7 +190,7 @@ if(JSON.stringify(this.$store.state.Panier.contenu)!="[]"){
         this.$store.state.Panier.contenu[index].montant = parseInt(this.$store.state.Panier.contenu[index].quantite) * parseInt(this.$store.state.Panier.contenu[index].price)
         console.log("montant",this.$store.state.Panier.contenu[index].montant)
         this.nbAjout = 0 
-        localStorage.setItem('panier', JSON.stringify(this.$store.state.Panier.contenu))
+        // localStorage.setItem('panier', JSON.stringify(this.$store.state.Panier.contenu))
         
         if(this.$store.state.Users.connexion){
             Order_content.updateOrderContent(
@@ -192,6 +199,8 @@ if(JSON.stringify(this.$store.state.Panier.contenu)!="[]"){
                       quantity:this.$store.state.Panier.contenu[index].quantite
                       }
             )
+        }else {
+            localStorage.setItem('panier', JSON.stringify(this.$store.state.Panier.contenu))
         }
     } 
   })
@@ -204,18 +213,27 @@ if(JSON.stringify(this.$store.state.Panier.contenu)!="[]"){
       console.log("montant",this.product.montant)
       this.nbAjout = 0 
 
-      //Détail de l'ajout
-      this.$store.state.Panier.contenu.push(this.product)
-      localStorage.setItem('panier', JSON.stringify(this.$store.state.Panier.contenu))
+      
+      // localStorage.setItem('panier', JSON.stringify(this.$store.state.Panier.contenu))
 
       if(this.$store.state.Users.connexion){
+          this.product.idContentOrder = this.$store.state.Panier.order_id
           Order_content.createOrderContent(
                       {
                         order_id: this.$store.state.Panier.order_id,
                         product_id: this.product.id,
                         quantity: this.product.quantite,
                       }
-                      )
+                      ).then(data=>{
+                        console.log("create order content ajout carte",data)
+                        this.product.idContentOrder = data.id
+                        //Détail de l'ajout
+                        this.$store.state.Panier.contenu.push(this.product)
+                })
+      } else {
+          localStorage.setItem('panier', JSON.stringify(this.$store.state.Panier.contenu))
+          //Détail de l'ajout
+          this.$store.state.Panier.contenu.push(this.product)
       }
 
     }
@@ -229,8 +247,27 @@ if(JSON.stringify(this.$store.state.Panier.contenu)!="[]"){
       this.nbAjout = 0 
 
       //Détail de l'ajout
-      this.$store.state.Panier.contenu.push(this.product)
-      localStorage.setItem('panier', JSON.stringify(this.$store.state.Panier.contenu))
+      // this.$store.state.Panier.contenu.push(this.product)
+
+      if(this.$store.state.Users.connexion){
+        //  this.product.idContentOrder = this.$store.state.Panier.order_id
+          Order_content.createOrderContent(
+                      {
+                        order_id: this.$store.state.Panier.order_id,
+                        product_id: this.product.id,
+                        quantity: this.product.quantite,
+                      }
+                      ).then(data=>{
+                        console.log("create order content ajout carte",data)
+                        this.product.idContentOrder = data.id
+                        //Détail de l'ajout
+                        this.$store.state.Panier.contenu.push(this.product)
+                })
+      } else {
+          localStorage.setItem('panier', JSON.stringify(this.$store.state.Panier.contenu))
+          //Détail de l'ajout
+          this.$store.state.Panier.contenu.push(this.product)
+      }
 
 }
 

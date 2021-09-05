@@ -81,7 +81,20 @@ export default {
 
               }
             }).bind(this)
-          );        
+          ).catch((error)=>{if(error){
+                this.$store.state.Users.connexion = false
+                this.$vuetify.goTo(0)
+                this.$store.state.Users.id=null
+                this.$store.state.Users.lastname= ""
+                this.$store.state.Users.firstname= ""
+                this.$store.state.Users.mail= ""
+                this.$store.state.Users.image= ""
+                localStorage.removeItem('token')
+                localStorage.removeItem('panier')
+                localStorage.removeItem('nbProduitPanier')
+                this.$store.state.Panier.contenu = []
+                this.$store.state.Panier.nbProduit = "0"
+          }})        
         }else{
           localStorage.removeItem('token')
         }

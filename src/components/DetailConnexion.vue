@@ -1,5 +1,160 @@
 <template>
-  <v-form 
+
+<v-container fluid class="pa-0">
+<!-- <v-toolbar
+      color="grey"
+      dark
+      flat
+    > -->
+      <!-- <template v-slot:extension> -->
+        <v-tabs
+          v-if="$store.state.Users.connexion"
+          v-model="tab"
+          align-with-title
+          dark
+          background-color="grey darken-3"
+        >
+          <v-tabs-slider color="white"></v-tabs-slider>
+
+          <v-tab
+            
+          >
+            Compte
+          </v-tab>
+          <v-tab
+            
+          >
+            Commandes
+          </v-tab>
+        </v-tabs>
+      <!-- </template> -->
+    <!-- </v-toolbar> -->
+
+    <v-tabs-items v-if="$store.state.Users.connexion" v-model="tab">
+      <v-tab-item>
+            <v-form 
+              ref="form"
+              v-model="valid"
+              lazy-validation>
+              <v-container>
+                <v-row>
+                    <v-col cols="12">
+                        <v-img :src="$store.state.Users.image" width="15%" alt="image user"></v-img>
+                    </v-col>
+                </v-row>
+                <v-row>
+
+                  <v-col
+                    cols="12"
+                    md="4"
+                  >
+                    <v-text-field
+                      v-model="firstname"
+                      :label="`Prénom: ${$store.state.Users.firstname}`"
+                      required
+                      readonly
+                    ></v-text-field>
+                  </v-col>
+                  
+                  <v-col
+                    cols="12"
+                    md="4"
+                  >
+                    <v-text-field
+                      v-model="lastname"
+                      :label="`Nom: ${$store.state.Users.lastname}`"
+                      required
+                      readonly
+                    ></v-text-field>
+                  </v-col>
+                  
+                  <v-col
+                    cols="12"
+                    md="4"
+                  >
+                    <v-text-field
+                      v-model="email"
+                      :label="`E-mail: ${$store.state.Users.mail}`"
+                      required
+                      readonly
+                    ></v-text-field>
+                  </v-col>
+
+                  <v-col
+                    cols="12"
+                    md="4"
+                  >
+                    <v-text-field
+                      v-model="nouvelEmail"
+                      label="Nouvel E-mail"
+                    ></v-text-field>
+                  </v-col>
+
+                  <v-col
+                    cols="12"
+                    md="4"
+                  >
+                    <v-text-field
+                      v-model="motDePasseActuel"
+                      :rules="nameRules"
+                      type="password"
+                      label="Mot de passe actuel"
+                      required
+                    ></v-text-field>
+                  </v-col>
+
+                  <v-col
+                    cols="12"
+                    md="4"
+                  >
+                    <v-text-field
+                      v-model="nouveauMotDePasse"
+                      type="password"
+                      label="Nouveau mot de passe"
+                    ></v-text-field>
+                  </v-col>
+
+                  <v-col
+                    cols="12"
+                    md="4"
+                  >
+                      <v-btn
+                      :disabled="!valid"
+                      color="success"
+                      class="mr-4"
+                      @click="update"
+                      align-center
+                      >
+                      Modifier
+                      </v-btn>
+                  </v-col>
+
+
+                  <v-col
+                    cols="12"
+                    md="4"
+                  >
+                      <v-btn
+                      :disabled="!$store.state.Users.connexion"
+                      color="red"
+                      dark
+                      class="mr-4"
+                      @click="logout"
+                      align-center
+                      >
+                      Déconnexion
+                      </v-btn>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-form>
+      </v-tab-item>
+      <v-tab-item>
+        test 2
+      </v-tab-item>
+    </v-tabs-items>
+  </v-container>
+  <!-- <v-form 
     v-if="$store.state.Users.connexion"
     ref="form"
     v-model="valid"
@@ -115,13 +270,14 @@
         </v-col>
       </v-row>
     </v-container>
-  </v-form>
+  </v-form> -->
 </template>
 <script>
 import Users from '@/services/Users'
 export default {
     name:"DetailConnexion",
     data: () => ({
+      tab:null,
       user:null,
       valid: false,
       motDePasseActuel: '',
