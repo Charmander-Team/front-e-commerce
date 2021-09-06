@@ -1,15 +1,15 @@
 <template>
   <div>
 
-        <v-tab @click="$store.state.Panier.sheet = !$store.state.Panier.sheet">
-          <v-img src="../assets/panier_icon.png" width="58" height="auto">
-            <v-badge
-          color="black"
-          :content="$store.state.Panier.nbProduit"
-        ></v-badge>
-          </v-img>
-          <!-- PANIER -->
-      </v-tab>
+      <v-tab @click="$store.state.Panier.sheet = !$store.state.Panier.sheet">
+        <v-img src="../assets/panier_icon.png" width="58" height="auto">
+          <v-badge
+        color="black"
+        :content="$store.state.Panier.nbProduit"
+      ></v-badge>
+        </v-img>
+        <!-- PANIER -->
+    </v-tab>
     <v-bottom-sheet  v-model="$store.state.Panier.sheet">
       <v-sheet
         class="text-center"

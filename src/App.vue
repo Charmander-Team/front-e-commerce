@@ -9,18 +9,36 @@ import User from "@/services/Users.js"
 import Orders from "@/services/Orders.js"
 import Order_content from "@/services/Order_content.js"
 import Products from "@/services/Products.js"
+import Script from "@/mixins/script.js"
+
 export default {
   name: 'App',
 
   components: {
   },
+  mixins:[Script],
 
   data: () => ({
     user:null,
   }),
 
   methods:{
-    checkToken () {
+    deconnexion(){
+      this.$store.state.Users.connexion = false
+      this.$vuetify.goTo(0)
+      this.$store.state.Users.id=null
+      this.$store.state.Users.lastname= ""
+      this.$store.state.Users.firstname= ""
+      this.$store.state.Users.mail= ""
+      this.$store.state.Users.image= ""
+      localStorage.removeItem('token')
+      localStorage.removeItem('panier')
+      localStorage.removeItem('nbProduitPanier')
+      this.$store.state.Panier.contenu = []
+      this.$store.state.Panier.nbProduit = "0"
+    },
+
+    async checkToken () {
         let checkTimestamp = null
         let timestampNow = null
         if(localStorage.getItem('token')){
@@ -29,11 +47,13 @@ export default {
         }
         // check tout les 4 heures = 14400 secondes
         if(localStorage.getItem('token') && timestampNow - checkTimestamp[0]<= 14400){
-          User.checkUserToken({
+          console.log("time",timestampNow - checkTimestamp[0])
+          await User.checkUserToken({
             token: localStorage.getItem('token')
           })
           .then(
-            (event => {
+            (
+             async (event) => {
               console.log("event user check token",event)
               this.$set(this, "user", event)
               if(event!==undefined){
@@ -79,21 +99,19 @@ export default {
                       })
                 }))
 
+                //Charge toute les commandes payé
+              await this.loadAllOrder()
+              //Charge toute le contenu des commandes payé
+              await this.pushContenuOrderPaid()
+
+              }else{
+                  this.deconnexion()
               }
-            }).bind(this)
-          ).catch((error)=>{if(error){
-                this.$store.state.Users.connexion = false
-                this.$vuetify.goTo(0)
-                this.$store.state.Users.id=null
-                this.$store.state.Users.lastname= ""
-                this.$store.state.Users.firstname= ""
-                this.$store.state.Users.mail= ""
-                this.$store.state.Users.image= ""
-                localStorage.removeItem('token')
-                localStorage.removeItem('panier')
-                localStorage.removeItem('nbProduitPanier')
-                this.$store.state.Panier.contenu = []
-                this.$store.state.Panier.nbProduit = "0"
+            }
+            ).bind(this)
+          ).catch ((error)=>{if(error){
+            console.log("error",error)
+                this.deconnexion()
           }})        
         }else{
           localStorage.removeItem('token')

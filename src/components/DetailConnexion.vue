@@ -1,34 +1,27 @@
 <template>
 
 <v-container fluid class="pa-0">
-<!-- <v-toolbar
-      color="grey"
-      dark
-      flat
-    > -->
-      <!-- <template v-slot:extension> -->
-        <v-tabs
-          v-if="$store.state.Users.connexion"
-          v-model="tab"
-          align-with-title
-          dark
-          background-color="grey darken-3"
-        >
-          <v-tabs-slider color="white"></v-tabs-slider>
 
-          <v-tab
-            
-          >
-            Compte
-          </v-tab>
-          <v-tab
-            
-          >
-            Commandes
-          </v-tab>
-        </v-tabs>
-      <!-- </template> -->
-    <!-- </v-toolbar> -->
+    <v-tabs
+      v-if="$store.state.Users.connexion"
+      v-model="tab"
+      align-with-title
+      dark
+      background-color="grey darken-3"
+    >
+        <v-tabs-slider color="white"></v-tabs-slider>
+
+        <v-tab
+          
+        >
+          Compte
+        </v-tab>
+        <v-tab
+          
+        >
+          Commandes
+        </v-tab>
+    </v-tabs>
 
     <v-tabs-items v-if="$store.state.Users.connexion" v-model="tab">
       <v-tab-item>
@@ -150,133 +143,59 @@
             </v-form>
       </v-tab-item>
       <v-tab-item>
-        test 2
+          <v-expansion-panels focusable>
+            <v-expansion-panel
+              v-for="(item,i) in $store.state.Panier.orderPaidTrue"
+              :key="i"
+            >
+              <v-expansion-panel-header>N°: {{item.id}}</v-expansion-panel-header>
+              <v-expansion-panel-content>
+                    <v-data-table
+                      :headers="headers"
+                      :options="{}"
+                      item-key="idContentOrder"
+                      :items="$store.state.Panier.contenuOrderPaid[i]"
+                      :items-per-page="5"
+                      :sort-desc="true"
+                    >
+                    <template v-slot:[`item.img`]="{ item }">
+                      <img :src="item.img" width="30" height="auto" alt="" @mouseover="zoomImg" @mouseout="deZoomImg">
+                    </template>
+                    </v-data-table>
+                    <v-footer absolute>
+                        <div class="text-center mx-auto">
+                          Total : 
+                          {{$store.state.Panier.totalOrderPaid[i]}} €
+                        </div>
+                    </v-footer>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
       </v-tab-item>
     </v-tabs-items>
   </v-container>
-  <!-- <v-form 
-    v-if="$store.state.Users.connexion"
-    ref="form"
-    v-model="valid"
-    lazy-validation>
-    <v-container>
-      <v-row>
-          <v-col cols="12">
-              <v-img :src="$store.state.Users.image" width="15%" alt="image user"></v-img>
-          </v-col>
-      </v-row>
-      <v-row>
-
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-text-field
-            v-model="firstname"
-            :label="`Prénom: ${$store.state.Users.firstname}`"
-            required
-            readonly
-          ></v-text-field>
-        </v-col>
-        
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-text-field
-            v-model="lastname"
-            :label="`Nom: ${$store.state.Users.lastname}`"
-            required
-            readonly
-          ></v-text-field>
-        </v-col>
-        
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-text-field
-            v-model="email"
-            :label="`E-mail: ${$store.state.Users.mail}`"
-            required
-            readonly
-          ></v-text-field>
-        </v-col>
-
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-text-field
-            v-model="nouvelEmail"
-            label="Nouvel E-mail"
-          ></v-text-field>
-        </v-col>
-
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-text-field
-            v-model="motDePasseActuel"
-            :rules="nameRules"
-            type="password"
-            label="Mot de passe actuel"
-            required
-          ></v-text-field>
-        </v-col>
-
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-text-field
-            v-model="nouveauMotDePasse"
-            type="password"
-            label="Nouveau mot de passe"
-          ></v-text-field>
-        </v-col>
-
-        <v-col
-          cols="12"
-          md="4"
-        >
-            <v-btn
-            :disabled="!valid"
-            color="success"
-            class="mr-4"
-            @click="update"
-            align-center
-            >
-            Modifier
-            </v-btn>
-        </v-col>
-
-
-        <v-col
-          cols="12"
-          md="4"
-        >
-            <v-btn
-            :disabled="!$store.state.Users.connexion"
-            color="red"
-            dark
-            class="mr-4"
-            @click="logout"
-            align-center
-            >
-            Déconnexion
-            </v-btn>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-form> -->
 </template>
 <script>
 import Users from '@/services/Users'
+// import Order_content from '@/services/Order_content'
+// import Products from '@/services/Products'
+
 export default {
     name:"DetailConnexion",
     data: () => ({
+      // orderPaidTrue:[],
+      headers:[
+        {
+            text: 'Nom',
+            align: 'start',
+            sortable: false,
+            value: 'name',
+          },
+          { text: 'Carte', value: 'img' },
+          { text: 'Prix (€)', value: 'price' },
+          { text: 'Quantité', value: 'quantite' },
+          { text: 'Montant (€)', value: 'montant' },
+      ],
       tab:null,
       user:null,
       valid: false,
@@ -294,11 +213,63 @@ export default {
       ],
       nouvelEmail:'',
       nouvelEmailRules: [
-        // v => !!v || 'E-mail obligatoire',
         v => /.+@.+/.test(v) || 'E-mail invalid',
       ]
     }),
     methods: {
+
+    //  loadAllOrder(){
+    //     if(this.$store.state.Users.connexion){
+    //        return Orders.loadOrderByUser(this.$store.state.Users.id).then(data=>{
+    //           console.log("order by user",data)
+    //           data.forEach(element => {
+    //             if(element.paid===true){this.$store.state.Panier.orderPaidTrue.push(element)}
+    //           })
+    //           return this.$store.state.Panier.orderPaidTrue
+    //         })
+    //     }
+    //   },
+
+
+    // pushContenuOrderPaid(){
+
+    //   //  return  
+    //   this.$store.state.Panier.orderPaidTrue.forEach((element,index)=>{
+    //       Order_content.loadOrderContentByOrder(element.id).then(content=>{
+             
+
+    //     let contenu = []
+        
+    //     content.forEach(value=>{
+    //           let product = {}             
+    //           Products.loadCardById(value.product_id).then(data=>{
+    //             product.id=data.card_id
+    //             product.img=data.img
+    //             product.ref=data.ref
+    //             product.price=data.price
+    //             product.name=data.name
+    //             product.quantite=data.quantity
+    //             product.montant=data.price * data.quantity
+    //             product.idContentOrder=value.id
+    //             contenu.push(product)
+    //           })
+    //       })
+    //       console.log("contenu paid order",contenu)
+    //       this.$store.state.Panier.contenuOrderPaid[index]=contenu
+    //       // return contenu
+    //     })
+    //   })
+       
+    //   },
+      zoomImg(event){
+        let imgClick = event.target
+        imgClick.style.width = "150px"
+      },
+      deZoomImg(event){
+        let imgClick = event.target
+        imgClick.style.width = "30px"
+      },
+
       logout(){
         this.$store.state.Users.connexion = false
         this.$vuetify.goTo(0)
@@ -312,6 +283,9 @@ export default {
         localStorage.removeItem('nbProduitPanier')
         this.$store.state.Panier.contenu = []
         this.$store.state.Panier.nbProduit = "0"
+        this.$store.state.Panier.orderPaidTrue = []
+        this.$store.state.Panier.contenuOrderPaid = []
+        this.$store.state.Panier.totalOrderPaid = []
       },
       update(){
         if(this.$refs.form.validate()){

@@ -3,7 +3,10 @@ export default {
         nbProduit:"0",
         sheet:false,
         contenu:[],
-        order_id:null
+        order_id:null,
+        orderPaidTrue:[],
+        contenuOrderPaid:[],
+        totalOrderPaid:[]
     },
     getters:{
        getNbProduit(state){
@@ -17,6 +20,15 @@ export default {
        },
        getOrderId(state){
            return state.order_id
+       },
+       getOrderPaidTrue(state){
+           return state.orderPaidTrue
+       },
+       getContenuOrderPaid(state){
+           return state.contenuOrderPaid
+       },
+       getTotalOrderPaid(state){
+           return state.totalOrderPaid
        }
     }
   }
