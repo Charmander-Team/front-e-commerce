@@ -34,13 +34,28 @@
                                                 <v-card-title class="jutify-content-center">{{detailCard.name}}</v-card-title>
                                                 <v-card-text>
                                                      <div class="mb-2">Ref: {{detailCard.ref}}</div>
-                                                     <div class="mb-2">Etat: </div>
+                                                     <div class="d-flex mb-2">
+                                                        <div class="grey--text">
+                                                          Etat:
+                                                        </div>
+                                                        <v-rating
+                                                          :value="parseInt(detailCard.etat)"
+                                                          color="amber"
+                                                          dense
+                                                          half-increments
+                                                          readonly
+                                                          size="14"
+                                                        ></v-rating>
+                                                      </div>
                                                      <div class="mb-2">Type: {{detailCard.type}}</div>
                                                      <div class="mb-2">Description:<br>{{detailCard.description}}</div>
                                                      <div  class="mb-2 jutify-content-center">Prix: {{detailCard.price}}€</div>
                                                      <div class="mt-6 jutify-content-center">
-                                                        <v-btn x-large color="deep-purple" dark>
+                                                        <v-btn x-large color="deep-purple" v-if="detailCard.stock>0" @click="dialog = true, stock = detailCard.stock, product = {id:detailCard.card_id, img:detailCard.img, ref:detailCard.ref, price:detailCard.price, name:detailCard.name, quantite:null, montant:null, idContentOrder:null }" dark>
                                                             Ajouter au panier
+                                                        </v-btn>
+                                                        <v-btn x-large color="red" v-if="detailCard.stock<=0"  dark>
+                                                            épuisé
                                                         </v-btn>
                                                      </div>
                                                 </v-card-text>
@@ -55,6 +70,60 @@
             </v-col>
             <CreerCompte/>
         </v-row>
+        <v-dialog
+      v-model="dialog"
+      overlay-color="grey"
+      max-width="600px"
+      @click:outside="nbAjout = 0"
+    >
+      <v-card>
+        <v-form 
+        ref="form"
+        v-model="valid"
+        lazy-validation>
+        <v-card-title>
+          <span class="text-h5">Ajouter Au panier</span>
+        </v-card-title>
+        <v-card-text>
+          <small>En stock: {{stock}}</small>
+          <v-container>
+            <v-row>
+              <v-col
+                cols="12"
+                sm="6"
+              >
+                <v-select
+                  v-model="nbAjout"
+                  :items="quantite()"
+                  label="Choisir une Quantité*"
+                  :rules="nbProduitRule"
+                  required
+                ></v-select>
+              </v-col>
+            </v-row>
+          </v-container>
+          <small>*Ce champ est obligatoire</small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="blue"
+            dark
+            @click="dialog = false"
+          >
+            Fermer
+          </v-btn>
+          <v-btn
+            color="blue"
+            dark
+            @click="ajouterPanier()"
+          >
+            Ajouter
+          </v-btn>
+        </v-card-actions>
+        </v-form>
+      </v-card>
+    </v-dialog>
         <!-- <ScrollDown/> -->
     </v-container>
      <Footer/>
@@ -67,6 +136,7 @@ import Panier from '../components/Panier'
 import Footer from '../components/Footer'
 import CreerCompte from '../components/CreerCompte'
 import Products from '@/services/Products.js';
+import Script from '@/mixins/script.js'
 
 // import ScrollDown from '../components/ScrollDown'
 export default {
@@ -78,8 +148,16 @@ export default {
       CreerCompte,
     //   ScrollDown,
       },
+      mixins:[Script],
     data(){
       return {
+          nbProduitRule: [
+                v => !!v || 'Veuillez choisir une quantité',
+            ],
+          valid:false,
+          nbAjout:0,
+          dialog:false,
+          stock:null,
           detailCard:{
             // img: "www.pokemon.fr/img/pikachu.png",
             // name: "Pikachu",
@@ -94,7 +172,9 @@ export default {
     },
     methods:{
 
-        async getEventDataProductID() {
+    
+
+    async getEventDataProductID() {
       Products.loadCardById(this.$route.params.cardId)
       .then(
         (event => {

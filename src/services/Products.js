@@ -27,8 +27,10 @@ export default {
             {list: trainer_cards_list}
             ] = cards;
       
+            
+            let responseReverse = response.data.reverse()
 
-            response.data.forEach((card_db) => {
+            responseReverse.forEach((card_db) => {
                 const current_ts = Date.now() / 1000;
                 const field_date_ts = new Date(card_db.createdAt).getTime() / 1000; //console.log(field_date_timestamp);
                 const one_month_ts = 60 * 60 * 24 * 30;
@@ -75,7 +77,8 @@ export default {
                 price: response.data.price,
                 date: response.data.createdAt,
                 description: response.data.description,
-                stock: response.data.stock
+                stock: response.data.stock,
+                etat: response.data.condition
             }
 
             return card
@@ -99,14 +102,15 @@ export default {
                     type: card_db.energy_type,
                     price: card_db.price,
                     date: card_db.createdAt,
-                    stock: card_db.stock
+                    stock: card_db.stock,
+                    etat: card_db.condition
                 };
                 if (current_ts - field_date_ts <= one_month_ts && news_cards_list.length < 30) {
                     
                     news_cards_list.push(card)
                 }
             })
-            return news_cards_list
+            return news_cards_list.reverse()
         }).catch(error => console.log(error))
         return res
 
