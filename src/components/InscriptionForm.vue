@@ -166,12 +166,17 @@ import Order_content from '@/services/Order_content'
                     console.log("order id",this.order_id)
                     console.log("array content",this.arrayContentOrder)
                     console.log("panier content",this.$store.state.Panier.contenu)
-                if(localStorage.getItem('nbProduitPanier')){
+
+
+                // if(localStorage.getItem('nbProduitPanier')){
                           Orders.createOrder({
                           user_id: event.id,
                           paid: false
                         }).then(data=>{
-                          
+
+                          this.$store.state.Panier.order_id =data.id
+
+                          if(localStorage.getItem('nbProduitPanier')){
 
                           this.$store.state.Panier.contenu.forEach(element => {
                                 Order_content.createOrderContent(
@@ -182,10 +187,13 @@ import Order_content from '@/services/Order_content'
                             }
                             )
                           })
+                            localStorage.removeItem('panier')
+                            localStorage.removeItem('nbProduitPanier')     
+                          } 
                         })
-                  localStorage.removeItem('panier')
-                  localStorage.removeItem('nbProduitPanier')     
-                } 
+                //   localStorage.removeItem('panier')
+                //   localStorage.removeItem('nbProduitPanier')     
+                // } 
                 // else 
                 // if(localStorage.getItem('nbProduitPanier') && this.order_id!=null) {
 
