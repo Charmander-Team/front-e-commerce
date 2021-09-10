@@ -28,7 +28,12 @@ const routes = [
   {
     path: '/VoirCategory/:categoryId',
     name: 'VoirCategory',
-    component: () => import(/* webpackChunkName: "category" */ '../views/VoirCategory.vue')
+    component: () => import(/* webpackChunkName: "category voir" */ '../views/VoirCategory.vue')
+  },
+  {
+    path: '/Regles',
+    name: 'Regles',
+    component: () => import(/* webpackChunkName: "Regles" */ '../views/Regles.vue')
   },
   //{
     //path: '/about',
@@ -41,7 +46,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  // mode: 'history',
   base: process.env.BASE_URL,
   routes,
   // scrollBehavior(to, from, savedPosition) {
