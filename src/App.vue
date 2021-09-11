@@ -67,6 +67,8 @@ export default {
 
                 localStorage.setItem('token', event.token)
 
+                this.$store.state.Users.admin= event.admin
+
                 this.$store.state.Panier.contenu = []
                 this.$store.state.Panier.nbProduit = "0"
 

@@ -1,6 +1,7 @@
 export default {
   state: {
       connexion:false,
+      admin:false,
       id:null,
       lastname:"",
       firstname:"",

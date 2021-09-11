@@ -242,6 +242,8 @@ export default {
                 this.$store.state.Users.firstname= event.firstname
                 this.$store.state.Users.mail= event.mail
                 this.$store.state.Users.image= event.image
+                
+                this.$store.state.Users.admin= event.admin
 
                 localStorage.setItem('token', event.token)
 

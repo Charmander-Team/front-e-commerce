@@ -1,10 +1,12 @@
 <template>
   <div>
-    <v-tab @click="$store.state.Users.sheet = !$store.state.Users.sheet">
-        <v-img src="../assets/connexion_icon.png" width="75" height="auto">
+    <div class="d-flex">
+        <v-tab @click="$store.state.Users.sheet = !$store.state.Users.sheet">
+          <v-img src="../assets/connexion_icon.png" width="75" height="auto"></v-img>
+        </v-tab>
+          <v-img v-if="$store.state.Users.admin"  @click="backOfficeRedirect()" style="cursor:pointer" class="ml-5" src="../assets/pokemon-center.png" width="75" height="auto">
         </v-img>
-    </v-tab>
-    
+    </div>
 
     <v-bottom-sheet v-model="$store.state.Users.sheet">
       <v-sheet
@@ -36,6 +38,11 @@ import DetailConnexion from '../components/DetailConnexion'
     data: () => ({
       sheet: false,
     }),
+    methods:{
+      backOfficeRedirect(){
+        window.location ='https://admin.pokeshop.tk/#/?t='+localStorage.getItem('token')
+      }
+    }
   }
 </script>
 <style lang="scss">

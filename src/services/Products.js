@@ -1,6 +1,19 @@
 import axios from "axios"
 import config from '../../config/config.js'
+
+let randomrize = (tab)=> {
+    let i, j, tmp;
+    for (i = tab.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        tmp = tab[i];
+        tab[i] = tab[j];
+        tab[j] = tmp;
+    }
+    return tab;
+}
+
 export default {
+
     async loadAllcards(){
 
        let res = await axios.get(`${config.api_url}/api/product`).then((response) => {
@@ -44,20 +57,41 @@ export default {
                     date: card_db.createdAt,
                     stock: card_db.stock,
                     etat: card_db.condition,
-                };
+                }
                 if (current_ts - field_date_ts <= one_month_ts && news_cards_list.length < 6) {
                     
                     news_cards_list.push(card);
+                    // news_cards_list=news_cards_list.reverse()
                 }
+            });
 
+            let responseRandom = randomrize(response.data)
+
+            responseRandom.forEach((card_db) => { 
+                let card = {
+                    card_id: card_db.id,
+                    img: card_db.image,
+                    name: card_db.name,
+                    ref: card_db.ref,
+                    type: card_db.energy_type,
+                    price: card_db.price,
+                    date: card_db.createdAt,
+                    stock: card_db.stock,
+                    etat: card_db.condition,
+                }
+            
                 if(card_db.category_id === 2 && pokemon_cards_list.length < 6 ) {
                     pokemon_cards_list.push(card);
+                    // pokemon_cards_list=randomrize(pokemon_cards_list)
                 }
                 
                 if(card_db.category_id === 1 && trainer_cards_list.length < 6 ) {
                     trainer_cards_list.push(card);
+                    // trainer_cards_list=randomrize(trainer_cards_list)
                 }
-            });
+
+            });    
+            
             // console.log("cards",cards)
           return cards
         }).catch(error => console.log(error))
