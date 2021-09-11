@@ -7,6 +7,22 @@
          {{item.title}}
        </router-link>
     </v-btn>
+
+    <v-btn height="45" block  tile small light color="white">
+       <router-link to="/Regles" style="text-decoration:none;color:#000000">
+         Règles
+       </router-link>
+    </v-btn>
+    <v-btn height="45" block  tile small light color="white">
+       <router-link to="/A-propos" style="text-decoration:none;color:#000000">
+         A propos
+       </router-link>
+    </v-btn>
+    <v-btn height="45" block  tile small light color="white">
+       <router-link to="/Contact" style="text-decoration:none;color:#000000">
+         Contact
+       </router-link>
+    </v-btn>
 </div>
 <!-- Menu mobile -->
 <div id="menuMobile" class="hidden-md-and-up" v-scroll="onScroll">
@@ -30,13 +46,29 @@
       <v-btn height="45" v-for="(item,index) in items" :key="index" block light tile color="#ffffff">
        {{item.title}}
       </v-btn>
+
+      <v-btn height="45" block  tile light color="white">
+       <router-link to="/Regles" style="text-decoration:none;color:#000000">
+         Règles
+       </router-link>
+    </v-btn>
+    <v-btn height="45" block  tile light color="white">
+       <router-link to="/A-propos" style="text-decoration:none;color:#000000">
+         A propos
+       </router-link>
+    </v-btn>
+    <v-btn height="45" block  tile light color="white">
+       <router-link to="/Contact" style="text-decoration:none;color:#000000">
+         Contact
+       </router-link>
+    </v-btn>
     </v-navigation-drawer>
   </v-layout>
 </div>
 </div>
 </template>
 <script>
-
+import Page from '@/services/Page.js'
 export default {
   name: "Menu",
   data() {
@@ -46,16 +78,36 @@ export default {
         { title: "Nouveautés", icon: "mdi-account",path:"/Nouveautes" },
         // { title: "Enchères", icon: "mdi-account-group-outline",path:"/encheres" },
         { title: "Catégories", icon: "mdi-account-group-outline",path:"/Categories"},
-        { title: "Règles", icon: "mdi-account-group-outline",path:"/Regles"},
-        { title: "A propos", icon: "mdi-account-group-outline",path:"/A-propos"},
-        { title: "Contact", icon: "mdi-account-group-outline",path:"/Contact" },
+
+
+        // { title: "Règles", icon: "mdi-account-group-outline",path:"/Regles"},
+        // { title: "A propos", icon: "mdi-account-group-outline",path:"/A-propos"},
+        // { title: "Contact", icon: "mdi-account-group-outline",path:"/Contact" },
       ],
       mini: true,
       drawer: null,
       fab: false,
     };
   },
+  created(){
+    this.addItemPage()
+  },
   methods: {
+    addItemPage(){
+        Page.loadAllPage().then((event)=>{
+          console.log("page",event)
+          if(event.length>0){
+              event.forEach(element => {
+                  let item = {}
+                  item.title = element.navbar_title
+                  item.icon = ""
+                  item.path = `/page/${element.display}/${element.id}`
+                  this.items.push(item)
+              })
+          }
+        })
+    }
+    ,
     onScroll () {
       // if (typeof window === 'undefined') return
       // const top = window.pageYOffset ||   e.target.scrollTop || 0

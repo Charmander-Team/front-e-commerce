@@ -40,6 +40,16 @@ const routes = [
     name: 'A-propos',
     component: () => import(/* webpackChunkName: "A propos" */ '../views/APropos.vue')
   },
+  {
+    path: '/Page/1/:id',
+    name: 'Page1',
+    component: () => import(/* webpackChunkName: "Page1" */ '../views/Page1.vue')
+  },
+  {
+    path: '/Page/2/:id',
+    name: 'Page2',
+    component: () => import(/* webpackChunkName: "Page2" */ '../views/Page2.vue')
+  },
 ]
 
 const router = new VueRouter({

@@ -47,7 +47,7 @@
                                             Numéro d’inscription au RCS: 145978562155520589987054<br>
                                             Numéro de TVA intracommunautaire: FR 89 1254412<br>
                                             Responsable de la publication: Christian AMBANG<br>
-                                            Hébergeur du site: Heroku / 415 Mission Street Suite 300 San Francisco, CA 94105<br>
+                                            Hébergeur du site: Digital Ocean / 415 Mission Street Suite 300 San Francisco, CA 94105<br>
                                             Numéro de déclaration simplifiée CNIL: 1223545521<br>
                                             <br>
                                             Conditions générales de vente : <br><br>

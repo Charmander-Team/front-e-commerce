@@ -137,7 +137,7 @@ export default {
                 },
                 {
                     img:require("@/assets/pokemon-energie-spy.jpg"),
-                    titre:"Spy",
+                    titre:"Psy",
                     desc:`Les Pokémon de type Psy ont de formidables pouvoirs spéciaux ! Leurs adversaires se retrouvent souvent Endormis, Confus ou Empoisonnés.`
                 },
                 {
