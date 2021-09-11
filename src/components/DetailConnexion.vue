@@ -286,6 +286,7 @@ export default {
         this.$store.state.Panier.orderPaidTrue = []
         this.$store.state.Panier.contenuOrderPaid = []
         this.$store.state.Panier.totalOrderPaid = []
+        this.$store.state.Users.admin = false
       },
       update(){
         if(this.$refs.form.validate()){

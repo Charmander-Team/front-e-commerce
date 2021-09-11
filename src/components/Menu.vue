@@ -43,12 +43,12 @@ export default {
     return {
       items: [
         { title: "Home", icon: "mdi-home-city", path:"/" },
-        { title: "Nouveautés", icon: "mdi-account",path:"/nouveautes" },
+        { title: "Nouveautés", icon: "mdi-account",path:"/Nouveautes" },
         // { title: "Enchères", icon: "mdi-account-group-outline",path:"/encheres" },
-        { title: "Catégories", icon: "mdi-account-group-outline",path:"/categories"},
-        { title: "Règles", icon: "mdi-account-group-outline",path:"/regles"},
-        { title: "A propos", icon: "mdi-account-group-outline",path:"/apropos"},
-        { title: "Contact", icon: "mdi-account-group-outline",path:"/contact" },
+        { title: "Catégories", icon: "mdi-account-group-outline",path:"/Categories"},
+        { title: "Règles", icon: "mdi-account-group-outline",path:"/Regles"},
+        { title: "A propos", icon: "mdi-account-group-outline",path:"/A-propos"},
+        { title: "Contact", icon: "mdi-account-group-outline",path:"/Contact" },
       ],
       mini: true,
       drawer: null,
