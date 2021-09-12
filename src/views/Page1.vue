@@ -31,6 +31,7 @@
                                             <div class="d-flex">
                                                 <img :src="content.image" height="300" class="mr-3 mb-3" alt="">
                                                 <span :style="{color:content.text_color}">{{content.content}}</span>
+                                                <!-- <span :style="{color:content.text_color}" v-html="content.content"></span> -->
                                             </div>
                                         </v-card-text>
                                    </v-card>

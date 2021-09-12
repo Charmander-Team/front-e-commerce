@@ -25,8 +25,13 @@
                                    </v-layout>
                                </v-col>
                                <v-col cols="12" lg="12" md="12"> 
-                                   <v-card rounded="xl" class="mx-6" color="#ffffff">
-                                       
+                                   <v-card rounded="xl" class="mx-6" :color="content.page_color">
+                                        <v-card-title :style="{color:content.text_color}" class="text-decoration-underline justify-center">{{content.title}}</v-card-title>
+                                        <v-card-text>
+                                            <div class="d-flex">
+                                                <span :style="{color:content.text_color}" v-html="content.content"></span>
+                                            </div>
+                                        </v-card-text>
                                    </v-card>
                                </v-col>
                            </v-row>
@@ -50,6 +55,8 @@ import CreerCompte from '../components/CreerCompte'
 import Footer from '../components/Footer'
 import ScrollDown from '../components/ScrollDown'
 
+import Page from '@/services/Page.js'
+
 export default {
     components:{
       Menu,
@@ -61,7 +68,25 @@ export default {
       },
       data:()=>{
           return {
+              content:{},
           }
+      },
+      methods:{
+        loadContentPage(){
+            Page.loadPageById(this.$route.params.id).then((event)=>{
+                if(event){
+                    this.$set(this, "content", event)
+                }
+            })
+        }
+      },
+      watch: {
+        '$route.params.id':function () {
+            this.loadContentPage()
+        },
+      },
+      mounted(){
+          this.loadContentPage()
       }
     }
 </script>
