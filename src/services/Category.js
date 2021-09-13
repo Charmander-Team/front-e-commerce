@@ -13,7 +13,7 @@ export default {
       
       async loadCartesByCategory(id){
         let res = await axios.get(`${config.api_url}/api/product/category/${id}`).then((response) => {
-
+            console.log("loadallcartes",response.data)
             return response.data
 
         }).catch(error => console.log(error))

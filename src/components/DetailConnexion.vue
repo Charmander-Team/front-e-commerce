@@ -148,7 +148,7 @@
               v-for="(item,i) in $store.state.Panier.orderPaidTrue"
               :key="i"
             >
-              <v-expansion-panel-header>N°: {{item.id}}</v-expansion-panel-header>
+              <v-expansion-panel-header><span>N°: {{item.id}}</span> <span>Le: {{isoDate(item.createdAt)}}</span>  <span v-if="item.status==null">Validée</span><span v-else>{{item.status}}</span></v-expansion-panel-header>
               <v-expansion-panel-content>
                     <v-data-table
                       :headers="headers"
@@ -261,6 +261,18 @@ export default {
     //   })
        
     //   },
+
+      isoDate(date){
+        let d= new Date(date)
+        let day = d.getDate()
+        let month = d.getMonth()+1
+        let year = d.getFullYear()
+
+        if(day<10){day = "0"+day}
+        if(month<10){month = "0"+month}
+
+        return day+"/"+month+"/"+year
+      },
       zoomImg(event){
         let imgClick = event.target
         imgClick.style.width = "150px"
