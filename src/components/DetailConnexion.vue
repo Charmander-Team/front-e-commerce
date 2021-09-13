@@ -148,7 +148,7 @@
               v-for="(item,i) in $store.state.Panier.orderPaidTrue"
               :key="i"
             >
-              <v-expansion-panel-header><span>N°: {{item.id}}</span> <span>Le: {{isoDate(item.createdAt)}}</span>  <span v-if="item.status==null">Validée</span><span v-else>{{item.status}}</span></v-expansion-panel-header>
+              <v-expansion-panel-header><span>N°: {{item.id}}</span> <span>Le: {{isoDate(item.createdAt)}}</span>  <span>{{item.status}}</span></v-expansion-panel-header>
               <v-expansion-panel-content>
                     <v-data-table
                       :headers="headers"
