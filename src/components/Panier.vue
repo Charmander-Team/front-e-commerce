@@ -11,6 +11,26 @@
         <!-- PANIER -->
     </v-tab>
     <v-bottom-sheet  v-model="$store.state.Panier.sheet">
+      <div>
+        <StripeElementCard
+          ref="elementRef"
+          @token="tokenCreated"
+          :pk="stripe_public_key"
+          ></StripeElementCard>
+        <button @click="submit">Generate token</button>
+      </div>
+       <!-- <div>
+          <stripe-checkout
+            ref="checkoutRef"
+            mode="payment"
+            pk="pk_test_51JPSpCKoSMACykFS1MwWYut67FZ8Tl2jQOgZPBrzfdDFQsYwRyM8oGcP0HEYQjPvDFcyjSCvsR1v1AitLgIUW6J300VnV4vlbm"
+            :line-items="lineItems"
+            :success-url="successURL"
+            :cancel-url="cancelURL"
+            @loading="v => loading = v"
+          />
+          <button @click="submit">Pay now!</button>
+        </div> -->
       <v-sheet
         class="text-center"
       >
@@ -121,7 +141,8 @@
       <v-footer absolute class="pa-4">
           <div class="text-center mx-auto">
             Total : {{totalPanier()}} €<br>
-            <v-btn v-if="$store.state.Users.connexion" :disabled="$store.state.Panier.contenu.length>0?false:true" class="mt-3" color="success" @click="validerPanier()" >Valider panier</v-btn>
+            <!-- <v-btn v-if="$store.state.Users.connexion" :disabled="$store.state.Panier.contenu.length>0?false:true" class="mt-3" color="success" @click="validerPanier()" >Valider panier</v-btn> -->
+            <v-btn v-if="$store.state.Users.connexion" :disabled="$store.state.Panier.contenu.length>0?false:true" class="mt-3" color="success" @click="stripePayment()" >Valider panier</v-btn>
             <div v-if="!$store.state.Users.connexion">
                 <p>Pour valider votre panier:</p> 
                 <v-btn class="mt-3" color="success" @click="connecterPanier()">Connectez vous</v-btn>
@@ -134,12 +155,33 @@
   </div>
 </template>
 <script>
+  import { StripeElementCard } from '@vue-stripe/vue-stripe';
+  import config from '../../config/config.js';
+  // import { StripeCheckout } from '@vue-stripe/vue-stripe';
+
   import Products from '@/services/Products'
   import Order_content from '@/services/Order_content'
   import Orders from '@/services/Orders'
+  import Stripe from '@/services/Stripe'
   export default {
     name:"Panier",
+    components: {
+    StripeElementCard,
+    // StripeCheckout
+  },
     data: () => ({
+      // loading: false,
+      // lineItems: [
+      //   {
+      //     price: '10', // The id of the one-time price you created in your Stripe dashboard
+      //     quantity: 1,
+      //   },
+      // ],
+      // successURL: 'https://www.google.com',
+      // cancelURL: 'https://www.google.com',
+      stripe_public_key:config.stripe_public_key,
+      token:null,
+
       stock:null,
       itemStock:[],
       // id:null,
@@ -168,7 +210,38 @@
       editedIndex:null,
       idContentOrder:null
     }),
+    
     methods:{
+    // stripePayment(){
+    //   Stripe.paymentOrder({}).then((data)=>{console.log("stripe data",data)})
+    // },
+
+    // submit() {
+    //   // You will be redirected to Stripe's secure checkout page
+    //   this.$refs.checkoutRef.redirectToCheckout();
+    // },
+    submit () {
+      // this will trigger the process
+      this.$refs.elementRef.submit();
+    },
+    tokenCreated (token) {
+      console.log(token);
+      let value = {
+        stripeToken:token.id,
+        name:"Kris",
+        mail:"demo@kris.fr",
+        phone:"0100000000",
+        address:"2 place pokémon",
+        zip:"75011",
+        country:"France", 
+        amount:"60000",
+        description:"pikachu argenté"
+      }
+      Stripe.paymentOrder(value).then((data)=>{console.log("stripe data",data)})
+
+      // handle the token
+      // send it to your server
+    },
       validerPanier(){
         if(this.$store.state.Panier.contenu.length>0){
           
