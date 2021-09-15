@@ -1,6 +1,5 @@
 <template>
   <div>
-
       <v-tab @click="$store.state.Panier.sheet = !$store.state.Panier.sheet">
         <v-img src="../assets/panier_icon.png" width="58" height="auto">
           <v-badge
@@ -11,14 +10,16 @@
         <!-- PANIER -->
     </v-tab>
     <v-bottom-sheet  v-model="$store.state.Panier.sheet">
-      <div>
+      <!-- <div>
         <StripeElementCard
           ref="elementRef"
           @token="tokenCreated"
           :pk="stripe_public_key"
           ></StripeElementCard>
         <button @click="submit">Generate token</button>
-      </div>
+      </div> -->
+
+
        <!-- <div>
           <stripe-checkout
             ref="checkoutRef"
@@ -142,7 +143,7 @@
           <div class="text-center mx-auto">
             Total : {{totalPanier()}} €<br>
             <!-- <v-btn v-if="$store.state.Users.connexion" :disabled="$store.state.Panier.contenu.length>0?false:true" class="mt-3" color="success" @click="validerPanier()" >Valider panier</v-btn> -->
-            <v-btn v-if="$store.state.Users.connexion" :disabled="$store.state.Panier.contenu.length>0?false:true" class="mt-3" color="success" @click="stripePayment()" >Valider panier</v-btn>
+            <v-btn v-if="$store.state.Users.connexion" :disabled="$store.state.Panier.contenu.length>0?false:true" class="mt-3" color="success" @click="dialogStripe=true" >Valider panier</v-btn>
             <div v-if="!$store.state.Users.connexion">
                 <p>Pour valider votre panier:</p> 
                 <v-btn class="mt-3" color="success" @click="connecterPanier()">Connectez vous</v-btn>
@@ -152,6 +153,35 @@
           </div>
       </v-footer>
     </v-bottom-sheet>
+    <v-dialog
+      v-model="dialogStripe"
+      width="500"
+    >
+     <v-card color="#cccccc">
+        <v-card-title class="text-h5 white lighten-2 justify-center">
+          Finaliser votre commande
+        </v-card-title>
+        <v-card-text>
+            <div>
+              <v-form v-model="valid" ref="form" lazy-validation>
+                  <v-text-field height="25" background-color="#ffffff" v-model="name" readonly :label="`Identité: ${$store.state.Users.firstname} ${$store.state.Users.lastname}`"></v-text-field>
+                  <v-text-field height="25" background-color="#ffffff" v-model="mail" readonly :label="`Mail: ${$store.state.Users.mail}`" :value="$store.state.Users.mail"></v-text-field>
+                  <v-text-field height="25" background-color="#ffffff" v-model="phone" required :rules="[v => !!v || 'Veuillez saisir un numéro de téléphone']" label="Téléphone"></v-text-field>
+                  <v-text-field height="25" background-color="#ffffff" v-model="address" required :rules="[v => !!v || 'Veuillez renseigner une adresse valide']" label="Adresse de livraison"></v-text-field>
+                  <v-text-field height="25" background-color="#ffffff" v-model="zip" required :rules="[v => !!v || 'Veuillez renseigner un code postal']" label="Code postal de livraison"></v-text-field>
+                  <v-text-field height="25" background-color="#ffffff" v-model="country" :rules="[v => !!v || 'Veuillez renseigner un pays']" required label="Pays de livraison"></v-text-field>
+                  <v-text-field height="25" background-color="#ffffff" v-model="amount" readonly :label="`Montant a payer: ${totalPanier()} €`"></v-text-field>
+                  <StripeElementCard
+                    ref="elementRef"
+                    @token="tokenCreated"
+                    :pk="stripe_public_key"
+                    ></StripeElementCard>
+                  <v-btn :disabled="!valid" @click="submit">Payer</v-btn>
+              </v-form>
+            </div>
+        </v-card-text>
+     </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -170,15 +200,17 @@
     // StripeCheckout
   },
     data: () => ({
-      // loading: false,
-      // lineItems: [
-      //   {
-      //     price: '10', // The id of the one-time price you created in your Stripe dashboard
-      //     quantity: 1,
-      //   },
-      // ],
-      // successURL: 'https://www.google.com',
-      // cancelURL: 'https://www.google.com',
+      valid:true,
+      name:"",
+      mail:"",
+      phone:"",
+      address:"",
+      zip:"",
+      country:"", 
+      amount:"",
+      description:"",
+
+      dialogStripe:false,
       stripe_public_key:config.stripe_public_key,
       token:null,
 
@@ -222,22 +254,43 @@
     // },
     submit () {
       // this will trigger the process
-      this.$refs.elementRef.submit();
+      console.log("validate",this.$refs.form.validate())
+      if(this.$refs.form.validate()){
+        this.$refs.elementRef.submit()
+      }
     },
     tokenCreated (token) {
       console.log(token);
       let value = {
         stripeToken:token.id,
-        name:"Kris",
-        mail:"demo@kris.fr",
-        phone:"0100000000",
-        address:"2 place pokémon",
-        zip:"75011",
-        country:"France", 
-        amount:"60000",
-        description:"pikachu argenté"
+        name:`${this.$store.state.Users.firstname} ${this.$store.state.Users.lastname}`,
+        mail:`${this.$store.state.Users.mail}`,
+        phone:this.phone,
+        address:this.address,
+        zip:this.zip,
+        country:this.country, 
+        amount:this.totalPanier()*100,
+        description:"Pokeshop carte pokémon"
       }
-      Stripe.paymentOrder(value).then((data)=>{console.log("stripe data",data)})
+      // let value = {
+      //   stripeToken:token.id,
+      //   name:"Kris",
+      //   mail:"demo@kris.fr",
+      //   phone:"0100000000",
+      //   address:"2 place pokémon",
+      //   zip:"75011",
+      //   country:"France", 
+      //   amount:"60000",
+      //   description:"pikachu argenté"
+      // }
+      Stripe.paymentOrder(value).then((data)=>{
+        console.log("stripe data",data)
+        if(data=="Success"){
+          this.validerPanier()
+          this.$refs.form.reset()
+          this.$refs.elementRef.clear()
+        }
+      })
 
       // handle the token
       // send it to your server
@@ -266,7 +319,7 @@
                   }).then(data=>{
                     console.log("créer panier data",data)
                     this.$store.state.Panier.order_id = data.id
-                    this.$router.go(0)
+                    // this.$router.go(0)
                   })
               })
         }
