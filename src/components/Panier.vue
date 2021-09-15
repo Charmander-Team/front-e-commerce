@@ -182,7 +182,7 @@
             })
           }
         
-          Orders.updateOrder(this.$store.state.Panier.order_id,{paid:true}).then(data=>{
+          Orders.updateOrder(this.$store.state.Panier.order_id,{paid:true,status:"Validée"}).then(data=>{
                 console.log("valide panier data",data)
                 this.$store.state.Panier.contenu = []
                 this.$store.state.Panier.nbProduit = "0"

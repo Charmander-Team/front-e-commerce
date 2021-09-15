@@ -40,7 +40,7 @@ import DetailConnexion from '../components/DetailConnexion'
     }),
     methods:{
       backOfficeRedirect(){
-        window.location ='https://admin.pokeshop.tk/#/dashboard?t='+localStorage.getItem('token')
+        window.location ='https://admin.pokeshop.tk/#/?t='+localStorage.getItem('token')
       }
     }
   }
