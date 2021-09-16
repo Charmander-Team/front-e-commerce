@@ -159,7 +159,7 @@
     >
      <v-card color="#cccccc">
         <v-card-title class="text-h5 white lighten-2 justify-center">
-          Finaliser votre commande
+          Finalisez votre commande
         </v-card-title>
         <v-card-text>
             <div>
@@ -170,17 +170,25 @@
                   <v-text-field height="25" background-color="#ffffff" v-model="address" required :rules="[v => !!v || 'Veuillez renseigner une adresse valide']" label="Adresse de livraison"></v-text-field>
                   <v-text-field height="25" background-color="#ffffff" v-model="zip" required :rules="[v => !!v || 'Veuillez renseigner un code postal']" label="Code postal de livraison"></v-text-field>
                   <v-text-field height="25" background-color="#ffffff" v-model="country" :rules="[v => !!v || 'Veuillez renseigner un pays']" required label="Pays de livraison"></v-text-field>
-                  <v-text-field height="25" background-color="#ffffff" v-model="amount" readonly :label="`Montant a payer: ${totalPanier()} €`"></v-text-field>
+                  <v-text-field height="25" background-color="#ffffff" v-model="amount" readonly :label="`Montant à payer: ${totalPanier()} €`"></v-text-field>
                   <StripeElementCard
                     ref="elementRef"
                     @token="tokenCreated"
                     :pk="stripe_public_key"
                     ></StripeElementCard>
                   <v-btn :disabled="!valid" @click="submit">Payer</v-btn>
+                  <v-img src="@/assets/Stripe_Logo.svg" class="my-1" height="auto" width="10%" alt="logo-stripe"></v-img>
               </v-form>
             </div>
         </v-card-text>
      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogConfirmPayment" width="400">
+            <v-card color="#ffffff">
+                <v-card-title class="justify-center">
+                    {{dialogConfirmPaymentMessage}}
+                </v-card-title>
+            </v-card>
     </v-dialog>
   </div>
 </template>
@@ -200,6 +208,8 @@
     // StripeCheckout
   },
     data: () => ({
+      dialogConfirmPayment:false,
+      dialogConfirmPaymentMessage:"",
       valid:true,
       name:"",
       mail:"",
@@ -289,6 +299,11 @@
           this.validerPanier()
           this.$refs.form.reset()
           this.$refs.elementRef.clear()
+        }else{
+          this.$refs.elementRef.clear()
+          this.dialogStripe = false
+          this.dialogConfirmPayment = true
+          this.dialogConfirmPaymentMessage = "Un problème est survenu"
         }
       })
 
@@ -319,7 +334,13 @@
                   }).then(data=>{
                     console.log("créer panier data",data)
                     this.$store.state.Panier.order_id = data.id
-                    // this.$router.go(0)
+
+                    this.dialogStripe = false
+                    this.dialogConfirmPayment = true
+                    this.dialogConfirmPaymentMessage = "Votre commande a bien été validée"
+                    setTimeout(()=>{ 
+                          this.$router.go(0)
+                          }, 3000)
                   })
               })
         }
