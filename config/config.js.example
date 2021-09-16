@@ -21,6 +21,8 @@ const api_url = "https://api.pokeshop.tk";
 const api_port = 3000;
 
 
+const stripe_public_key = "pk_test_510000000000000000000000000000000000000000000000000000000";
 
 module.exports.api_port = api_port;
 module.exports.api_url = api_url;
+module.exports.stripe_public_key = stripe_public_key;
